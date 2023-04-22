@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e18e2d41-3f32-44d4-aac5-1c14e0386cc9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/components/login/login.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/login/social-buttons/facebookIcon.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/login/social-buttons/googleIcon.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/login/social-buttons/socialButtons.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/auth.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/comment/comment.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/comment/commentsSkeleton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/search-input/search-input.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/video-id-chip/video-id-chip.module.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/video-id-chip/video-id-chip.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/comment.dto.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/commentSearchResponse.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/_app.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.tsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2Oej8KaaTPRlxQqTEHMFZpbG0pD" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JavaScript" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/components/login" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e18e2d41-3f32-44d4-aac5-1c14e0386cc9" name="Changes" comment="" />
+      <created>1681927781071</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1681927781071</updated>
+      <workItem from="1681927782138" duration="24000" />
+      <workItem from="1681927814910" duration="691000" />
+      <workItem from="1681928542677" duration="934000" />
+      <workItem from="1681929523106" duration="63000" />
+      <workItem from="1681929609045" duration="44000" />
+      <workItem from="1681929673564" duration="30000" />
+      <workItem from="1681929714170" duration="567000" />
+      <workItem from="1682072172885" duration="41000" />
+      <workItem from="1682159552566" duration="893000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
