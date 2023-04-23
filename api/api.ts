@@ -2,14 +2,14 @@ import axios, {AxiosResponse} from "axios";
 import {LoginRequest} from "../models/Auth/LoginRequest";
 import {RegisterRequest} from "../models/Auth/RegisterRequest";
 import {LoginResponse} from "../models/Auth/LoginResponse";
-import useAuth from "../stores/useAuth";
+import { getCookie } from 'cookies-next';
 
 const ApiUrl = process.env.API_URL;
 
 axios.defaults.baseURL = `${ApiUrl}`;
 
 axios.interceptors.request.use((config) => {
-    const token = useAuth(state => state.jwt);
+    const token = getCookie('jwt');
     if (token && config?.headers) config.headers.Authorization = `Bearer ${token}`;
     return config;
 });
