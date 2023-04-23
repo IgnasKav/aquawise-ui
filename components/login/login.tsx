@@ -14,22 +14,49 @@ import {
 } from '@mantine/core';
 import {FacebookButton, GoogleButton} from "./social-buttons/socialButtons";
 import { useForm } from '@mantine/form';
+import useAuth from "../../stores/useAuth";
 
 export function LoginForm(props?: PaperProps) {
+    const [user, login, register] = useAuth((state) => ([state.user, state.login, state.register]))
     const [type, toggle] = useToggle(['login', 'register']);
+
     const form = useForm({
         initialValues: {
             email: '',
-            name: '',
+            firstName: '',
+            lastName: '',
             password: '',
             terms: true,
         },
 
         validate: {
             email: (val: string) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
-            password: (val: string) => (val.length <= 6 ? 'Password should include at least 6 characters' : null),
+            password: (val: string) => (val.length < 6 ? 'Password should include at least 6 characters' : null),
         },
     });
+
+    const handleLogin = async () => {
+        const {email, password}= form.values;
+        await login({email, password})
+    }
+
+    const handleRegister = () => {
+        const {firstName, lastName, email, password} = form.values;
+
+    }
+
+    const handleAuth = () => {
+        if (!form.isValid()) return;
+
+        switch (type) {
+            case 'login':
+                handleLogin();
+                break;
+            case 'register':
+                handleRegister();
+                break;
+        }
+    }
 
     return (
         <Paper radius="md" p="xl" withBorder {...props}>
@@ -48,13 +75,22 @@ export function LoginForm(props?: PaperProps) {
             })}>
                 <Stack>
                     {type === 'register' && (
-                        <TextInput
-                            label="Name"
-                            placeholder="Your name"
-                            value={form.values.name}
-                            onChange={(event) => form.setFieldValue('name', event.currentTarget.value)}
-                            radius="md"
-                        />
+                        <>
+                            <TextInput
+                                label="First Name"
+                                placeholder="First Name"
+                                value={form.values.firstName}
+                                onChange={(event) => form.setFieldValue('firstName', event.currentTarget.value)}
+                                radius="md"
+                            />
+                            <TextInput
+                                label="Last Name"
+                                placeholder="Last Name"
+                                value={form.values.lastName}
+                                onChange={(event) => form.setFieldValue('lastName', event.currentTarget.value)}
+                                radius="md"
+                            />
+                        </>
                     )}
 
                     <TextInput
@@ -98,7 +134,7 @@ export function LoginForm(props?: PaperProps) {
                             ? 'Already have an account? Login'
                             : "Don't have an account? Register"}
                     </Anchor>
-                    <Button type="submit" radius="xl">
+                    <Button type="submit" radius="xl" onClick={() => handleAuth()}>
                         {upperFirst(type)}
                     </Button>
                 </Group>

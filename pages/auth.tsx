@@ -3,8 +3,10 @@ import { LoginForm } from "../components/login/login";
 
 export default function Auth() {
     return(
-        <Center>
-            <LoginForm/>
-        </Center>
+        <>
+            <Center>
+                <LoginForm/>
+            </Center>
+        </>
     )
 }
