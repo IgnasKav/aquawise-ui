@@ -1,20 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e18e2d41-3f32-44d4-aac5-1c14e0386cc9" name="Changes" comment="add auth">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/api.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/Auth/LoginRequest.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/Auth/LoginResponse.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/Auth/RegisterRequest.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/User.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/useAuth.ts" afterDir="false" />
+    <list default="true" id="e18e2d41-3f32-44d4-aac5-1c14e0386cc9" name="Changes" comment="set user on login">
+      <change beforePath="$PROJECT_DIR$/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/login/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/login/login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/auth.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/auth.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,8 +39,10 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path" value="$USER_HOME$/.nvm/versions/node/v18.16.0/bin/node" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.JavaScript" />
+    <property name="prettierjs.PrettierConfiguration.Package" value="$PROJECT_DIR$/node_modules/prettier" />
+    <property name="settings.editor.selected.configurable" value="settings.nodejs" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -77,7 +70,11 @@
       <workItem from="1682072172885" duration="41000" />
       <workItem from="1682159552566" duration="893000" />
       <workItem from="1682161345345" duration="4486000" />
-      <workItem from="1682267889826" duration="6853000" />
+      <workItem from="1682267889826" duration="9738000" />
+      <workItem from="1682317929323" duration="4028000" />
+      <workItem from="1682327287879" duration="118000" />
+      <workItem from="1682359523738" duration="9000" />
+      <workItem from="1682445042270" duration="1507000" />
     </task>
     <task id="LOCAL-00001" summary="update readme, switch from yarn">
       <created>1682161953460</created>
@@ -86,7 +83,35 @@
       <option name="project" value="LOCAL" />
       <updated>1682161953460</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="add auth">
+      <created>1682289268682</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1682289268682</updated>
+    </task>
+    <task id="LOCAL-00003" summary="save jwt in cookies">
+      <created>1682290625387</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1682290625387</updated>
+    </task>
+    <task id="LOCAL-00004" summary="remove comment">
+      <created>1682290695952</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1682290695952</updated>
+    </task>
+    <task id="LOCAL-00005" summary="set user on login">
+      <created>1682320716222</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1682320716222</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -106,7 +131,10 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update readme, switch from yarn" />
     <MESSAGE value="add auth" />
-    <option name="LAST_COMMIT_MESSAGE" value="add auth" />
+    <MESSAGE value="save jwt in cookies" />
+    <MESSAGE value="remove comment" />
+    <MESSAGE value="set user on login" />
+    <option name="LAST_COMMIT_MESSAGE" value="set user on login" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

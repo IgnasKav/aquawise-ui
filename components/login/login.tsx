@@ -1,19 +1,19 @@
-import { useToggle, upperFirst } from '@mantine/hooks';
+import {upperFirst, useToggle} from '@mantine/hooks';
 import {
-    TextInput,
-    PasswordInput,
-    Text,
-    Paper,
-    Group,
-    PaperProps,
-    Button,
-    Divider,
-    Checkbox,
     Anchor,
+    Button,
+    Checkbox,
+    Divider,
+    Group,
+    Paper,
+    PaperProps,
+    PasswordInput,
     Stack,
+    Text,
+    TextInput,
 } from '@mantine/core';
 import {FacebookButton, GoogleButton} from "./social-buttons/socialButtons";
-import { useForm } from '@mantine/form';
+import {useForm} from '@mantine/form';
 import useAuth from "../../stores/useAuth";
 
 export function LoginForm(props?: PaperProps) {
