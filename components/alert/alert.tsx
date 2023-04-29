@@ -1,19 +1,8 @@
 import {Alert as MantineAlert} from '@mantine/core';
 import {IconAlertCircle} from "@tabler/icons";
 import {motion} from 'framer-motion';
+import { Alert, AlertType } from '../../models/Alert';
 import useAlert from "../../stores/useAlert";
-
-export interface Alert {
-    id: string;
-    type: AlertTypes
-    message: string;
-    title: string;
-}
-export enum AlertTypes {
-    'error',
-    'success',
-    'info'
-}
 
 interface Props {
     alert: Alert,
@@ -21,8 +10,27 @@ interface Props {
 
 }
 
-export function Alert({alert, className}: Props) {
+export function AlertComponent({alert, className}: Props) {
     const [removeAlert] = useAlert((state) => [state.removeAlert]);
+
+    const getAlertColour = (): string => {
+        let colour = '';
+        switch (alert.type) {
+            case AlertType.success:
+                colour = 'green';
+                break;
+            case AlertType.error:
+                colour = 'red';
+                break;
+            case AlertType.info:
+                colour = 'blue';
+                break;
+        }
+
+        return colour;
+    }
+
+    const alertColour = getAlertColour();
 
     return (
         <motion.div
@@ -35,7 +43,7 @@ export function Alert({alert, className}: Props) {
                 icon={<IconAlertCircle size="1rem" />}
                 className={className}
                 title={alert.title}
-                color="red"
+                color={alertColour}
                 withCloseButton
                 onClose={() => removeAlert(alert.id)}
             >
