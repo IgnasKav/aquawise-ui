@@ -1,4 +1,4 @@
-import { Button, ButtonProps, Group } from '@mantine/core';
+import { Button, ButtonProps } from '@mantine/core';
 import GoogleIcon from './googleIcon';
 import FacebookIcon from './facebookIcon';
 
