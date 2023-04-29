@@ -15,16 +15,19 @@ export enum AlertTypes {
 }
 
 interface Props {
-    alert: Alert
+    alert: Alert,
+    className: string;
+
 }
 
-export function Alert({alert}: Props) {
+export function Alert({alert, className}: Props) {
     const [removeAlert] = useAlert((state) => [state.removeAlert]);
 
     return (
         <>
             <MantineAlert
                 icon={<IconAlertCircle size="1rem" />}
+                className={className}
                 title={alert.title}
                 color="red"
                 withCloseButton

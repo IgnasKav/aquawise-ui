@@ -6,12 +6,13 @@ import {Button, MantineProvider} from '@mantine/core';
 import '../styles/global.scss';
 import useAlert from "../stores/useAlert";
 import {Alert, AlertTypes} from "../components/alert/alert";
-import { v4 as uuid } from 'uuid';
+import {v4 as uuid} from 'uuid';
+import {AlertList} from "../components/alert/alertList";
 
 
 export default function App({Component, pageProps}: AppProps) {
     const [queryClient] = useState(() => new QueryClient())
-    const [alerts, createAlert] = useAlert((state) => [state.alerts, state.createAlert]);
+    const [createAlert] = useAlert((state) => [state.createAlert]);
 
     const handleAlertCreation = () => {
         const alert: Alert = {
@@ -41,7 +42,7 @@ export default function App({Component, pageProps}: AppProps) {
                     >
                         <Component {...pageProps} />
                         <Button onClick={() => handleAlertCreation()}>Create alert</Button>
-                        {alerts.map(alert => <Alert key={alert.id} alert={alert}/>)}
+                        <AlertList/>
                     </MantineProvider>
                 </Hydrate>
             </QueryClientProvider>

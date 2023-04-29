@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e18e2d41-3f32-44d4-aac5-1c14e0386cc9" name="Changes" comment="configure eslint">
-      <change afterPath="$PROJECT_DIR$/components/alert/alert.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/auth/register.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pages/auth/register.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/stores/useAlert.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/global.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc.json" afterDir="false" />
+    <list default="true" id="e18e2d41-3f32-44d4-aac5-1c14e0386cc9" name="Changes" comment="animate alert">
+      <change afterPath="$PROJECT_DIR$/components/alert/alertList.module.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/alert/alertList.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/login/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/auth/login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/login/social-buttons/facebookIcon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/auth/social-buttons/facebookIcon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/login/social-buttons/googleIcon.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/auth/social-buttons/googleIcon.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/login/social-buttons/socialButtons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/auth/social-buttons/socialButtons.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Auth/RegisterRequest.ts" beforeDir="false" afterPath="$PROJECT_DIR$/models/Auth/RegisterRequest.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/alert/alert.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/alert/alert.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/_app.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/auth.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/auth/login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/Home.module.scss" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +88,8 @@
       <workItem from="1682522614999" duration="3899000" />
       <workItem from="1682624808787" duration="3054000" />
       <workItem from="1682778223665" duration="2730000" />
-      <workItem from="1682783078216" duration="1386000" />
+      <workItem from="1682783078216" duration="3330000" />
+      <workItem from="1682789044421" duration="1039000" />
     </task>
     <task id="LOCAL-00001" summary="update readme, switch from yarn">
       <created>1682161953460</created>
@@ -142,7 +133,14 @@
       <option name="project" value="LOCAL" />
       <updated>1682446732263</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="add register functionality and alerts">
+      <created>1682786681677</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1682786681677</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -166,7 +164,9 @@
     <MESSAGE value="remove comment" />
     <MESSAGE value="set user on login" />
     <MESSAGE value="configure eslint" />
-    <option name="LAST_COMMIT_MESSAGE" value="configure eslint" />
+    <MESSAGE value="add register functionality and alerts" />
+    <MESSAGE value="animate alert" />
+    <option name="LAST_COMMIT_MESSAGE" value="animate alert" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
