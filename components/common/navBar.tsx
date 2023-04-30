@@ -90,7 +90,7 @@ const NavBar = () => {
 
     return (
         <>
-            <Container mx="auto" py={20} px={20} style={{ maxWidth: '1000px', zIndex: '2' }}>
+            <Container mx="auto" pt={20} pb={30} px={20} style={{ maxWidth: '1000px', zIndex: '2' }}>
                 <Card shadow="md" radius="lg" p="md" withBorder>
                     <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
                         <Group position="apart">
