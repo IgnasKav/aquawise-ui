@@ -6,11 +6,8 @@ import {
     QueryClientProvider,
 } from "@tanstack/react-query";
 import Head from "next/head";
-import { Button, MantineProvider } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import "../styles/global.scss";
-import useAlert from "../stores/useAlert";
-import { Alert, AlertTypes } from "../components/alert/alert";
-import { v4 as uuid } from "uuid";
 import { AlertList } from "../components/alert/alertList";
 import NavBar from "../components/common/navBar";
 
