@@ -1,9 +1,10 @@
-import axios, {AxiosError, AxiosResponse} from "axios";
+import axios, {AxiosResponse} from "axios";
 import {LoginRequest} from "../models/Auth/LoginRequest";
 import {RegisterRequest} from "../models/Auth/RegisterRequest";
 import {LoginResponse} from "../models/Auth/LoginResponse";
-import { getCookie } from 'cookies-next';
-import { ApiError } from "../models/ApiError";
+import {getCookie} from 'cookies-next';
+import {ApiError} from "../models/ApiError";
+import {User} from "../models/User";
 
 const ApiUrl = process.env.API_URL;
 
@@ -28,6 +29,7 @@ const requests = {
 const Auth = {
     login: (req: LoginRequest): Promise<LoginResponse> => requests.post('/auth/login', req),
     register: (req: RegisterRequest): Promise<void> => requests.post('/auth/register', req),
+    current: (): Promise<User> => requests.get('auth/current')
 };
 
 const api = {

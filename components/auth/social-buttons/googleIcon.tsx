@@ -1,4 +1,4 @@
-export default function GoogleIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
+const GoogleIcon = (props: React.ComponentPropsWithoutRef<'svg'>) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -27,3 +27,5 @@ export default function GoogleIcon(props: React.ComponentPropsWithoutRef<'svg'>)
         </svg>
     );
 }
+
+export default GoogleIcon;

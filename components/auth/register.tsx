@@ -1,24 +1,13 @@
-import {
-    Anchor,
-    Button,
-    Divider,
-    Group,
-    Paper,
-    PaperProps,
-    PasswordInput,
-    Stack,
-    Text,
-    TextInput,
-} from '@mantine/core';
+import {Anchor, Button, Divider, Group, Paper, PaperProps, PasswordInput, Stack, Text, TextInput,} from '@mantine/core';
 import {FacebookButton, GoogleButton} from "./social-buttons/socialButtons";
 import {useForm} from '@mantine/form';
 import useAuth from "../../stores/useAuth";
 import Link from "next/link";
-import { parseError } from '../../api/api';
+import {parseError} from '../../api/api';
 import useAlert from '../../stores/useAlert';
-import { Alert, AlertType } from '../../models/Alert';
+import {Alert, AlertType} from '../../models/Alert';
 
-export function RegisterForm(props?: PaperProps) {
+export const RegisterForm = (props?: PaperProps) => {
     const [register] = useAuth((state) => ([state.register]));
     const [createAlert] = useAlert((state) => ([state.createAlert]))
 

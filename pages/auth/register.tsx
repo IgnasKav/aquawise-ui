@@ -1,10 +1,12 @@
-import { Center } from "@mantine/core";
+import {Center} from "@mantine/core";
 import {RegisterForm} from "../../components/auth/register";
 
-export default function Register() {
+const Register = () => {
     return(
         <Center>
             <RegisterForm/>
         </Center>
     )
 }
+
+export default Register;

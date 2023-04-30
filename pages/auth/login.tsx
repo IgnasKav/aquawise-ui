@@ -1,10 +1,12 @@
-import { Center } from "@mantine/core";
-import { LoginForm } from "../../components/auth/login";
+import {Center} from "@mantine/core";
+import {LoginForm} from "../../components/auth/login";
 
-export default function Login() {
+const Login = () => {
     return(
         <Center>
             <LoginForm/>
         </Center>
     )
 }
+
+export default Login;

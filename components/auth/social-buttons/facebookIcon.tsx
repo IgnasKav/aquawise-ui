@@ -1,4 +1,4 @@
-export default function FacebookIcon(props: React.ComponentProps<'svg'>) {
+const FacebookIcon = (props: React.ComponentProps<'svg'>) => {
     return (
         <svg
             aria-hidden="true"
@@ -20,3 +20,5 @@ export default function FacebookIcon(props: React.ComponentProps<'svg'>) {
         </svg>
     );
 }
+
+export default FacebookIcon;
