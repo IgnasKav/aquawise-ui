@@ -1,6 +1,6 @@
 import {create} from "zustand";
-import {Alert} from "../components/alert/alert";
 import {produce} from "immer";
+import {Alert} from "../models/Alert";
 
 interface AlertState {
     alerts: Alert[];

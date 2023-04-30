@@ -9,8 +9,7 @@ import {
     MantineNumberSize,
     MantineSize,
     MediaQuery,
-    Menu,
-    Stack
+    Menu
 } from "@mantine/core";
 import React, {useState} from 'react';
 import {AiFillCaretDown, AiOutlineEdit, AiOutlineHome} from 'react-icons/ai';
@@ -19,19 +18,21 @@ import useAuth from "../../stores/useAuth";
 import {User} from "../../models/User";
 import css from './navBar.module.scss';
 
+interface NavButtonProps {
+    to: string;
+    color: string;
+    title: string;
+    icon?: React.ReactNode;
+    size?: MantineSize;
+}
+
 const NavButton = ({
     to,
     color,
     title,
     icon = '',
     size = 'lg',
-}: {
-    to: string;
-    color: string;
-    title: string;
-    icon?: React.ReactNode;
-    size?: MantineSize;
-}) => {
+}: NavButtonProps) => {
     const router = useRouter();
 
     return (
@@ -47,7 +48,14 @@ const NavButton = ({
     );
 };
 
-const NavHoverMenu = ({ user, logout, buttonSize = 'lg', avatarSize = 'md' }: {user: User, logout: () => void, buttonSize?: MantineSize, avatarSize?: MantineNumberSize,}) => {
+interface NavHoverMenuProps {
+    user: User;
+    logout: () => void;
+    buttonSize?: MantineSize;
+    avatarSize?: MantineNumberSize;
+}
+
+const NavHoverMenu = ({ user, logout, buttonSize = 'lg', avatarSize = 'md' }: NavHoverMenuProps) => {
     const router = useRouter();
 
     return (
@@ -97,39 +105,37 @@ const NavBar = () => {
                 <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
                     <Group position="apart">
                         <NavButton to="/" color="blue" title="Home" icon={<AiOutlineHome />} />
-                        {!user ? (
-                            <Group>
-                                <NavButton to="/auth/login" color="blue" title="Login" />
-                                <NavButton to="/auth/register" color="blue" title="Register" />
-                            </Group>
-                        ) : (
-                            <Group>
+                        <Group>
+                            {!user ? (
+                                <>
+                                    <NavButton to="/auth/login" color="blue" title="Login" />
+                                    <NavButton to="/auth/register" color="blue" title="Register" />
+                                </>
+                            ) : (
                                 <NavHoverMenu user={user} logout={logout} />
-                            </Group>
-                        )}
+                            )}
+                        </Group>
                     </Group>
                 </MediaQuery>
                 <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-                    <Stack>
-                        <Group position="apart">
-                            <Burger size={'xs'} opened={opened} onClick={() => setOpened((o) => !o)} />
+                    <Group position="apart">
+                        <Burger size={'xs'} opened={opened} onClick={() => setOpened((o) => !o)} />
+                        <Group>
                             {!user ? (
-                                <Group>
+                                <>
                                     <NavButton to="/auth/login" color="blue" title="Login" />
                                     <NavButton to="/auth/register" color="blue" title="Register" />
-                                </Group>
+                                </>
                             ) : (
-                                <Group>
+                                <>
                                     <NavHoverMenu avatarSize={'sm'} buttonSize={'sm'} user={user} logout={logout} />
                                     {opened && (
-                                        <Stack>
-                                            <NavButton size={'sm'} to="/" color="blue" title="Home" icon={<AiOutlineHome />} />
-                                        </Stack>
+                                        <NavButton size={'sm'} to="/" color="blue" title="Home" icon={<AiOutlineHome />} />
                                     )}
-                                </Group>
+                                </>
                             )}
                         </Group>
-                    </Stack>
+                    </Group>
                 </MediaQuery>
             </Card>
         </div>
