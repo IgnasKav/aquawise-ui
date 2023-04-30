@@ -2,8 +2,8 @@ import {User} from "../models/User";
 import {LoginRequest} from "../models/Auth/LoginRequest";
 import {RegisterRequest} from "../models/Auth/RegisterRequest";
 import {create} from "zustand";
-import api from "../api/api";
-import { setCookie } from 'cookies-next';
+import {api} from "../api/api";
+import {setCookie} from 'cookies-next';
 
 interface AuthState {
     user: User | null,

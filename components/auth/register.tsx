@@ -14,9 +14,13 @@ import {FacebookButton, GoogleButton} from "./social-buttons/socialButtons";
 import {useForm} from '@mantine/form';
 import useAuth from "../../stores/useAuth";
 import Link from "next/link";
+import { parseError } from '../../api/api';
+import useAlert from '../../stores/useAlert';
+import { Alert, AlertType } from '../../models/Alert';
 
 export function RegisterForm(props?: PaperProps) {
     const [register] = useAuth((state) => ([state.register]));
+    const [createAlert] = useAlert((state) => ([state.createAlert]))
 
     const form = useForm({
         initialValues: {
@@ -34,7 +38,19 @@ export function RegisterForm(props?: PaperProps) {
 
     const handleRegister = async () => {
         const {firstName, lastName, email, password} = form.values;
-        await register({firstName, lastName, email, password});
+
+        try {
+            await register({firstName, lastName, email, password});
+            const alert = new Alert({
+                message: 'Successfully registered, please confirm registration via email',
+                type: AlertType.success,
+                title: 'Success!'
+            })
+            createAlert(alert)
+        } catch(error) {
+            const alert = parseError(error).toAlert();
+            createAlert(alert)
+        }
     }
 
     return (

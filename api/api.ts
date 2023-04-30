@@ -1,8 +1,9 @@
-import axios, {AxiosResponse} from "axios";
+import axios, {AxiosError, AxiosResponse} from "axios";
 import {LoginRequest} from "../models/Auth/LoginRequest";
 import {RegisterRequest} from "../models/Auth/RegisterRequest";
 import {LoginResponse} from "../models/Auth/LoginResponse";
 import { getCookie } from 'cookies-next';
+import { ApiError } from "../models/ApiError";
 
 const ApiUrl = process.env.API_URL;
 
@@ -15,6 +16,7 @@ axios.interceptors.request.use((config) => {
 });
 
 const responseBody = (response: AxiosResponse) => response.data;
+const parseError = (error: any): ApiError => new ApiError(error.response?.data);
 
 const requests = {
     get: (url: string) => axios.get(url).then(responseBody),
@@ -32,4 +34,4 @@ const api = {
     Auth
 }
 
-export default api;
+export {api, parseError};

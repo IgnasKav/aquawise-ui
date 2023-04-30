@@ -15,9 +15,14 @@ import {FacebookButton, GoogleButton} from "./social-buttons/socialButtons";
 import {useForm} from '@mantine/form';
 import useAuth from "../../stores/useAuth";
 import Link from "next/link";
+import { ApiError } from '../../models/ApiError';
+import useAlert from '../../stores/useAlert';
+import { parseError } from '../../api/api';
+import {Alert, AlertType } from '../../models/Alert';
 
 export function LoginForm(props?: PaperProps) {
     const [login] = useAuth((state) => ([state.login]))
+    const [createAlert] = useAlert((state) => ([state.createAlert]))
 
     const form = useForm({
         initialValues: {
@@ -32,7 +37,19 @@ export function LoginForm(props?: PaperProps) {
 
     const handleLogin = async () => {
         const {email, password}= form.values;
-        await login({email, password})
+
+        try {
+            await login({email, password})
+            const alert = new Alert({
+                message: 'Successfuly logged in',
+                type: AlertType.success,
+                title: 'Success!'
+            })
+            createAlert(alert)
+        } catch(error) {
+            const alert = parseError(error).toAlert();
+            createAlert(alert)
+        }
     }
 
     return (

@@ -14,20 +14,8 @@ import { v4 as uuid } from "uuid";
 import { AlertList } from "../components/alert/alertList";
 import NavBar from "../components/common/navBar";
 
-export default function App({ Component, pageProps }: AppProps) {
-    const [queryClient] = useState(() => new QueryClient());
-    const [createAlert] = useAlert((state) => [state.createAlert]);
-
-    const handleAlertCreation = () => {
-        const alert: Alert = {
-            id: uuid(),
-            title: "Hello World",
-            message: "Alerts are working",
-            type: AlertTypes.success,
-        };
-
-        createAlert(alert);
-    };
+export default function App({Component, pageProps}: AppProps) {
+    const [queryClient] = useState(() => new QueryClient())
 
     return (
         <>
@@ -50,7 +38,6 @@ export default function App({ Component, pageProps }: AppProps) {
                         <div className="bg-image">
                             <NavBar />
                             <Component {...pageProps} />
-                            <Button onClick={() => handleAlertCreation()}>Create alert</Button>
                             <AlertList />
                         </div>
                     </MantineProvider>
