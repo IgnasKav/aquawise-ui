@@ -38,7 +38,7 @@ export function RegisterForm(props?: PaperProps) {
     }
 
     return (
-        <Paper radius="md" p="xl" withBorder {...props}>
+        <Paper shadow="md" radius="md" p="xl" withBorder {...props}>
             <Text size="lg" weight={500}>
                 Welcome to Aquawise, register with
             </Text>

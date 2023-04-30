@@ -1,6 +1,7 @@
 import {
     Anchor,
     Button,
+    Center,
     Divider,
     Group,
     Paper,
@@ -35,9 +36,9 @@ export function LoginForm(props?: PaperProps) {
     }
 
     return (
-        <Paper radius="md" p="xl" withBorder {...props}>
+        <Paper shadow="md" radius="md" p="xl" withBorder {...props}>
             <Text size="lg" weight={500}>
-                Welcome to Aquawise, login with
+                  Welcome to Aquawise, login with
             </Text>
 
             <Group grow mb="md" mt="md">
@@ -80,7 +81,7 @@ export function LoginForm(props?: PaperProps) {
                         <Link className="plain-link" href="/auth/register">{ `Don't have an account? Register` }</Link>
                     </Anchor>
                     <Button type="submit" radius="xl">
-                        Login
+                          Login
                     </Button>
                 </Group>
             </form>
