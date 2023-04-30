@@ -1,22 +1,23 @@
-import { FiLogOut } from 'react-icons/fi';
+import {FiLogOut} from 'react-icons/fi';
 import {
+    Avatar,
+    Burger,
     Button,
     Card,
-    Container,
-    Group,
-    MediaQuery,
-    Burger,
-    Stack,
-    Menu,
-    Avatar,
     Divider,
-    MantineSize, MantineNumberSize
+    Group,
+    MantineNumberSize,
+    MantineSize,
+    MediaQuery,
+    Menu,
+    Stack
 } from "@mantine/core";
-import React, { useState } from 'react';
-import { AiFillCaretDown, AiOutlineEdit, AiOutlineHome } from 'react-icons/ai';
-import { useRouter } from "next/router";
+import React, {useState} from 'react';
+import {AiFillCaretDown, AiOutlineEdit, AiOutlineHome} from 'react-icons/ai';
+import {useRouter} from "next/router";
 import useAuth from "../../stores/useAuth";
-import { User } from "../../models/User";
+import {User} from "../../models/User";
+import css from './navBar.module.scss';
 
 const NavButton = ({
     to,
@@ -61,40 +62,57 @@ const NavHoverMenu = ({ user, logout, buttonSize = 'lg', avatarSize = 'md' }: {u
                     </Group>
                 </Button>
             </Menu.Target>
-            <Menu.Label>{user.email}</Menu.Label>
-            <Menu.Item
-                icon={<AiOutlineEdit />}
-                onClick={() =>
-                    router.push('/')
-                }
-            >
-                Edit profile
-            </Menu.Item>
-            <Divider />
-            <Menu.Item
-                color={'red'}
-                icon={<FiLogOut />}
-                onClick={() => {
-                    logout();
-                }}
-            >
-                Logout
-            </Menu.Item>
+            <Menu.Dropdown>
+                <Menu.Label>{user.email}</Menu.Label>
+                <Menu.Item
+                    icon={<AiOutlineEdit />}
+                    onClick={() =>
+                        router.push('/')
+                    }
+                >
+                    Edit profile
+                </Menu.Item>
+                <Divider />
+                <Menu.Item
+                    color={'red'}
+                    icon={<FiLogOut />}
+                    onClick={() => {
+                        logout();
+                    }}
+                >
+                    Logout
+                </Menu.Item>
+            </Menu.Dropdown>
         </Menu>
     );
 };
 
 const NavBar = () => {
-    const { user, logout } = useAuth();
+    const [user, logout]  = useAuth((state) => [state.user, state.logout]);
     const [opened, setOpened] = useState(false);
 
     return (
-        <>
-            <Container mx="auto" pt={20} pb={30} px={20} style={{ maxWidth: '1000px', zIndex: '2' }}>
-                <Card shadow="md" radius="lg" p="md" withBorder>
-                    <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+        <div className={css.navContainer}>
+            <Card className={css.navCard} shadow="md" radius="lg" p="md" withBorder>
+                <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+                    <Group position="apart">
+                        <NavButton to="/" color="blue" title="Home" icon={<AiOutlineHome />} />
+                        {!user ? (
+                            <Group>
+                                <NavButton to="/auth/login" color="blue" title="Login" />
+                                <NavButton to="/auth/register" color="blue" title="Register" />
+                            </Group>
+                        ) : (
+                            <Group>
+                                <NavHoverMenu user={user} logout={logout} />
+                            </Group>
+                        )}
+                    </Group>
+                </MediaQuery>
+                <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+                    <Stack>
                         <Group position="apart">
-                            <NavButton to="/" color="blue" title="Home" icon={<AiOutlineHome />} />
+                            <Burger size={'xs'} opened={opened} onClick={() => setOpened((o) => !o)} />
                             {!user ? (
                                 <Group>
                                     <NavButton to="/auth/login" color="blue" title="Login" />
@@ -102,36 +120,19 @@ const NavBar = () => {
                                 </Group>
                             ) : (
                                 <Group>
-                                    <NavHoverMenu user={user} logout={logout} />
+                                    <NavHoverMenu avatarSize={'sm'} buttonSize={'sm'} user={user} logout={logout} />
+                                    {opened && (
+                                        <Stack>
+                                            <NavButton size={'sm'} to="/" color="blue" title="Home" icon={<AiOutlineHome />} />
+                                        </Stack>
+                                    )}
                                 </Group>
                             )}
                         </Group>
-                    </MediaQuery>
-                    <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-                        <Stack>
-                            <Group position="apart">
-                                <Burger size={'xs'} opened={opened} onClick={() => setOpened((o) => !o)} />
-                                {!user ? (
-                                    <Group>
-                                        <NavButton to="/auth/login" color="blue" title="Login" />
-                                        <NavButton to="/auth/register" color="blue" title="Register" />
-                                    </Group>
-                                ) : (
-                                    <Group>
-                                        <NavHoverMenu avatarSize={'sm'} buttonSize={'sm'} user={user} logout={logout} />
-                                        {opened && (
-                                            <Stack>
-                                                <NavButton size={'sm'} to="/" color="blue" title="Home" icon={<AiOutlineHome />} />
-                                            </Stack>
-                                        )}
-                                    </Group>
-                                )}
-                            </Group>
-                        </Stack>
-                    </MediaQuery>
-                </Card>
-            </Container>
-        </>
+                    </Stack>
+                </MediaQuery>
+            </Card>
+        </div>
     );
 };
 
