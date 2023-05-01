@@ -1,5 +1,5 @@
 import {Center} from "@mantine/core";
-import {RegisterForm} from "../../components/auth/register";
+import {RegisterForm} from "../../components/auth/registerForm";
 
 const Register = () => {
     return(

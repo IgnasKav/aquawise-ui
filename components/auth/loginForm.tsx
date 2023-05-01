@@ -1,4 +1,4 @@
-import {Anchor, Button, Divider, Group, Paper, PaperProps, PasswordInput, Stack, Text, TextInput,} from '@mantine/core';
+import {Anchor, Button, Divider, Group, PaperProps, PasswordInput, Stack, TextInput,} from '@mantine/core';
 import {FacebookButton, GoogleButton} from "./social-buttons/socialButtons";
 import {useForm} from '@mantine/form';
 import useAuth from "../../stores/useAuth";
@@ -40,11 +40,7 @@ export const LoginForm = (props?: PaperProps) => {
     }
 
     return (
-        <Paper shadow="md" radius="md" p="xl" withBorder {...props}>
-            <Text size="lg" weight={500}>
-                  Welcome to Aquawise, login with
-            </Text>
-
+        <>
             <Group grow mb="md" mt="md">
                 <GoogleButton radius="xl">Google</GoogleButton>
                 <FacebookButton radius="xl">Facebook</FacebookButton>
@@ -89,6 +85,6 @@ export const LoginForm = (props?: PaperProps) => {
                     </Button>
                 </Group>
             </form>
-        </Paper>
+        </>
     )
 }
