@@ -1,5 +1,5 @@
 import {Center} from "@mantine/core";
-import {LoginForm} from "../../components/auth/login";
+import { LoginForm } from "../../components/auth/Login";
 
 const Login = () => {
     return(
