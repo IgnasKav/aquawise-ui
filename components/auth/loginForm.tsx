@@ -1,43 +1,55 @@
-import {Anchor, Button, Divider, Group, PaperProps, PasswordInput, Stack, TextInput,} from '@mantine/core';
-import {FacebookButton, GoogleButton} from "./social-buttons/socialButtons";
-import {useForm} from '@mantine/form';
-import useAuth from "../../stores/useAuth";
-import Link from "next/link";
+import {
+    Button,
+    Center,
+    Divider,
+    Group,
+    PaperProps,
+    PasswordInput,
+    Stack,
+    TextInput,
+} from '@mantine/core';
+import { FacebookButton, GoogleButton } from './social-buttons/socialButtons';
+import { useForm } from '@mantine/form';
+import useAuth from '../../stores/useAuth';
 import useAlert from '../../stores/useAlert';
-import {parseError} from '../../api/api';
-import {Alert, AlertType} from '../../models/Alert';
+import { parseError } from '../../api/api';
+import { Alert, AlertType } from '../../models/Alert';
 
-export const LoginForm = (props?: PaperProps) => {
-    const [login] = useAuth((state) => ([state.login]))
-    const [createAlert] = useAlert((state) => ([state.createAlert]))
+export const LoginForm = () => {
+    const [login] = useAuth((state) => [state.login]);
+    const [createAlert] = useAlert((state) => [state.createAlert]);
 
     const form = useForm({
         initialValues: {
             email: '',
-            password: ''
+            password: '',
         },
         validate: {
-            email: (val: string) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
-            password: (val: string) => (val.length < 6 ? 'Password should include at least 6 characters' : null),
+            email: (val: string) =>
+                /^\S+@\S+$/.test(val) ? null : 'Invalid email',
+            password: (val: string) =>
+                val.length < 6
+                    ? 'Password should include at least 6 characters'
+                    : null,
         },
     });
 
     const handleLogin = async () => {
-        const {email, password}= form.values;
+        const { email, password } = form.values;
 
         try {
-            await login({email, password})
+            await login({ email, password });
             const alert = new Alert({
                 message: 'Successfuly logged in',
                 type: AlertType.success,
-                title: 'Success!'
-            })
-            createAlert(alert)
-        } catch(error) {
+                title: 'Success!',
+            });
+            createAlert(alert);
+        } catch (error) {
             const alert = parseError(error).toAlert();
-            createAlert(alert)
+            createAlert(alert);
         }
-    }
+    };
 
     return (
         <>
@@ -46,16 +58,25 @@ export const LoginForm = (props?: PaperProps) => {
                 <FacebookButton radius="xl">Facebook</FacebookButton>
             </Group>
 
-            <Divider label="Or continue with email" labelPosition="center" my="lg"/>
+            <Divider
+                label="Or continue with email"
+                labelPosition="center"
+                my="lg"
+            />
 
             <form onSubmit={form.onSubmit(() => handleLogin())}>
                 <Stack>
                     <TextInput
                         required
                         label="Email"
-                        placeholder="hello@mantine.dev"
+                        placeholder="Email"
                         value={form.values.email}
-                        onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
+                        onChange={(event) =>
+                            form.setFieldValue(
+                                'email',
+                                event.currentTarget.value,
+                            )
+                        }
                         error={form.errors.email}
                         radius="md"
                     />
@@ -63,28 +84,24 @@ export const LoginForm = (props?: PaperProps) => {
                     <PasswordInput
                         required
                         label="Password"
-                        placeholder="Your password"
+                        placeholder="Password"
                         value={form.values.password}
-                        onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
+                        onChange={(event) =>
+                            form.setFieldValue(
+                                'password',
+                                event.currentTarget.value,
+                            )
+                        }
                         error={form.errors.password}
                         radius="md"
                     />
+                    <Center>
+                        <Button w={140} type="submit" radius="xl">
+                            Login
+                        </Button>
+                    </Center>
                 </Stack>
-
-                <Group position="apart" mt="xl">
-                    <Anchor
-                        component="button"
-                        type="button"
-                        color="dimmed"
-                        size="xs"
-                    >
-                        <Link className="plain-link" href="/auth/register">{ `Don't have an account? Register` }</Link>
-                    </Anchor>
-                    <Button type="submit" radius="xl">
-                          Login
-                    </Button>
-                </Group>
             </form>
         </>
-    )
-}
+    );
+};

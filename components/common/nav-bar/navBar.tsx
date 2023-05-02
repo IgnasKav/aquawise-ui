@@ -1,15 +1,18 @@
-import {Button, Card, Group, MantineSize} from "@mantine/core";
-import {AiOutlineHome} from 'react-icons/ai';
-import {useRouter} from "next/router";
-import useAuth from "../../../stores/useAuth";
+import { Button, Card, Group, MantineSize } from '@mantine/core';
+import { AiOutlineHome } from 'react-icons/ai';
+import { useRouter } from 'next/router';
+import useAuth from '../../../stores/useAuth';
 import css from './navBar.module.scss';
-import NavBarLoader from "./navBarLoader";
-import {NavBarMenu} from "./navBarMenu";
+import ProfileButton from './profileButton';
+import NavBarLoader from './navBarLoader';
+import { useState } from 'react';
+import AuthModal from '../modals/authModal';
 
 interface NavButtonProps {
-    to: string;
+    to?: string;
     color: string;
     title: string;
+    onClick?: () => void;
     icon?: React.ReactNode;
     size?: MantineSize;
 }
@@ -20,6 +23,7 @@ const NavButton = ({
     title,
     icon = '',
     size = 'lg',
+    onClick,
 }: NavButtonProps) => {
     const router = useRouter();
 
@@ -29,7 +33,7 @@ const NavButton = ({
             color={color}
             size={size}
             leftIcon={icon}
-            onClick={() => router.push(to)}
+            onClick={to ? () => router.push(to) : onClick}
         >
             {title}
         </Button>
@@ -37,23 +41,49 @@ const NavButton = ({
 };
 
 const NavBar = () => {
-    const [isLoading]  = useAuth((state) => [state.isLoading]);
+    const [user, isLoading] = useAuth((state) => [state.user, state.isLoading]);
+    const [authModalOpened, setAuthModalOpened] = useState<boolean>(false);
 
-    if(isLoading) {
-        return(
+    if (isLoading) {
+        return (
             <div className={css.navContainer}>
-                <NavBarLoader/>
+                <NavBarLoader />
             </div>
-        )
+        );
     }
 
     return (
         <div className={css.navContainer}>
-            <Card className={css.navCard} shadow="md" radius="lg" p="md" withBorder>
+            <Card
+                className={css.navCard}
+                shadow="md"
+                radius="lg"
+                p="md"
+                withBorder
+            >
                 <Group position="apart">
-                    <NavButton to="/" color="blue" title="Home" icon={<AiOutlineHome />} />
+                    <NavButton
+                        to="/"
+                        color="blue"
+                        title="Home"
+                        icon={<AiOutlineHome />}
+                    />
                     <Group>
-                        <NavBarMenu />
+                        {user ? (
+                            <ProfileButton user={user} />
+                        ) : (
+                            <>
+                                <NavButton
+                                    color="blue"
+                                    title="Log in"
+                                    onClick={() => setAuthModalOpened(true)}
+                                />
+                                <AuthModal
+                                    isOpen={authModalOpened}
+                                    onClose={() => setAuthModalOpened(false)}
+                                />
+                            </>
+                        )}
                     </Group>
                 </Group>
             </Card>
