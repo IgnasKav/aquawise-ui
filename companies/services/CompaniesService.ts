@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CompanyCreateDto } from '../models/companyCreate.dto';
+import {CompanyCreateDto} from '../models/CompanyCreate.dto';
 
 export const createCompany = async (createRequest: CompanyCreateDto) => {
     const response = await axios.post('/companies', createRequest);

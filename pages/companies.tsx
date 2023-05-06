@@ -1,7 +1,7 @@
-import { Button, Card, Loader, Table } from '@mantine/core';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { CompaniesService } from '../companies/services/companiesService';
-import { Company, CompanyStatus } from '../companies/models/Company';
+import {Button, Card, Loader, Table} from '@mantine/core';
+import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import {CompaniesService} from '../companies/services/CompaniesService';
+import {Company, CompanyStatus} from '../companies/models/Company';
 
 const Companies = () => {
     const queryClient = useQueryClient();

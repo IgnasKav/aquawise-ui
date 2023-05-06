@@ -11,11 +11,11 @@ import {
     Text,
     TextInput,
 } from '@mantine/core';
-import { FacebookButton, GoogleButton } from './social-buttons/socialButtons';
-import { useForm } from '@mantine/form';
-import { useRouter } from 'next/router';
-import { useQuery } from '@tanstack/react-query';
-import { CompaniesService } from '../../companies/services/companiesService';
+import {FacebookButton, GoogleButton} from './social-buttons/SocialButtons';
+import {useForm} from '@mantine/form';
+import {useRouter} from 'next/router';
+import {useQuery} from '@tanstack/react-query';
+import {CompaniesService} from '../../companies/services/CompaniesService';
 
 export const RegisterForm = (props?: PaperProps) => {
     const router = useRouter();

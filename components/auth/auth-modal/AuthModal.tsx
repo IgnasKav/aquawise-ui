@@ -1,18 +1,17 @@
-import {LoginForm} from './loginForm';
+import {LoginForm} from './LoginForm';
 import {Modal} from '@mantine/core';
 import {useState} from 'react';
-import {ApplyForm} from './applyForm';
+import {ApplyForm} from './ApplyForm';
 
 interface AuthModalProps {
-    isOpen: boolean;
     onClose: () => void;
 }
 
-const AuthModal = ({ isOpen, onClose }: AuthModalProps) => {
+const AuthModal = ({onClose }: AuthModalProps) => {
     const [isLoginView, setIsLoginView] = useState(true);
     return (
         <Modal
-            opened={isOpen}
+            opened={true}
             onClose={onClose}
             title={
                 isLoginView

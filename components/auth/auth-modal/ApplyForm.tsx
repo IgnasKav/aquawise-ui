@@ -1,10 +1,10 @@
 import {Anchor, Button, Group, LoadingOverlay, Stack, Text, TextInput,} from '@mantine/core';
 import {useForm, UseFormReturnType} from '@mantine/form';
 import {useMutation} from '@tanstack/react-query';
-import {CompaniesService} from '../../../companies/services/companiesService';
-import {CompanyCreateDto} from '../../../companies/models/companyCreate.dto';
+import {CompaniesService} from '../../../companies/services/CompaniesService';
+import {CompanyCreateDto} from '../../../companies/models/CompanyCreate.dto';
 import {useState} from 'react';
-import AnimatedCheckIcon from '../animatedCheckIcon';
+import AnimatedCheckIcon from '../AnimatedCheckIcon';
 import useAlert from '../../../stores/useAlert';
 import {parseError} from '../../../api/api';
 

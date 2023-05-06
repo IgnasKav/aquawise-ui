@@ -1,6 +1,6 @@
 import {Button, ButtonProps} from '@mantine/core';
-import GoogleIcon from './googleIcon';
-import FacebookIcon from './facebookIcon';
+import GoogleIcon from './GoogleIcon';
+import FacebookIcon from './FacebookIcon';
 
 export const GoogleButton = (props: ButtonProps) => {
     return <Button leftIcon={<GoogleIcon />} variant="default" color="gray" {...props} />;
