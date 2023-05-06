@@ -14,8 +14,8 @@ export class User {
     }
 }
 
-enum UserRole {
-    User= 'User',
-    Admin='Admin',
-    Support='Support',
+export enum UserRole {
+    User = 'User',
+    Admin = 'Admin',
+    Support = 'Support',
 }

@@ -67,7 +67,7 @@ export const ApplyForm = () => {
                     <Stack>
                         <TextInput
                             required
-                            label="Name"
+                            label="Company name"
                             placeholder="Name"
                             radius="md"
                             {...form.getInputProps('name')}

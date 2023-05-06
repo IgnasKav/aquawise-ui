@@ -6,4 +6,24 @@ export const createCompany = async (createRequest: CompanyCreateDto) => {
     return response.data;
 };
 
-export const CompaniesService = { createCompany };
+export const confirmApplication = async (applicationId: string) => {
+    const response = await axios.post(`/companies/confirm/${applicationId}`);
+    return response.data;
+};
+
+export const getCompanies = async () => {
+    const response = await axios.get(`/companies`);
+    return response.data;
+};
+
+export const getCompanyByApplicationId = async (applicationId: string) => {
+    const response = await axios.get(`/companies/application/${applicationId}`);
+    return response.data;
+};
+
+export const CompaniesService = {
+    createCompany,
+    confirmApplication,
+    getCompanies,
+    getCompanyByApplicationId,
+};

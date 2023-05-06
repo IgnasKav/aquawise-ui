@@ -7,6 +7,8 @@ import ProfileButton from './profileButton';
 import NavBarLoader from './navBarLoader';
 import { useState } from 'react';
 import AuthModal from '../modals/authModal';
+import { HiOutlineOfficeBuilding } from 'react-icons/hi';
+import { UserRole } from '../../../models/User';
 
 interface NavButtonProps {
     to?: string;
@@ -68,6 +70,14 @@ const NavBar = () => {
                         title="Home"
                         icon={<AiOutlineHome />}
                     />
+                    {user && user.role == UserRole.Support && (
+                        <NavButton
+                            to="/companies"
+                            color="blue"
+                            title="Companies"
+                            icon={<HiOutlineOfficeBuilding />}
+                        />
+                    )}
                     <Group>
                         {user ? (
                             <ProfileButton user={user} />
