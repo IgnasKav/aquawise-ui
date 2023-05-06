@@ -1,14 +1,14 @@
-import { Button, Card, Group, MantineSize } from '@mantine/core';
-import { AiOutlineHome } from 'react-icons/ai';
-import { useRouter } from 'next/router';
+import {Button, Card, Group, MantineSize} from '@mantine/core';
+import {AiOutlineHome} from 'react-icons/ai';
+import {useRouter} from 'next/router';
 import useAuth from '../../../stores/useAuth';
 import css from './navBar.module.scss';
 import ProfileButton from './profileButton';
 import NavBarLoader from './navBarLoader';
-import { useState } from 'react';
-import AuthModal from '../modals/authModal';
-import { HiOutlineOfficeBuilding } from 'react-icons/hi';
-import { UserRole } from '../../../models/User';
+import {useState} from 'react';
+import AuthModal from '../../auth/auth-modal/authModal';
+import {HiOutlineOfficeBuilding} from 'react-icons/hi';
+import {UserRole} from '../../../models/User';
 
 interface NavButtonProps {
     to?: string;

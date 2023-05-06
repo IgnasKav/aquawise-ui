@@ -28,7 +28,6 @@ const useAuth = create<AuthState>((set,get) => ({
         try {
             const user = await api.Auth.current();
             set(() => ({user: user, isLoading: false}))
-            console.log('isloading', get().isLoading);
         } catch {
             get().logout();
             set(() => ({isLoading: false}));

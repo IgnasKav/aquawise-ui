@@ -1,21 +1,16 @@
-import {
-    Button,
-    Center,
-    Divider,
-    Group,
-    PaperProps,
-    PasswordInput,
-    Stack,
-    TextInput,
-} from '@mantine/core';
-import { FacebookButton, GoogleButton } from './social-buttons/socialButtons';
-import { useForm } from '@mantine/form';
-import useAuth from '../../stores/useAuth';
-import useAlert from '../../stores/useAlert';
-import { parseError } from '../../api/api';
-import { Alert, AlertType } from '../../models/Alert';
+import {Anchor, Button, Divider, Group, PasswordInput, Stack, TextInput,} from '@mantine/core';
+import {FacebookButton, GoogleButton} from '../social-buttons/socialButtons';
+import {useForm} from '@mantine/form';
+import useAuth from '../../../stores/useAuth';
+import useAlert from '../../../stores/useAlert';
+import {parseError} from '../../../api/api';
+import {Alert, AlertType} from '../../../models/Alert';
 
-export const LoginForm = () => {
+interface Props {
+    switchToRegistration: () => void;
+}
+
+export const LoginForm = ({switchToRegistration}: Props) => {
     const [login] = useAuth((state) => [state.login]);
     const [createAlert] = useAlert((state) => [state.createAlert]);
 
@@ -95,11 +90,20 @@ export const LoginForm = () => {
                         error={form.errors.password}
                         radius="md"
                     />
-                    <Center>
+                    <Group position={'apart'}>
+                        <Anchor
+                            component="button"
+                            type="button"
+                            color="dimmed"
+                            size="xs"
+                            onClick={() => switchToRegistration()}
+                        >
+                            {`Don't have an account? Apply here`}
+                        </Anchor>
                         <Button w={140} type="submit" radius="xl">
                             Login
                         </Button>
-                    </Center>
+                    </Group>
                 </Stack>
             </form>
         </>

@@ -1,21 +1,18 @@
-import {
-    Button,
-    Text,
-    LoadingOverlay,
-    Stack,
-    TextInput,
-    Center,
-} from '@mantine/core';
-import { useForm, UseFormReturnType } from '@mantine/form';
-import { useMutation } from '@tanstack/react-query';
-import { CompaniesService } from '../../companies/services/companiesService';
-import { CompanyCreateDto } from '../../companies/models/companyCreate.dto';
-import { useState } from 'react';
-import AnimatedCheckIcon from './animatedCheckIcon';
-import useAlert from '../../stores/useAlert';
-import { parseError } from '../../api/api';
+import {Anchor, Button, Group, LoadingOverlay, Stack, Text, TextInput,} from '@mantine/core';
+import {useForm, UseFormReturnType} from '@mantine/form';
+import {useMutation} from '@tanstack/react-query';
+import {CompaniesService} from '../../../companies/services/companiesService';
+import {CompanyCreateDto} from '../../../companies/models/companyCreate.dto';
+import {useState} from 'react';
+import AnimatedCheckIcon from '../animatedCheckIcon';
+import useAlert from '../../../stores/useAlert';
+import {parseError} from '../../../api/api';
 
-export const ApplyForm = () => {
+interface Props {
+    switchToLogin: () => void;
+}
+
+export const ApplyForm = ({switchToLogin}: Props) => {
     const [createAlert] = useAlert((state) => [state.createAlert]);
     const [isSuccess, setSuccess] = useState(false);
 
@@ -55,11 +52,8 @@ export const ApplyForm = () => {
                 {isSuccess ? (
                     <Stack align="center">
                         <AnimatedCheckIcon />
-                        <Text color="green" fw={700}>
-                            Your application has been received!
-                        </Text>
-                        <Text>
-                            You will receive an email once your application is
+                        <Text color="green" fw={700} align={'center'}>
+                            Your application has been received! You will receive an email once your application is
                             reviewed.
                         </Text>
                     </Stack>
@@ -93,11 +87,20 @@ export const ApplyForm = () => {
                             radius="md"
                             {...form.getInputProps('phone')}
                         />
-                        <Center>
+                        <Group position={'apart'}>
+                            <Anchor
+                                component="button"
+                                type="button"
+                                color="dimmed"
+                                size="xs"
+                                onClick={() => switchToLogin()}
+                            >
+                                {'Already have an account? Log in'}
+                            </Anchor>
                             <Button w={140} type="submit" radius="xl">
                                 Apply
                             </Button>
-                        </Center>
+                        </Group>
                     </Stack>
                 )}
             </form>
