@@ -4,7 +4,7 @@ import {useMutation} from '@tanstack/react-query';
 import {CompaniesService} from '../../../companies/services/CompaniesService';
 import {CompanyCreateDto} from '../../../companies/models/CompanyCreate.dto';
 import {useState} from 'react';
-import AnimatedCheckIcon from '../AnimatedCheckIcon';
+import AnimatedCheckIcon from '../utils/AnimatedCheckIcon';
 import useAlert from '../../../stores/useAlert';
 import {parseError} from '../../../api/api';
 
@@ -12,7 +12,7 @@ interface Props {
     switchToLogin: () => void;
 }
 
-export const ApplyForm = ({switchToLogin}: Props) => {
+export const CompanyRegisterForm = ({switchToLogin}: Props) => {
     const [createAlert] = useAlert((state) => [state.createAlert]);
     const [isSuccess, setSuccess] = useState(false);
 

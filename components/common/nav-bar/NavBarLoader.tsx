@@ -1,8 +1,12 @@
 import {Skeleton} from "@mantine/core";
-import css from './NavBar.module.scss';
+import css from './nav-bar.module.scss';
 
-const NavBarLoader = () => {
-    return(<Skeleton className={css.navLoader} radius="lg"/>)
+interface Props {
+    className?: string;
+}
+
+const NavBarLoader = ({className}: Props) => {
+    return(<Skeleton className={`${css.navLoader} ${className}`} radius="lg"/>)
 }
 
 export default NavBarLoader;

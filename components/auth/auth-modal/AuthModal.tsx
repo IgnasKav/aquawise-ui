@@ -1,17 +1,18 @@
 import {LoginForm} from './LoginForm';
 import {Modal} from '@mantine/core';
 import {useState} from 'react';
-import {ApplyForm} from './ApplyForm';
+import {CompanyRegisterForm} from './CompanyRegisterForm';
 
 interface AuthModalProps {
+    isOpened: boolean;
     onClose: () => void;
 }
 
-const AuthModal = ({onClose }: AuthModalProps) => {
+const AuthModal = ({isOpened, onClose}: AuthModalProps) => {
     const [isLoginView, setIsLoginView] = useState(true);
     return (
         <Modal
-            opened={true}
+            opened={isOpened}
             onClose={onClose}
             title={
                 isLoginView
@@ -19,7 +20,7 @@ const AuthModal = ({onClose }: AuthModalProps) => {
                     : 'Apply for a company account'
             }
         >
-            {isLoginView ? <LoginForm switchToRegistration={() => setIsLoginView(false)}/> : <ApplyForm switchToLogin={() => setIsLoginView(true)} />}
+            {isLoginView ? <LoginForm switchToRegistration={() => setIsLoginView(false)}/> : <CompanyRegisterForm switchToLogin={() => setIsLoginView(true)} />}
         </Modal>
     );
 };

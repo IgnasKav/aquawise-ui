@@ -1,6 +1,6 @@
 import useAlert from "../../stores/useAlert";
 import {AlertComponent} from "./Alert";
-import css from './AlertList.module.scss';
+import css from './alert-list.module.scss';
 import {AnimatePresence} from "framer-motion"
 
 

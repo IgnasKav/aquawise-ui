@@ -1,7 +1,7 @@
 import axios, {AxiosResponse} from "axios";
-import {LoginRequest} from "../models/Auth/LoginRequest";
-import {RegisterRequest} from "../models/Auth/RegisterRequest";
-import {LoginResponse} from "../models/Auth/LoginResponse";
+import {LoginRequest} from "../models/auth/LoginRequest";
+import {RegisterRequest} from "../models/auth/RegisterRequest";
+import {LoginResponse} from "../models/auth/LoginResponse";
 import {getCookie} from 'cookies-next';
 import {ApiError} from "../models/ApiError";
 import {User} from "../models/User";

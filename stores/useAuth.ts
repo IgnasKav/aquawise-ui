@@ -1,6 +1,6 @@
 import {User} from "../models/User";
-import {LoginRequest} from "../models/Auth/LoginRequest";
-import {RegisterRequest} from "../models/Auth/RegisterRequest";
+import {LoginRequest} from "../models/auth/LoginRequest";
+import {RegisterRequest} from "../models/auth/RegisterRequest";
 import {create} from "zustand";
 import {api} from "../api/api";
 import {deleteCookie, setCookie} from 'cookies-next';
@@ -18,10 +18,10 @@ const useAuth = create<AuthState>((set,get) => ({
     user: null,
     isLoading: true,
     login: async (req: LoginRequest) => {
-        set(() => ({isLoading: true}));
         const loginInfo = await api.Auth.login(req);
         setCookie('jwt', loginInfo.jwt);
-        set(() => ({user: loginInfo.user, isLoading: false}))
+        set(() => ({user: loginInfo.user}))
+
     },
     getCurrent: async () => {
         set(() => ({isLoading: true}));

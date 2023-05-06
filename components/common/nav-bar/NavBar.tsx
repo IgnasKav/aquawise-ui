@@ -2,13 +2,14 @@ import {Button, Card, Group, MantineSize} from '@mantine/core';
 import {AiOutlineHome} from 'react-icons/ai';
 import {useRouter} from 'next/router';
 import useAuth from '../../../stores/useAuth';
-import css from './NavBar.module.scss';
+import css from './nav-bar.module.scss';
 import NavBarLoader from './NavBarLoader';
 import {useState} from 'react';
 import AuthModal from '../../auth/auth-modal/AuthModal';
 import {HiOutlineOfficeBuilding} from 'react-icons/hi';
 import {UserRole} from '../../../models/User';
 import ProfileButton from "./ProfileButton";
+import classNames from 'classnames';
 
 interface NavButtonProps {
     to?: string;
@@ -46,18 +47,10 @@ const NavBar = () => {
     const [user, isLoading] = useAuth((state) => [state.user, state.isLoading]);
     const [authModalOpened, setAuthModalOpened] = useState<boolean>(false);
 
-    if (isLoading) {
-        return (
-            <div className={css.navContainer}>
-                <NavBarLoader />
-            </div>
-        );
-    }
-
     return (
         <div className={css.navContainer}>
             <Card
-                className={css.navCard}
+                className={classNames(css.navCard, {[css.hidden]: isLoading})}
                 shadow="md"
                 radius="lg"
                 p="md"
@@ -88,13 +81,13 @@ const NavBar = () => {
                                     title="Log in"
                                     onClick={() => setAuthModalOpened(true)}
                                 />
-                                {authModalOpened && <AuthModal onClose={() => setAuthModalOpened(false)}
-                                />}
+                                <AuthModal  isOpened={authModalOpened} onClose={() => setAuthModalOpened(false)}/>
                             </>
                         )}
                     </Group>
                 </Group>
             </Card>
+            <NavBarLoader className={classNames({[css.hidden]: !isLoading})}/>
         </div>
     );
 };
