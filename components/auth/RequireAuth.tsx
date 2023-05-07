@@ -3,14 +3,15 @@ import { useEffect } from 'react';
 import useAuth from '../../stores/useAuth';
 
 export const RequireAuth = ({ children }: { children: JSX.Element }) => {
-    const [user] = useAuth((state) => [state.user]);
+    const [user, isLoading] = useAuth((state) => [state.user, state.isLoading]);
     const router = useRouter();
 
     useEffect(() => {
-        if (!user) {
+        if (!user && !isLoading) {
+            console.log('user not found');
             router.push('/');
         }
-    }, [user, router]);
+    }, [user, isLoading, router]);
 
     return <>{children}</>;
 };

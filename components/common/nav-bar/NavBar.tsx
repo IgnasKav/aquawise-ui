@@ -1,14 +1,14 @@
-import {Button, Card, Group, MantineSize} from '@mantine/core';
-import {AiOutlineHome} from 'react-icons/ai';
-import {useRouter} from 'next/router';
+import { Button, Card, Group, MantineSize } from '@mantine/core';
+import { AiOutlineHome } from 'react-icons/ai';
+import { useRouter } from 'next/router';
 import useAuth from '../../../stores/useAuth';
 import css from './nav-bar.module.scss';
 import NavBarLoader from './NavBarLoader';
-import {useState} from 'react';
+import { useState } from 'react';
 import AuthModal from '../../auth/auth-modal/AuthModal';
-import {HiOutlineOfficeBuilding} from 'react-icons/hi';
-import {UserRole} from '../../../models/User';
-import ProfileButton from "./ProfileButton";
+import { HiOutlineColorSwatch, HiOutlineOfficeBuilding } from 'react-icons/hi';
+import { UserRole } from '../../../models/User';
+import ProfileButton from './ProfileButton';
 import classNames from 'classnames';
 
 interface NavButtonProps {
@@ -50,7 +50,7 @@ const NavBar = () => {
     return (
         <div className={css.navContainer}>
             <Card
-                className={classNames(css.navCard, {[css.hidden]: isLoading})}
+                className={classNames(css.navCard, { [css.hidden]: isLoading })}
                 shadow="md"
                 radius="lg"
                 p="md"
@@ -71,6 +71,12 @@ const NavBar = () => {
                             icon={<HiOutlineOfficeBuilding />}
                         />
                     )}
+                    <NavButton
+                        to="/products"
+                        color="blue"
+                        title="Products"
+                        icon={<HiOutlineColorSwatch />}
+                    />
                     <Group>
                         {user ? (
                             <ProfileButton user={user} />
@@ -82,10 +88,15 @@ const NavBar = () => {
                             />
                         )}
                     </Group>
-                    <AuthModal isOpened={authModalOpened} onClose={() => setAuthModalOpened(false)}/>
+                    <AuthModal
+                        isOpened={authModalOpened}
+                        onClose={() => setAuthModalOpened(false)}
+                    />
                 </Group>
             </Card>
-            <NavBarLoader className={classNames({[css.hidden]: !isLoading})}/>
+            <NavBarLoader
+                className={classNames({ [css.hidden]: !isLoading })}
+            />
         </div>
     );
 };
