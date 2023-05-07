@@ -8,10 +8,13 @@ export const RequireAuth = ({ children }: { children: JSX.Element }) => {
 
     useEffect(() => {
         if (!user && !isLoading) {
-            console.log('user not found');
             router.push('/');
         }
     }, [user, isLoading, router]);
+
+    if (!user) {
+        return null;
+    }
 
     return <>{children}</>;
 };
