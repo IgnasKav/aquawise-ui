@@ -21,7 +21,6 @@ const useAuth = create<AuthState>((set,get) => ({
         const loginInfo = await api.Auth.login(req);
         setCookie('jwt', loginInfo.jwt);
         set(() => ({user: loginInfo.user}))
-
     },
     getCurrent: async () => {
         set(() => ({isLoading: true}));

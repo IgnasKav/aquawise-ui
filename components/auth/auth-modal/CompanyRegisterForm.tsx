@@ -1,12 +1,13 @@
 import {Anchor, Button, Group, LoadingOverlay, Stack, Text, TextInput,} from '@mantine/core';
 import {useForm, UseFormReturnType} from '@mantine/form';
 import {useMutation} from '@tanstack/react-query';
-import {CompaniesService} from '../../../companies/services/CompaniesService';
-import {CompanyCreateDto} from '../../../companies/models/CompanyCreate.dto';
+import {CompanyCreateDto} from '../../../models/companies/CompanyCreate.dto';
 import {useState} from 'react';
 import AnimatedCheckIcon from '../utils/AnimatedCheckIcon';
 import useAlert from '../../../stores/useAlert';
-import {parseError} from '../../../api/api';
+import {api, parseError} from '../../../api/api';
+import {AxiosError} from "axios";
+import {motion, Variants} from 'framer-motion';
 
 interface Props {
     switchToLogin: () => void;
@@ -16,23 +17,18 @@ export const CompanyRegisterForm = ({switchToLogin}: Props) => {
     const [createAlert] = useAlert((state) => [state.createAlert]);
     const [isSuccess, setSuccess] = useState(false);
 
-    const { mutate, isLoading } = useMutation(CompaniesService.createCompany, {
+    const { mutate, isLoading } = useMutation(api.Companies.create, {
         onSuccess: () => {
             setSuccess(true);
         },
-        onError: (error) => {
+        onError: (error: AxiosError) => {
             const alert = parseError(error).toAlert();
             createAlert(alert);
         },
     });
 
     const form: UseFormReturnType<CompanyCreateDto> = useForm({
-        initialValues: new CompanyCreateDto({
-            name: '',
-            code: '',
-            email: '',
-            phone: '',
-        }),
+        initialValues: new CompanyCreateDto(),
         validate: {
             email: (val: string) =>
                 /^\S+@\S+$/.test(val) ? null : 'Invalid email',
@@ -45,8 +41,26 @@ export const CompanyRegisterForm = ({switchToLogin}: Props) => {
         },
     });
 
+    const variants: Variants = {
+        closed: {
+            x: 50
+        },
+        open: {
+            x: 0
+        },
+        exit: {
+            x: 50
+        }
+    }
+
     return (
-        <>
+        <motion.div
+            initial="closed"
+            animate="open"
+            exit="exit"
+            variants={variants}
+            transition={{ duration: 0.25 }}
+        >
             <form onSubmit={form.onSubmit(() => mutate(form.values))}>
                 <LoadingOverlay visible={isLoading} overlayBlur={0.5} />
                 {isSuccess ? (
@@ -104,6 +118,6 @@ export const CompanyRegisterForm = ({switchToLogin}: Props) => {
                     </Stack>
                 )}
             </form>
-        </>
+        </motion.div>
     );
 };

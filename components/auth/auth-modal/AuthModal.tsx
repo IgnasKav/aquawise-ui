@@ -1,7 +1,9 @@
 import {LoginForm} from './LoginForm';
-import {Modal} from '@mantine/core';
 import {useState} from 'react';
 import {CompanyRegisterForm} from './CompanyRegisterForm';
+import {Modal} from '@mantine/core';
+import {AnimatePresence} from "framer-motion";
+import css from './auth-modal.module.scss';
 
 interface AuthModalProps {
     isOpened: boolean;
@@ -10,17 +12,36 @@ interface AuthModalProps {
 
 const AuthModal = ({isOpened, onClose}: AuthModalProps) => {
     const [isLoginView, setIsLoginView] = useState(true);
+
+    const handleClose = () => {
+        onClose();
+        setTimeout(() => setIsLoginView(true), 200);
+    }
+
     return (
         <Modal
             opened={isOpened}
-            onClose={onClose}
+            onClose={handleClose}
+            transitionDuration={200}
+            exitTransitionDuration={200}
             title={
                 isLoginView
                     ? 'Welcome to Aquawise, log in with'
                     : 'Apply for a company account'
             }
+
         >
-            {isLoginView ? <LoginForm switchToRegistration={() => setIsLoginView(false)}/> : <CompanyRegisterForm switchToLogin={() => setIsLoginView(true)} />}
+            <div className={css.overflowHidden}>
+                <AnimatePresence initial={false}>
+                    {
+                        isLoginView
+                            ?
+                            <LoginForm closeModal={handleClose} switchToRegistration={() => setIsLoginView(false)}/>
+                            :
+                            <CompanyRegisterForm switchToLogin={() => setIsLoginView(true)} />
+                    }
+                </AnimatePresence>
+            </div>
         </Modal>
     );
 };

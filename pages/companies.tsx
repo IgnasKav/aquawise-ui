@@ -1,16 +1,16 @@
 import {Button, Card, Loader, Table} from '@mantine/core';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import {CompaniesService} from '../companies/services/CompaniesService';
-import {Company, CompanyStatus} from '../companies/models/Company';
+import {Company, CompanyStatus} from '../models/companies/Company';
+import {api} from "../api/api";
 
 const Companies = () => {
     const queryClient = useQueryClient();
     const { data: companies, isLoading: companiesLoading } = useQuery(
         ['companies'],
-        CompaniesService.getCompanies,
+        api.Companies.getAll,
     );
 
-    const { mutate } = useMutation(CompaniesService.confirmApplication, {
+    const { mutate } = useMutation(api.Companies.confirmApplication, {
         onSuccess: () => queryClient.invalidateQueries(['companies']),
     });
 

@@ -5,12 +5,15 @@ import useAuth from '../../../stores/useAuth';
 import useAlert from '../../../stores/useAlert';
 import {parseError} from '../../../api/api';
 import {Alert, AlertType} from '../../../models/Alert';
+import {AxiosError} from "axios";
+import {motion, Variants} from 'framer-motion';
 
 interface Props {
     switchToRegistration: () => void;
+    closeModal: () => void;
 }
 
-export const LoginForm = ({switchToRegistration}: Props) => {
+export const LoginForm = ({switchToRegistration, closeModal}: Props) => {
     const [login] = useAuth((state) => [state.login]);
     const [createAlert] = useAlert((state) => [state.createAlert]);
 
@@ -34,6 +37,7 @@ export const LoginForm = ({switchToRegistration}: Props) => {
 
         try {
             await login({ email, password });
+            closeModal();
             const alert = new Alert({
                 message: 'Successfuly logged in',
                 type: AlertType.success,
@@ -41,13 +45,35 @@ export const LoginForm = ({switchToRegistration}: Props) => {
             });
             createAlert(alert);
         } catch (error) {
-            const alert = parseError(error).toAlert();
-            createAlert(alert);
+            closeModal();
+
+            if (error instanceof AxiosError) {
+                const alert = parseError(error).toAlert();
+                createAlert(alert);
+            }
         }
     };
 
+    const variants: Variants = {
+        closed: {
+            x: -50
+        },
+        open: {
+            x: 0
+        },
+        exit: {
+            x: -50
+        }
+    }
+
     return (
-        <>
+        <motion.div
+            variants={variants}
+            initial="closed"
+            animate="open"
+            exit="exit"
+            transition={{ duration: 0.25 }}
+        >
             <Group grow mb="md" mt="md">
                 <GoogleButton radius="xl">Google</GoogleButton>
                 <FacebookButton radius="xl">Facebook</FacebookButton>
@@ -106,6 +132,6 @@ export const LoginForm = ({switchToRegistration}: Props) => {
                     </Group>
                 </Stack>
             </form>
-        </>
+        </motion.div>
     );
 };

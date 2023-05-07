@@ -15,16 +15,20 @@ import {FacebookButton, GoogleButton} from './utils/SocialButtons';
 import {useForm} from '@mantine/form';
 import {useRouter} from 'next/router';
 import {useQuery} from '@tanstack/react-query';
-import {CompaniesService} from '../../companies/services/CompaniesService';
+import {ParsedUrlQuery} from "querystring";
+import {api} from "../../api/api";
+
+interface QueryParams extends ParsedUrlQuery {
+    applicationId: string
+}
 
 export const RegisterForm = (props?: PaperProps) => {
     const router = useRouter();
-    const { applicationId } = router.query;
+    const { applicationId }= router.query as QueryParams;
 
     const { data: company, isLoading } = useQuery(
         ['company', applicationId],
-        () =>
-            CompaniesService.getCompanyByApplicationId(applicationId as string),
+        () => api.Companies.getByApplicationId(applicationId),
         { enabled: applicationId != null },
     );
 
@@ -64,6 +68,8 @@ export const RegisterForm = (props?: PaperProps) => {
         //     createAlert(alert);
         // }
     };
+
+    if(!company) return(<></>);
 
     return (
         <Paper shadow="md" radius="md" p="xl" m="xl" withBorder {...props}>

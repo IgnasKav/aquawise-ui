@@ -75,16 +75,14 @@ const NavBar = () => {
                         {user ? (
                             <ProfileButton user={user} />
                         ) : (
-                            <>
-                                <NavButton
-                                    color="blue"
-                                    title="Log in"
-                                    onClick={() => setAuthModalOpened(true)}
-                                />
-                                <AuthModal  isOpened={authModalOpened} onClose={() => setAuthModalOpened(false)}/>
-                            </>
+                            <NavButton
+                                color="blue"
+                                title="Log in"
+                                onClick={() => setAuthModalOpened(true)}
+                            />
                         )}
                     </Group>
+                    <AuthModal isOpened={authModalOpened} onClose={() => setAuthModalOpened(false)}/>
                 </Group>
             </Card>
             <NavBarLoader className={classNames({[css.hidden]: !isLoading})}/>
