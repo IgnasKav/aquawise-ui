@@ -6,7 +6,7 @@ import useAlert from '../../../stores/useAlert';
 import {parseError} from '../../../api/api';
 import {Alert, AlertType} from '../../../models/Alert';
 import {AxiosError} from "axios";
-import {motion, Variants} from 'framer-motion';
+import {motion} from 'framer-motion';
 
 interface Props {
     switchToRegistration: () => void;
@@ -54,24 +54,10 @@ export const LoginForm = ({switchToRegistration, closeModal}: Props) => {
         }
     };
 
-    const variants: Variants = {
-        closed: {
-            x: -50
-        },
-        open: {
-            x: 0
-        },
-        exit: {
-            x: -50
-        }
-    }
-
     return (
         <motion.div
-            variants={variants}
-            initial="closed"
-            animate="open"
-            exit="exit"
+            initial={{x: -50}}
+            animate={{x: 0}}
             transition={{ duration: 0.25 }}
         >
             <Group grow mb="md" mt="md">

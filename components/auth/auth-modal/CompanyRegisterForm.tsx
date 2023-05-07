@@ -7,7 +7,7 @@ import AnimatedCheckIcon from '../utils/AnimatedCheckIcon';
 import useAlert from '../../../stores/useAlert';
 import {api, parseError} from '../../../api/api';
 import {AxiosError} from "axios";
-import {motion, Variants} from 'framer-motion';
+import {motion} from 'framer-motion';
 
 interface Props {
     switchToLogin: () => void;
@@ -41,24 +41,10 @@ export const CompanyRegisterForm = ({switchToLogin}: Props) => {
         },
     });
 
-    const variants: Variants = {
-        closed: {
-            x: 50
-        },
-        open: {
-            x: 0
-        },
-        exit: {
-            x: 50
-        }
-    }
-
     return (
         <motion.div
-            initial="closed"
-            animate="open"
-            exit="exit"
-            variants={variants}
+            initial={{x: 50}}
+            animate={{x: 0}}
             transition={{ duration: 0.25 }}
         >
             <form onSubmit={form.onSubmit(() => mutate(form.values))}>
