@@ -1,6 +1,6 @@
-import { Product } from './models/Product';
+import { Product } from '../models/Product';
 import { Card, Group, Image, Text } from '@mantine/core';
-import css from './products.module.scss';
+import css from './product-list.module.scss';
 
 interface Props {
     product: Product;

@@ -1,7 +1,8 @@
 import { Product } from '../../components/products/models/Product';
 import { createFakeProduct } from '../../components/products/models/FakeProduct';
 import { RequireAuth } from '../../components/auth/RequireAuth';
-import { ProductList } from '../../components/products/ProductList';
+import { ProductList } from '../../components/products/product-list/ProductList';
+import { CreateProductButton } from '../../components/products/product-edit/CreateProductButton';
 
 // this will be removed after implementing product fetching
 export async function getServerSideProps() {
@@ -26,7 +27,10 @@ interface ServerSideProps {
 const ProductsPage = ({ products }: ServerSideProps) => {
     return (
         <RequireAuth>
-            <ProductList products={products} />
+            <>
+                <CreateProductButton />
+                <ProductList products={products} />
+            </>
         </RequireAuth>
     );
 };

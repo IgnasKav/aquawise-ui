@@ -43,7 +43,7 @@ export default function App({ Component, pageProps }: AppProps) {
                             colorScheme: 'light',
                         }}
                     >
-                        <div className="bg-image">
+                        <div className="appContainer">
                             {router.pathname != '/auth/register' && <NavBar />}
                             <Component {...pageProps} />
                             <AlertList />

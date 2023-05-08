@@ -1,6 +1,6 @@
-import { Product } from './models/Product';
+import { Product } from '../models/Product';
 import { ProductCard } from './ProductCard';
-import css from './products.module.scss';
+import css from './product-list.module.scss';
 
 interface Props {
     products: Product[];
