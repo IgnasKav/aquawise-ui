@@ -1,19 +1,27 @@
-import {Anchor, Button, Divider, Group, PasswordInput, Stack, TextInput,} from '@mantine/core';
-import {FacebookButton, GoogleButton} from '../utils/SocialButtons';
-import {useForm} from '@mantine/form';
+import {
+    Anchor,
+    Button,
+    Divider,
+    Group,
+    PasswordInput,
+    Stack,
+    TextInput,
+} from '@mantine/core';
+import { FacebookButton, GoogleButton } from '../utils/SocialButtons';
+import { useForm } from '@mantine/form';
 import useAuth from '../../../stores/useAuth';
 import useAlert from '../../../stores/useAlert';
-import {parseError} from '../../../api/api';
-import {Alert, AlertType} from '../../../models/Alert';
-import {AxiosError} from "axios";
-import {motion} from 'framer-motion';
+import { parseError } from '../../../api/api';
+import { Alert, AlertType } from '../../../models/Alert';
+import { AxiosError } from 'axios';
+import { motion } from 'framer-motion';
 
 interface Props {
     switchToRegistration: () => void;
     closeModal: () => void;
 }
 
-export const LoginForm = ({switchToRegistration, closeModal}: Props) => {
+export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
     const [login] = useAuth((state) => [state.login]);
     const [createAlert] = useAlert((state) => [state.createAlert]);
 
@@ -45,8 +53,6 @@ export const LoginForm = ({switchToRegistration, closeModal}: Props) => {
             });
             createAlert(alert);
         } catch (error) {
-            closeModal();
-
             if (error instanceof AxiosError) {
                 const alert = parseError(error).toAlert();
                 createAlert(alert);
@@ -56,8 +62,8 @@ export const LoginForm = ({switchToRegistration, closeModal}: Props) => {
 
     return (
         <motion.div
-            initial={{x: -50}}
-            animate={{x: 0}}
+            initial={{ x: -50 }}
+            animate={{ x: 0 }}
             transition={{ duration: 0.25 }}
         >
             <Group grow mb="md" mt="md">
