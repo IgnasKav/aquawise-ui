@@ -1,9 +1,18 @@
 import { useRouter } from 'next/router';
-import { Avatar, Button, Divider, Group, Menu } from '@mantine/core';
-import { AiFillCaretDown, AiOutlineEdit } from 'react-icons/ai';
+import {
+    Avatar,
+    Button,
+    Divider,
+    Group,
+    Menu,
+    Stack,
+    Text,
+} from '@mantine/core';
+import { AiFillCaretDown, AiOutlineUser } from 'react-icons/ai';
 import { FiLogOut } from 'react-icons/fi';
 import { User } from '../../../models/User';
 import useAuth from '../../../stores/useAuth';
+import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 
 interface ProfileButtonProps {
     user: User;
@@ -32,12 +41,23 @@ const ProfileButton = ({ user }: ProfileButtonProps) => {
                 </Button>
             </Menu.Target>
             <Menu.Dropdown>
-                <Menu.Label>{user.email}</Menu.Label>
+                <Stack spacing={0} px={12} py={10}>
+                    <Text>Signed in as</Text>
+                    <Text fw={700}>{user.email}</Text>
+                </Stack>
+
+                <Divider />
                 <Menu.Item
-                    icon={<AiOutlineEdit />}
+                    icon={<AiOutlineUser />}
                     onClick={() => router.push('/')}
                 >
-                    Edit profile
+                    Your profile
+                </Menu.Item>
+                <Menu.Item
+                    icon={<HiOutlineOfficeBuilding />}
+                    onClick={() => router.push('/')}
+                >
+                    Your company
                 </Menu.Item>
                 <Divider />
                 <Menu.Item

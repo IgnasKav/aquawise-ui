@@ -6,7 +6,7 @@ export class Company {
     phone: string;
     status: CompanyStatus;
     logoUrl?: string;
-    applicationId?: string;
+    companyRegistrationId?: string;
 
     constructor(dto: Partial<Company>) {
         this.id = dto.id ?? '';
@@ -16,7 +16,7 @@ export class Company {
         this.phone = dto.phone ?? '';
         this.status = dto.status ?? CompanyStatus.Confirmed;
         this.logoUrl = dto.logoUrl;
-        this.applicationId = dto.applicationId;
+        this.companyRegistrationId = dto.companyRegistrationId;
     }
 }
 

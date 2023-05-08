@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import useAuth from '../../../stores/useAuth';
 import css from './nav-bar.module.scss';
 import NavBarLoader from './NavBarLoader';
-import { useState } from 'react';
+import {useState} from 'react';
 import AuthModal from '../../auth/auth-modal/AuthModal';
 import { HiOutlineColorSwatch, HiOutlineOfficeBuilding } from 'react-icons/hi';
 import { UserRole } from '../../../models/User';
@@ -50,7 +50,7 @@ const NavBar = () => {
     return (
         <div className={css.navContainer}>
             <Card
-                className={classNames(css.navCard, { [css.hidden]: isLoading })}
+                className={classNames(css.navCard, {[css.hidden]: isLoading})}
                 shadow="md"
                 radius="lg"
                 p="md"
@@ -88,15 +88,10 @@ const NavBar = () => {
                             />
                         )}
                     </Group>
-                    <AuthModal
-                        isOpened={authModalOpened}
-                        onClose={() => setAuthModalOpened(false)}
-                    />
+                    <AuthModal isOpened={authModalOpened} onClose={() => setAuthModalOpened(false)}/>
                 </Group>
             </Card>
-            <NavBarLoader
-                className={classNames({ [css.hidden]: !isLoading })}
-            />
+            <NavBarLoader className={classNames({[css.hidden]: !isLoading})}/>
         </div>
     );
 };

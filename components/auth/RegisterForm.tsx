@@ -5,38 +5,79 @@ import {
     Group,
     Loader,
     Paper,
-    PaperProps,
     PasswordInput,
     Stack,
     Text,
     TextInput,
 } from '@mantine/core';
-import {FacebookButton, GoogleButton} from './utils/SocialButtons';
-import {useForm} from '@mantine/form';
-import {useRouter} from 'next/router';
-import {useQuery} from '@tanstack/react-query';
-import {ParsedUrlQuery} from "querystring";
-import {api} from "../../api/api";
+import { FacebookButton, GoogleButton } from './utils/SocialButtons';
+import { useForm, UseFormReturnType } from '@mantine/form';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { api } from '../../api/api';
+import { useEffect } from 'react';
+import { RegisterRequest } from '../../models/auth/RegisterRequest';
+import useAuth from '../../stores/useAuth';
+import { useRouter } from 'next/router';
 
-interface QueryParams extends ParsedUrlQuery {
-    applicationId: string
+interface RegisterFormArgs {
+    companyRegistrationId?: string;
+    userRegistrationId?: string;
 }
 
-export const RegisterForm = (props?: PaperProps) => {
-    const router = useRouter();
-    const { applicationId }= router.query as QueryParams;
+interface RegisterUserPayload {
+    req: RegisterRequest;
+    userRegistrationId: string;
+}
 
-    const { data: company, isLoading } = useQuery(
-        ['company', applicationId],
-        () => api.Companies.getByApplicationId(applicationId),
-        { enabled: applicationId != null },
+interface RegisterAdminPayload {
+    req: RegisterRequest;
+    companyRegistrationId: string;
+}
+
+export const RegisterForm = ({
+    companyRegistrationId,
+    userRegistrationId,
+}: RegisterFormArgs) => {
+    const router = useRouter();
+    const [registerUser, registerAdmin] = useAuth((state) => [
+        state.registerUser,
+        state.registerAdmin,
+    ]);
+
+    const { data: company } = useQuery(
+        ['company', companyRegistrationId],
+        () => api.Companies.getByApplicationId(companyRegistrationId as string),
+        { enabled: companyRegistrationId != null },
     );
 
-    const form = useForm({
+    const { data: user } = useQuery(
+        ['user', userRegistrationId],
+        () => api.Auth.getByRegistrationId(companyRegistrationId as string),
+        { enabled: userRegistrationId != null },
+    );
+
+    const { mutate: createUser } = useMutation(
+        ({ userRegistrationId, req }: RegisterUserPayload) =>
+            registerUser(userRegistrationId, req),
+        {
+            onSuccess: () => router.push('/'),
+        },
+    );
+
+    const { mutate: createAdmin } = useMutation(
+        ({ companyRegistrationId, req }: RegisterAdminPayload) =>
+            registerAdmin(companyRegistrationId, req),
+        {
+            onSuccess: () => router.push('/'),
+        },
+    );
+
+    const form: UseFormReturnType<RegisterRequest> = useForm({
         initialValues: {
             email: '',
             firstName: '',
             lastName: '',
+            phone: '',
             password: '',
         },
 
@@ -47,38 +88,32 @@ export const RegisterForm = (props?: PaperProps) => {
                 val.length < 6
                     ? 'Password should include at least 6 characters'
                     : null,
+            phone: (val: string) =>
+                /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/.test(
+                    val,
+                )
+                    ? null
+                    : 'Invalid phone number',
         },
     });
 
-    const handleRegister = async () => {
-        console.log(applicationId);
-        // const { firstName, lastName, email, password } = form.values;
-        //
-        // try {
-        //     await register({ firstName, lastName, email, password });
-        //     const alert = new Alert({
-        //         message:
-        //             'Successfully registered, please confirm registration via email',
-        //         type: AlertType.success,
-        //         title: 'Success!',
-        //     });
-        //     createAlert(alert);
-        // } catch (error) {
-        //     const alert = parseError(error).toAlert();
-        //     createAlert(alert);
-        // }
-    };
-
-    if(!company) return(<></>);
+    useEffect(() => {
+        if (company != null || user != null) {
+            form.setValues({
+                email: company?.email ?? user?.email,
+            });
+        }
+    }, [company, user]);
 
     return (
-        <Paper shadow="md" radius="md" p="xl" m="xl" withBorder {...props}>
-            {isLoading ? (
+        <Paper shadow="md" radius="md" p="xl" m="xl" withBorder>
+            {!company && !user ? (
                 <Loader />
             ) : (
                 <>
                     <Text size="lg" weight={500}>
-                        Create and account for {company.name} and begin using
+                        Create an account for{' '}
+                        {company?.name || user?.company.name} and begin using
                         Aquawise!
                     </Text>
 
@@ -93,7 +128,22 @@ export const RegisterForm = (props?: PaperProps) => {
                         my="lg"
                     />
 
-                    <form onSubmit={form.onSubmit(() => handleRegister())}>
+                    <form
+                        onSubmit={form.onSubmit(() => {
+                            if (companyRegistrationId) {
+                                createAdmin({
+                                    companyRegistrationId:
+                                        companyRegistrationId,
+                                    req: form.values,
+                                });
+                            } else if (userRegistrationId) {
+                                createUser({
+                                    userRegistrationId: userRegistrationId,
+                                    req: form.values,
+                                });
+                            }
+                        })}
+                    >
                         <Stack>
                             <TextInput
                                 required
@@ -125,15 +175,17 @@ export const RegisterForm = (props?: PaperProps) => {
                                 required
                                 label="Email"
                                 placeholder="name@email.com"
-                                value={form.values.email}
-                                onChange={(event) =>
-                                    form.setFieldValue(
-                                        'email',
-                                        event.currentTarget.value,
-                                    )
-                                }
+                                disabled={true}
                                 error={form.errors.email && 'Invalid email'}
                                 radius="md"
+                                {...form.getInputProps('email')}
+                            />
+                            <TextInput
+                                required
+                                label="Phone"
+                                placeholder="Phone"
+                                radius="md"
+                                {...form.getInputProps('phone')}
                             />
                             <PasswordInput
                                 required
