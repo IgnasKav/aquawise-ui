@@ -1,10 +1,10 @@
 import { Button, Card, Group, MantineSize } from '@mantine/core';
-import { AiOutlineHome } from 'react-icons/ai';
+import { AiOutlineHome, AiOutlineTeam } from 'react-icons/ai';
 import { useRouter } from 'next/router';
 import useAuth from '../../../stores/useAuth';
 import css from './nav-bar.module.scss';
 import NavBarLoader from './NavBarLoader';
-import {useState} from 'react';
+import { useState } from 'react';
 import AuthModal from '../../auth/auth-modal/AuthModal';
 import { HiOutlineColorSwatch, HiOutlineOfficeBuilding } from 'react-icons/hi';
 import { UserRole } from '../../../models/User';
@@ -50,33 +50,45 @@ const NavBar = () => {
     return (
         <div className={css.navContainer}>
             <Card
-                className={classNames(css.navCard, {[css.hidden]: isLoading})}
+                className={classNames(css.navCard, { [css.hidden]: isLoading })}
                 shadow="md"
                 radius="lg"
                 p="md"
                 withBorder
             >
                 <Group position="apart">
-                    <NavButton
-                        to="/"
-                        color="blue"
-                        title="Home"
-                        icon={<AiOutlineHome />}
-                    />
-                    {user && user.role == UserRole.Support && (
+                    <Group>
                         <NavButton
-                            to="/companies"
+                            to="/"
                             color="blue"
-                            title="Companies"
-                            icon={<HiOutlineOfficeBuilding />}
+                            title="Home"
+                            icon={<AiOutlineHome />}
                         />
-                    )}
-                    <NavButton
-                        to="/products"
-                        color="blue"
-                        title="Products"
-                        icon={<HiOutlineColorSwatch />}
-                    />
+                        {user && user.role == UserRole.Support && (
+                            <NavButton
+                                to="/companies"
+                                color="blue"
+                                title="Companies"
+                                icon={<HiOutlineOfficeBuilding />}
+                            />
+                        )}
+                        {user && user.role == UserRole.Admin && (
+                            <>
+                                <NavButton
+                                    to="/products"
+                                    color="blue"
+                                    title="Products"
+                                    icon={<HiOutlineColorSwatch />}
+                                />
+                                <NavButton
+                                    to="/users"
+                                    color="blue"
+                                    title="Team"
+                                    icon={<AiOutlineTeam />}
+                                />
+                            </>
+                        )}
+                    </Group>
                     <Group>
                         {user ? (
                             <ProfileButton user={user} />
@@ -88,10 +100,15 @@ const NavBar = () => {
                             />
                         )}
                     </Group>
-                    <AuthModal isOpened={authModalOpened} onClose={() => setAuthModalOpened(false)}/>
+                    <AuthModal
+                        isOpened={authModalOpened}
+                        onClose={() => setAuthModalOpened(false)}
+                    />
                 </Group>
             </Card>
-            <NavBarLoader className={classNames({[css.hidden]: !isLoading})}/>
+            <NavBarLoader
+                className={classNames({ [css.hidden]: !isLoading })}
+            />
         </div>
     );
 };

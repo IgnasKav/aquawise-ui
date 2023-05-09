@@ -3,13 +3,13 @@ import { RegisterForm } from '../../components/auth/RegisterForm';
 import { useRouter } from 'next/router';
 
 interface RegisterQueryParams {
-    companyRegistrationId?: string;
     userRegistrationId?: string;
+    companyRegistrationId?: string;
 }
 
 const Register = () => {
     const router = useRouter();
-    const { companyRegistrationId, userRegistrationId } =
+    const { userRegistrationId, companyRegistrationId } =
         router.query as RegisterQueryParams;
     return (
         <Center>

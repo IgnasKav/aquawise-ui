@@ -45,7 +45,7 @@ const Companies = () => {
                                             <Button
                                                 onClick={() =>
                                                     mutate(
-                                                        company.applicationId as string,
+                                                        company.companyRegistrationId as string,
                                                     )
                                                 }
                                             >
