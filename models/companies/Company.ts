@@ -1,3 +1,5 @@
+import { User } from '../User';
+
 export class Company {
     id: string;
     name: string;
@@ -7,6 +9,7 @@ export class Company {
     status: CompanyStatus;
     logoUrl?: string;
     companyRegistrationId?: string;
+    users: User[];
 
     constructor(dto: Partial<Company>) {
         this.id = dto.id ?? '';
@@ -17,6 +20,7 @@ export class Company {
         this.status = dto.status ?? CompanyStatus.Confirmed;
         this.logoUrl = dto.logoUrl;
         this.companyRegistrationId = dto.companyRegistrationId;
+        this.users = dto.users ?? [];
     }
 }
 

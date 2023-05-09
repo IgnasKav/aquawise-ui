@@ -8,6 +8,7 @@ import { User } from '../models/User';
 import { CompanyCreateDto } from '../models/companies/CompanyCreate.dto';
 import { Company } from '../models/companies/Company';
 import { RegisterResponse } from '../models/auth/RegisterResponse';
+import { UserInviteRequest } from '../components/users/models/UserInviteRequest';
 
 const ApiUrl = process.env.API_URL;
 
@@ -58,6 +59,8 @@ const Auth = {
     current: (): Promise<User> => requests.get('auth/current'),
     getByRegistrationId: (registrationId: string): Promise<User> =>
         requests.get(`auth?userRegistrationId=${registrationId}`),
+    inviteUser: (request: UserInviteRequest) =>
+        requests.post(`/auth/invite`, request),
 };
 
 const Companies = {
@@ -71,6 +74,7 @@ const Companies = {
 
     confirmApplication: (applicationId: string): Promise<Company> =>
         requests.post(`/companies/confirm/${applicationId}`, {}),
+    getById: (id: string): Promise<Company> => requests.get(`/companies/${id}`),
 };
 
 const api = {

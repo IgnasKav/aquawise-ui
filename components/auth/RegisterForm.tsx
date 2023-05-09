@@ -52,7 +52,7 @@ export const RegisterForm = ({
 
     const { data: user } = useQuery(
         ['user', userRegistrationId],
-        () => api.Auth.getByRegistrationId(companyRegistrationId as string),
+        () => api.Auth.getByRegistrationId(userRegistrationId as string),
         { enabled: userRegistrationId != null },
     );
 
@@ -98,6 +98,7 @@ export const RegisterForm = ({
     });
 
     useEffect(() => {
+        console.log(userRegistrationId);
         if (company != null || user != null) {
             form.setValues({
                 email: company?.email ?? user?.email,
