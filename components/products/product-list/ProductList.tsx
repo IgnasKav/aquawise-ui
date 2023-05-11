@@ -1,12 +1,13 @@
-import { Product } from '../models/Product';
 import { ProductCard } from './ProductCard';
 import css from './product-list.module.scss';
+import { useQuery } from '@tanstack/react-query';
+import { api } from '../../../api/api';
 
-interface Props {
-    products: Product[];
-}
+export const ProductList = () => {
+    const { data: products } = useQuery(['products'], () =>
+        api.Products.getAll(),
+    );
 
-export const ProductList = ({ products }: Props) => {
     return (
         <div className={css.grid}>
             {products?.map((product) => (
