@@ -1,6 +1,6 @@
 import { Product } from '../models/Product';
 import { useForm, UseFormReturnType } from '@mantine/form';
-import { CreateProductRequestDto } from '../models/CreateProductRequest.dto';
+import { ProductFormDto } from '../models/ProductForm.dto';
 import {
     Button,
     Group,
@@ -14,15 +14,17 @@ import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { TbPhoto, TbUpload, TbX } from 'react-icons/tb';
 import css from './dropzone.module.scss';
 import { useState } from 'react';
+import { api } from '../../../api/api';
 
 interface Props {
     product: Product;
 }
 
 export const ProductEditForm = ({ product }: Props) => {
-    const [imageUrl, setIamgeUrl] = useState<string | null>(null);
-    const form: UseFormReturnType<CreateProductRequestDto> = useForm({
-        initialValues: new CreateProductRequestDto(product),
+    const [imageUrl, setImageUrl] = useState<string | null>(null);
+    const [image, setImage] = useState<File | null>(null);
+    const form: UseFormReturnType<ProductFormDto> = useForm({
+        initialValues: new ProductFormDto(product),
         validate: {
             quantity: (val: number) =>
                 val >= 0 ? null : 'Quantity can not be lower than 0',
@@ -33,14 +35,23 @@ export const ProductEditForm = ({ product }: Props) => {
 
     const onDrop = (files: File[]) => {
         const imagePreview = URL.createObjectURL(files[0]);
-        setIamgeUrl(imagePreview);
-        // setImage(files[0]);
-        // setAdvertisement({ ...advertisement, imageUrl: imagePreview });
+        setImageUrl(imagePreview);
+        setImage(files[0]);
     };
 
-    // onSubmit={form.onSubmit(() => mutate(form.values))}
+    const handleSave = async () => {
+        if (!image) return;
+
+        const formData = new FormData();
+        formData.append('image', new Blob([image]), image.name);
+        const productData = JSON.stringify(form.values);
+        formData.append('product', productData);
+
+        await api.Products.create(formData);
+    };
+
     return (
-        <form>
+        <form onSubmit={form.onSubmit(() => handleSave())}>
             {/*<LoadingOverlay visible={isLoading} overlayBlur={0.5} />*/}
             <Stack>
                 <TextInput

@@ -9,6 +9,7 @@ import { CompanyCreateDto } from '../models/companies/CompanyCreate.dto';
 import { Company } from '../models/companies/Company';
 import { RegisterResponse } from '../models/auth/RegisterResponse';
 import { UserInviteRequest } from '../components/users/models/UserInviteRequest';
+import { Product } from '../components/products/models/Product';
 
 const ApiUrl = process.env.API_URL;
 
@@ -29,9 +30,18 @@ const parseError = (error: AxiosError): ApiError => {
 
 const requests = {
     get: (url: string) => axios.get(url).then(responseBody),
-    post: (url: string, body: object) =>
-        axios.post(url, body).then(responseBody),
-    put: (url: string, body: object) => axios.put(url, body).then(responseBody),
+    post: (url: string, body: object, isFormData?: boolean) => {
+        const headers = isFormData
+            ? { 'Content-Type': 'multipart/form-data' }
+            : {};
+        return axios.post(url, body, { headers }).then(responseBody);
+    },
+    put: (url: string, body: object, isFormData: boolean) => {
+        const headers = isFormData
+            ? { 'Content-Type': 'multipart/form-data' }
+            : {};
+        return axios.put(url, body, { headers }).then(responseBody);
+    },
     del: (url: string) => axios.delete(url).then(responseBody),
 };
 
@@ -65,7 +75,6 @@ const Auth = {
 
 const Companies = {
     getAll: (): Promise<Company[] | undefined> => requests.get(`/companies`),
-
     getByApplicationId: (applicationId: string): Promise<Company> =>
         requests.get(`/companies/application/${applicationId}`),
 
@@ -77,9 +86,22 @@ const Companies = {
     getById: (id: string): Promise<Company> => requests.get(`/companies/${id}`),
 };
 
+const Products = {
+    getAll: (): Promise<Product[] | undefined> => requests.get('/products'),
+    getById: (productId: string): Promise<Company> =>
+        requests.get(`/products/${productId}`),
+    create: (req: FormData): Promise<Product> =>
+        requests.post('/products', req, true),
+    update: (productId: string, req: FormData): Promise<Product> =>
+        requests.put(`/products/`, req, true),
+    delete: (productId: string): Promise<void> =>
+        requests.del(`/products/${productId}`),
+};
+
 const api = {
     Auth,
     Companies,
+    Products,
 };
 
 export { api, parseError };
