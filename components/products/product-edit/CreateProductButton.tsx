@@ -16,6 +16,7 @@ export const CreateProductButton = () => {
                 title="Create new product"
             >
                 <ProductEditForm
+                    isCreateForm={true}
                     product={newProduct}
                     onSave={() => setIsOpened(false)}
                 />

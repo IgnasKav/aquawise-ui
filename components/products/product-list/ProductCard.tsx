@@ -1,14 +1,29 @@
 import { Product } from '../models/Product';
 import { Card, Group, Image, Text } from '@mantine/core';
 import css from './product-list.module.scss';
+import { modals } from '@mantine/modals';
+import { ProductEditForm } from '../product-edit/ProductEditForm';
 
 interface Props {
     product: Product;
 }
 
 export const ProductCard = ({ product }: Props) => {
+    const openEditModal = () =>
+        modals.open({
+            id: 'productEditModal',
+            title: 'Edit product',
+            children: (
+                <ProductEditForm
+                    isCreateForm={false}
+                    product={product}
+                    onSave={() => modals.close('productEditModal')}
+                />
+            ),
+        });
+
     return (
-        <Card className={css.card} withBorder>
+        <Card className={css.card} withBorder onClick={() => openEditModal()}>
             <Card.Section>
                 <div className={css.imageContainer}>
                     <Image

@@ -12,18 +12,19 @@ import { useState } from 'react';
 import { ProductQueryKeys } from '../models/ProductQueryKeys';
 
 interface Props {
+    isCreateForm: boolean;
     product: Product;
     onSave?: () => void;
 }
 
-const useProductMutation = (onSave?: () => void) => {
+const useCreateProduct = (onSave?: () => void) => {
     const queryClient = useQueryClient();
     const [createAlert] = useAlert((state) => [state.createAlert]);
 
     return useMutation(api.Products.create, {
         onSuccess: async () => {
             const alert = new Alert({
-                message: 'Product create',
+                message: 'Product created',
                 type: AlertType.success,
                 title: 'Success!',
             });
@@ -42,6 +43,43 @@ const useProductMutation = (onSave?: () => void) => {
     });
 };
 
+interface ProductUpdateMutation {
+    productId: string;
+    product: FormData;
+}
+
+const useProductEdit = (onSave?: () => void) => {
+    const queryClient = useQueryClient();
+    const [createAlert] = useAlert((state) => [state.createAlert]);
+
+    return useMutation(
+        ({ productId, product }: ProductUpdateMutation) =>
+            api.Products.update(productId, product),
+        {
+            onSuccess: async () => {
+                const alert = new Alert({
+                    message: 'Product edited',
+                    type: AlertType.success,
+                    title: 'Success!',
+                });
+
+                if (onSave) {
+                    onSave();
+                }
+
+                createAlert(alert);
+                await queryClient.invalidateQueries([
+                    ProductQueryKeys.ProductList,
+                ]);
+            },
+            onError: (error: AxiosError) => {
+                const alert = parseError(error).toAlert();
+                createAlert(alert);
+            },
+        },
+    );
+};
+
 const useProductForm = (product: Product): UseFormReturnType<ProductFormDto> =>
     useForm({
         initialValues: new ProductFormDto(product),
@@ -53,24 +91,34 @@ const useProductForm = (product: Product): UseFormReturnType<ProductFormDto> =>
         },
     });
 
-export const ProductEditForm = ({ product, onSave }: Props) => {
+export const ProductEditForm = ({ isCreateForm, product, onSave }: Props) => {
     const [image, setImage] = useState<File | null>(null);
 
     const form = useProductForm(product);
-    const { mutate: createProduct } = useProductMutation(onSave);
+    const { mutate: createProduct } = useCreateProduct(onSave);
+    const { mutate: editProduct } = useProductEdit(onSave);
 
     const handleDrop = (image: File) => {
         setImage(image);
     };
 
     const handleSave = async () => {
-        if (!image) return;
+        if (isCreateForm && !image) return;
 
         const formData = new FormData();
-        formData.append('image', new Blob([image]), image.name);
+        if (image) {
+            formData.append('image', new Blob([image]), image.name);
+        }
+
         const productData = JSON.stringify(form.values);
         formData.append('product', productData);
-        createProduct(formData);
+
+        if (isCreateForm) {
+            createProduct(formData);
+        } else {
+            console.log('id', product.id);
+            editProduct({ productId: product.id, product: formData });
+        }
     };
 
     return (
@@ -97,9 +145,12 @@ export const ProductEditForm = ({ product, onSave }: Props) => {
                     radius="md"
                     {...form.getInputProps('price')}
                 />
-                <DropZoneComponent onDrop={handleDrop} />
+                <DropZoneComponent
+                    onDrop={handleDrop}
+                    imageUrl={product.imageUrl}
+                />
                 <Button w={140} type="submit" radius="xl">
-                    Create Product
+                    {isCreateForm ? 'Create Product' : 'Edit Product'}
                 </Button>
             </Stack>
         </form>

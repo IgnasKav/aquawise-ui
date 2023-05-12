@@ -13,6 +13,7 @@ import NavBar from '../components/common/nav-bar/NavBar';
 import { getCookie } from 'cookies-next';
 import useAuth from '../stores/useAuth';
 import { useRouter } from 'next/router';
+import { ModalsProvider } from '@mantine/modals';
 
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter();
@@ -43,11 +44,15 @@ export default function App({ Component, pageProps }: AppProps) {
                             colorScheme: 'light',
                         }}
                     >
-                        <div className="appContainer">
-                            {router.pathname != '/auth/register' && <NavBar />}
-                            <Component {...pageProps} />
-                            <AlertList />
-                        </div>
+                        <ModalsProvider>
+                            <div className="appContainer">
+                                {router.pathname != '/auth/register' && (
+                                    <NavBar />
+                                )}
+                                <Component {...pageProps} />
+                                <AlertList />
+                            </div>
+                        </ModalsProvider>
                     </MantineProvider>
                 </Hydrate>
             </QueryClientProvider>

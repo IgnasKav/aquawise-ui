@@ -7,10 +7,16 @@ import css from './dropzone.module.scss';
 
 interface Props {
     onDrop: (image: File, imageUrl?: string) => void;
+    imageUrl?: string;
 }
 
-export const DropZoneComponent = ({ onDrop }: Props) => {
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
+export const DropZoneComponent = ({
+    onDrop,
+    imageUrl: initialImageUrl,
+}: Props) => {
+    const [imageUrl, setImageUrl] = useState<string | undefined>(
+        initialImageUrl,
+    );
 
     const handleDrop = (files: File[]) => {
         const imagePreview = URL.createObjectURL(files[0]);
