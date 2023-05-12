@@ -1,35 +1,49 @@
 import { Product } from '../models/Product';
 import { useForm, UseFormReturnType } from '@mantine/form';
 import { ProductFormDto } from '../models/ProductForm.dto';
-import {
-    Button,
-    Group,
-    Image,
-    NumberInput,
-    Stack,
-    Text,
-    TextInput,
-} from '@mantine/core';
-import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
-import { TbPhoto, TbUpload, TbX } from 'react-icons/tb';
-import css from './dropzone.module.scss';
-import { useState } from 'react';
+import { Button, NumberInput, Stack, TextInput } from '@mantine/core';
 import { api, parseError } from '../../../api/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Alert, AlertType } from '../../../models/Alert';
 import useAlert from '../../../stores/useAlert';
 import { AxiosError } from 'axios';
+import { DropZoneComponent } from '../../common/dropzone/DropZone';
+import { useState } from 'react';
+import { ProductQueryKeys } from '../models/ProductQueryKeys';
 
 interface Props {
     product: Product;
+    onSave?: () => void;
 }
 
-export const ProductEditForm = ({ product }: Props) => {
+const useProductMutation = (onSave?: () => void) => {
     const queryClient = useQueryClient();
     const [createAlert] = useAlert((state) => [state.createAlert]);
-    const [imageUrl, setImageUrl] = useState<string | null>(null);
-    const [image, setImage] = useState<File | null>(null);
-    const form: UseFormReturnType<ProductFormDto> = useForm({
+
+    return useMutation(api.Products.create, {
+        onSuccess: async () => {
+            const alert = new Alert({
+                message: 'Product create',
+                type: AlertType.success,
+                title: 'Success!',
+            });
+
+            if (onSave) {
+                onSave();
+            }
+
+            createAlert(alert);
+            await queryClient.invalidateQueries([ProductQueryKeys.ProductList]);
+        },
+        onError: (error: AxiosError) => {
+            const alert = parseError(error).toAlert();
+            createAlert(alert);
+        },
+    });
+};
+
+const useProductForm = (product: Product): UseFormReturnType<ProductFormDto> =>
+    useForm({
         initialValues: new ProductFormDto(product),
         validate: {
             quantity: (val: number) =>
@@ -39,26 +53,14 @@ export const ProductEditForm = ({ product }: Props) => {
         },
     });
 
-    const { mutate: createProduct } = useMutation(api.Products.create, {
-        onSuccess: () => {
-            queryClient.invalidateQueries(['products']);
-            const alert = new Alert({
-                message: 'Product create',
-                type: AlertType.success,
-                title: 'Success!',
-            });
-            createAlert(alert);
-        },
-        onError: (error: AxiosError) => {
-            const alert = parseError(error).toAlert();
-            createAlert(alert);
-        },
-    });
+export const ProductEditForm = ({ product, onSave }: Props) => {
+    const [image, setImage] = useState<File | null>(null);
 
-    const onDrop = (files: File[]) => {
-        const imagePreview = URL.createObjectURL(files[0]);
-        setImageUrl(imagePreview);
-        setImage(files[0]);
+    const form = useProductForm(product);
+    const { mutate: createProduct } = useProductMutation(onSave);
+
+    const handleDrop = (image: File) => {
+        setImage(image);
     };
 
     const handleSave = async () => {
@@ -73,7 +75,6 @@ export const ProductEditForm = ({ product }: Props) => {
 
     return (
         <form onSubmit={form.onSubmit(() => handleSave())}>
-            {/*<LoadingOverlay visible={isLoading} overlayBlur={0.5} />*/}
             <Stack>
                 <TextInput
                     required
@@ -86,58 +87,17 @@ export const ProductEditForm = ({ product }: Props) => {
                     placeholder="Quantity"
                     label="Quantity"
                     withAsterisk
+                    radius="md"
                     {...form.getInputProps('quantity')}
                 />
                 <NumberInput
                     placeholder="Price"
                     label="Price"
                     withAsterisk
+                    radius="md"
                     {...form.getInputProps('price')}
                 />
-                <Dropzone
-                    className={css.dropzone}
-                    mt={20}
-                    maxSize={3 * 1024 ** 2}
-                    accept={IMAGE_MIME_TYPE}
-                    onDrop={(files) => onDrop(files)}
-                    onReject={(files) => console.log('rejected files', files)}
-                >
-                    {imageUrl && (
-                        <Image
-                            className={css.imageBackground}
-                            key={imageUrl}
-                            src={imageUrl}
-                            height={296}
-                            imageProps={{
-                                onLoad: () => URL.revokeObjectURL(imageUrl),
-                            }}
-                        />
-                    )}
-                    <Group
-                        position="center"
-                        spacing="xl"
-                        style={{ minHeight: 220, pointerEvents: 'none' }}
-                    >
-                        <Dropzone.Accept>
-                            <TbUpload className={css.iconAccepted} size={80} />
-                        </Dropzone.Accept>
-                        <Dropzone.Reject>
-                            <TbX className={css.iconRejected} size={80} />
-                        </Dropzone.Reject>
-                        <Dropzone.Idle>
-                            <TbPhoto size={80} className={css.iconIdle} />
-                        </Dropzone.Idle>
-                        <div>
-                            <Text size="xl" inline>
-                                Drag images here or click to select files
-                            </Text>
-                            <Text size="sm" color="dimmed" inline mt={7}>
-                                Attach as many files as you like, each file
-                                should not exceed 5mb
-                            </Text>
-                        </div>
-                    </Group>
-                </Dropzone>
+                <DropZoneComponent onDrop={handleDrop} />
                 <Button w={140} type="submit" radius="xl">
                     Create Product
                 </Button>

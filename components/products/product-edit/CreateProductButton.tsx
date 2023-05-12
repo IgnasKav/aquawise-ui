@@ -15,7 +15,10 @@ export const CreateProductButton = () => {
                 onClose={() => setIsOpened(false)}
                 title="Create new product"
             >
-                <ProductEditForm product={newProduct} />
+                <ProductEditForm
+                    product={newProduct}
+                    onSave={() => setIsOpened(false)}
+                />
             </Modal>
         </>
     );
