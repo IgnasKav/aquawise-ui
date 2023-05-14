@@ -2,6 +2,9 @@
   background-color: transparent;
   height: 300px;
 
+  &:hover {
+    background-color: transparent;
+  }
   .iconAccepted {
     color: var(--mantine-color-primary-6)
   }
