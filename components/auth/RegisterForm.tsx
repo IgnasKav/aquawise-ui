@@ -13,11 +13,13 @@ import {
 import { FacebookButton, GoogleButton } from './utils/SocialButtons';
 import { useForm, UseFormReturnType } from '@mantine/form';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { api } from '../../api/api';
+import { api, parseError } from '../../api/api';
 import { useEffect } from 'react';
 import { RegisterRequest } from '../../models/auth/RegisterRequest';
 import useAuth from '../../stores/useAuth';
 import { useRouter } from 'next/router';
+import { AxiosError } from 'axios';
+import useAlert from '../../stores/useAlert';
 
 interface RegisterFormArgs {
     companyRegistrationId?: string;
@@ -39,18 +41,19 @@ export const RegisterForm = ({
     userRegistrationId,
 }: RegisterFormArgs) => {
     const router = useRouter();
+    const [createAlert] = useAlert((state) => [state.createAlert]);
     const [registerUser, registerAdmin] = useAuth((state) => [
         state.registerUser,
         state.registerAdmin,
     ]);
 
-    const { data: company } = useQuery(
+    const { data: company, isError: isCompanyError } = useQuery(
         ['company', companyRegistrationId],
         () => api.Companies.getByApplicationId(companyRegistrationId as string),
         { enabled: companyRegistrationId != null },
     );
 
-    const { data: user } = useQuery(
+    const { data: user, isError: isUserError } = useQuery(
         ['user', userRegistrationId],
         () => api.Auth.getByRegistrationId(userRegistrationId as string),
         { enabled: userRegistrationId != null },
@@ -61,6 +64,10 @@ export const RegisterForm = ({
             registerUser(userRegistrationId, req),
         {
             onSuccess: () => router.push('/'),
+            onError: (error: AxiosError) => {
+                const alert = parseError(error).toAlert();
+                createAlert(alert);
+            },
         },
     );
 
@@ -69,6 +76,10 @@ export const RegisterForm = ({
             registerAdmin(companyRegistrationId, req),
         {
             onSuccess: () => router.push('/'),
+            onError: (error: AxiosError) => {
+                const alert = parseError(error).toAlert();
+                createAlert(alert);
+            },
         },
     );
 
@@ -108,7 +119,13 @@ export const RegisterForm = ({
 
     return (
         <Paper shadow="md" radius="md" p="xl" m="xl" withBorder>
-            {!company && !user ? (
+            {isCompanyError ||
+                (isUserError && (
+                    <Center>
+                        <Text>Link is no longer active</Text>
+                    </Center>
+                ))}
+            {!company && !user && !isCompanyError && !isUserError ? (
                 <Loader />
             ) : (
                 <>
@@ -118,16 +135,16 @@ export const RegisterForm = ({
                         Aquawise!
                     </Text>
 
-                    <Group grow mb="md" mt="md">
-                        <GoogleButton radius="xl">Google</GoogleButton>
-                        <FacebookButton radius="xl">Facebook</FacebookButton>
-                    </Group>
+                    {/*<Group grow mb="md" mt="md">*/}
+                    {/*    <GoogleButton radius="xl">Google</GoogleButton>*/}
+                    {/*    <FacebookButton radius="xl">Facebook</FacebookButton>*/}
+                    {/*</Group>*/}
 
-                    <Divider
-                        label="Or continue with email"
-                        labelPosition="center"
-                        my="lg"
-                    />
+                    {/*<Divider*/}
+                    {/*    label="Or continue with email"*/}
+                    {/*    labelPosition="center"*/}
+                    {/*    my="lg"*/}
+                    {/*/>*/}
 
                     <form
                         onSubmit={form.onSubmit(() => {

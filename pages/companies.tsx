@@ -7,12 +7,12 @@ import { RequireAuth } from '../components/auth/RequireAuth';
 const Companies = () => {
     const queryClient = useQueryClient();
     const { data: companies, isLoading: companiesLoading } = useQuery(
-        ['companies'],
+        ['clients'],
         api.Companies.getAll,
     );
 
     const { mutate } = useMutation(api.Companies.confirmApplication, {
-        onSuccess: () => queryClient.invalidateQueries(['companies']),
+        onSuccess: () => queryClient.invalidateQueries(['clients']),
     });
 
     return (

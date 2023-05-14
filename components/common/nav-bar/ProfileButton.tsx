@@ -55,7 +55,7 @@ const ProfileButton = ({ user }: ProfileButtonProps) => {
                 </Menu.Item>
                 <Menu.Item
                     icon={<HiOutlineOfficeBuilding />}
-                    onClick={() => router.push('/')}
+                    onClick={() => router.push('/company')}
                 >
                     Your company
                 </Menu.Item>
