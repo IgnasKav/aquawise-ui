@@ -1,5 +1,5 @@
 import { Button, Card, Group, MantineSize } from '@mantine/core';
-import { AiOutlineHome, AiOutlineTeam } from 'react-icons/ai';
+import { AiOutlineHome, AiOutlineMobile, AiOutlineTeam } from 'react-icons/ai';
 import { useRouter } from 'next/router';
 import useAuth from '../../../stores/useAuth';
 import css from './nav-bar.module.scss';
@@ -10,6 +10,7 @@ import { HiOutlineColorSwatch, HiOutlineOfficeBuilding } from 'react-icons/hi';
 import { UserRole } from '../../../models/User';
 import ProfileButton from './ProfileButton';
 import classNames from 'classnames';
+import { BsBoxSeam } from 'react-icons/bs';
 
 interface NavButtonProps {
     to?: string;
@@ -58,12 +59,14 @@ const NavBar = () => {
             >
                 <Group position="apart">
                     <Group>
-                        <NavButton
-                            to="/"
-                            color="blue"
-                            title="Home"
-                            icon={<AiOutlineHome />}
-                        />
+                        {!user && (
+                            <NavButton
+                                to="/"
+                                color="blue"
+                                title="Home"
+                                icon={<AiOutlineHome />}
+                            />
+                        )}
                         {user && user.role == UserRole.Support && (
                             <NavButton
                                 to="/companies"
@@ -75,9 +78,21 @@ const NavBar = () => {
                         {user && user.role == UserRole.Admin && (
                             <>
                                 <NavButton
+                                    to="/clients"
+                                    color="blue"
+                                    title="Clients"
+                                    icon={<AiOutlineMobile />}
+                                />
+                                <NavButton
                                     to="/products"
                                     color="blue"
                                     title="Products"
+                                    icon={<BsBoxSeam />}
+                                />
+                                <NavButton
+                                    to="/orders"
+                                    color="blue"
+                                    title="Orders"
                                     icon={<HiOutlineColorSwatch />}
                                 />
                                 <NavButton
@@ -85,6 +100,28 @@ const NavBar = () => {
                                     color="blue"
                                     title="Team"
                                     icon={<AiOutlineTeam />}
+                                />
+                            </>
+                        )}
+                        {user && user.role == UserRole.User && (
+                            <>
+                                <NavButton
+                                    to="/clients"
+                                    color="blue"
+                                    title="Clients"
+                                    icon={<AiOutlineMobile />}
+                                />
+                                <NavButton
+                                    to="/products"
+                                    color="blue"
+                                    title="Products"
+                                    icon={<BsBoxSeam />}
+                                />
+                                <NavButton
+                                    to="/orders"
+                                    color="blue"
+                                    title="Orders"
+                                    icon={<HiOutlineColorSwatch />}
                                 />
                             </>
                         )}

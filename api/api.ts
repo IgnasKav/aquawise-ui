@@ -10,6 +10,7 @@ import { Company } from '../models/companies/Company';
 import { RegisterResponse } from '../models/auth/RegisterResponse';
 import { UserInviteRequest } from '../components/users/models/UserInviteRequest';
 import { Product } from '../components/products/models/Product';
+import { CompanyClient } from '../models/companies/CompanyClient';
 
 const ApiUrl = process.env.API_URL;
 
@@ -84,6 +85,8 @@ const Companies = {
     confirmApplication: (applicationId: string): Promise<Company> =>
         requests.post(`/companies/confirm/${applicationId}`, {}),
     getById: (id: string): Promise<Company> => requests.get(`/companies/${id}`),
+    getClients: (id: string): Promise<CompanyClient[]> =>
+        requests.get(`/companies/${id}/clients`),
 };
 
 const Products = {

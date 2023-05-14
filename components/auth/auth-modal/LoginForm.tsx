@@ -66,16 +66,16 @@ export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
             animate={{ x: 0 }}
             transition={{ duration: 0.25 }}
         >
-            <Group grow mb="md" mt="md">
-                <GoogleButton radius="xl">Google</GoogleButton>
-                <FacebookButton radius="xl">Facebook</FacebookButton>
-            </Group>
+            {/*<Group grow mb="md" mt="md">*/}
+            {/*    <GoogleButton radius="xl">Google</GoogleButton>*/}
+            {/*    <FacebookButton radius="xl">Facebook</FacebookButton>*/}
+            {/*</Group>*/}
 
-            <Divider
-                label="Or continue with email"
-                labelPosition="center"
-                my="lg"
-            />
+            {/*<Divider*/}
+            {/*    label="Or continue with email"*/}
+            {/*    labelPosition="center"*/}
+            {/*    my="lg"*/}
+            {/*/>*/}
 
             <form onSubmit={form.onSubmit(() => handleLogin())}>
                 <Stack>
