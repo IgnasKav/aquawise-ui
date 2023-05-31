@@ -1,13 +1,11 @@
 import {
     Anchor,
     Button,
-    Divider,
     Group,
     PasswordInput,
     Stack,
     TextInput,
 } from '@mantine/core';
-import { FacebookButton, GoogleButton } from '../utils/SocialButtons';
 import { useForm } from '@mantine/form';
 import useAuth from '../../../stores/useAuth';
 import useAlert from '../../../stores/useAlert';

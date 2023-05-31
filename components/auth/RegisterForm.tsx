@@ -1,8 +1,6 @@
 import {
     Button,
     Center,
-    Divider,
-    Group,
     Loader,
     Paper,
     PasswordInput,
@@ -10,7 +8,6 @@ import {
     Text,
     TextInput,
 } from '@mantine/core';
-import { FacebookButton, GoogleButton } from './utils/SocialButtons';
 import { useForm, UseFormReturnType } from '@mantine/form';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { api, parseError } from '../../api/api';

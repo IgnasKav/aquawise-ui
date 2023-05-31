@@ -1,4 +1,4 @@
-import { Accordion, Card, Loader, Table } from '@mantine/core';
+import { Card, Loader, Table } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { AiOutlineWarning } from 'react-icons/ai';
 import { api } from '../../api/api';
