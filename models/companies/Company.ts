@@ -7,6 +7,7 @@ export class Company {
     email: string;
     phone: string;
     status: CompanyStatus;
+    brandColor: string;
     logoUrl?: string;
     companyRegistrationId?: string;
     users: User[];
@@ -18,6 +19,7 @@ export class Company {
         this.email = dto.email ?? '';
         this.phone = dto.phone ?? '';
         this.status = dto.status ?? CompanyStatus.Confirmed;
+        this.brandColor = dto.brandColor ?? '';
         this.logoUrl = dto.logoUrl;
         this.companyRegistrationId = dto.companyRegistrationId;
         this.users = dto.users ?? [];

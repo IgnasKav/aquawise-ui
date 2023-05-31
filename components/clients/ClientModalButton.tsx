@@ -1,6 +1,5 @@
 import { Button, Modal, Table } from '@mantine/core';
 import { useState } from 'react';
-import { Company, CompanyStatus } from '../../models/companies/Company';
 import { Device } from '../../models/companies/CompanyClient';
 
 interface ClientModalButtonArgs {
@@ -31,7 +30,11 @@ export const ClientModalButton = ({ devices }: ClientModalButtonArgs) => {
                                 <td>{device.name}</td>
                                 <td>
                                     {device.saltPercentage
-                                        ? device.saltPercentage + '%'
+                                        ? device.saltPercentage > 100 ||
+                                          device.saltPercentage < 0
+                                            ? 'Measuring error'
+                                            : device.saltPercentage.toFixed(2) +
+                                              '%'
                                         : 'Not configured'}
                                 </td>
                                 <td>{device.leak ? 'Yes' : 'No'}</td>

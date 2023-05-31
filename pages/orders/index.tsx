@@ -1,247 +1,139 @@
 import { RequireAuth } from '../../components/auth/RequireAuth';
 import {
-    Avatar,
-    Card,
+    Center,
     Container,
     Divider,
     Group,
-    ScrollArea,
-    Select,
+    Loader,
+    MediaQuery,
+    SegmentedControl,
     Stack,
-    Text,
 } from '@mantine/core';
-import React, { forwardRef } from 'react';
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { api } from '../../api/api';
+import useAuth from '../../stores/useAuth';
+import { OrdersColumn } from '../../components/orders/ordersColumn';
+import { OrderStatus } from '../../components/orders/models/Order';
 
 const OrdersPage = () => {
-    const users = [
-        {
-            firstName: 'George',
-            lastName: 'Foster',
-            label: 'George Foster',
-            value: 'GF',
-        },
-        {
-            firstName: 'Luke',
-            lastName: 'Kramer',
-            label: 'Luke Kramer',
-            value: 'LK',
-        },
-    ];
-
-    interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
-        firstName: string;
-        lastName: string;
-    }
-
-    const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
-        ({ firstName, lastName, ...others }: ItemProps, ref) => (
-            <div ref={ref} {...others}>
-                <Group noWrap>
-                    <Avatar variant="filled" size="md" color="teal" radius="xl">
-                        {firstName[0].toUpperCase() + lastName[0].toUpperCase()}
-                    </Avatar>
-                    <Text size="sm">{firstName + lastName}</Text>
-                </Group>
-            </div>
-        ),
+    const [user, isLoading] = useAuth((state) => [state.user, state.isLoading]);
+    const { data: orders, isLoading: isOrdersLoading } = useQuery(
+        ['orders'],
+        () => api.Companies.getOrders(user?.company.id ?? ''),
+        { enabled: !isLoading },
     );
+    const [selectedColumn, setSelectedColumn] = useState(OrderStatus.Todo);
 
     return (
         <RequireAuth>
-            <Container style={{ height: '80%' }}>
-                <Group align={'flex-start'} style={{ height: '100%' }}>
-                    <Stack w={250} justify="flex-start">
-                        <Text>{'Todo'}</Text>
-                        <ScrollArea offsetScrollbars={true} h={500}>
-                            <Stack>
-                                <Card
-                                    shadow="sm"
-                                    padding="lg"
-                                    radius="md"
-                                    withBorder
-                                >
-                                    <Stack>
-                                        <Text>Order name</Text>
-                                        <Text>Order Product1</Text>
-                                        <Text>Order Product2</Text>
-                                        <Text>Order Product3</Text>
-                                        <Select
-                                            placeholder="Assignee"
-                                            itemComponent={SelectItem}
-                                            data={users}
-                                            searchable
-                                            maxDropdownHeight={400}
-                                            nothingFound="Nobody here"
-                                            filter={(value, item) =>
-                                                item.firstName
-                                                    .toLowerCase()
-                                                    .includes(
-                                                        value
-                                                            .toLowerCase()
-                                                            .trim(),
-                                                    ) ||
-                                                item.lastName
-                                                    .toLowerCase()
-                                                    .includes(
-                                                        value
-                                                            .toLowerCase()
-                                                            .trim(),
-                                                    )
-                                            }
-                                        />
-                                        <Select
-                                            placeholder="Change status"
-                                            data={[
-                                                {
-                                                    value: 'Todo',
-                                                    label: 'Todo',
-                                                },
-                                                {
-                                                    value: 'InProgress',
-                                                    label: 'In Progress',
-                                                },
-                                                {
-                                                    value: 'Done',
-                                                    label: 'Done',
-                                                },
-                                            ]}
-                                        />
-                                    </Stack>
-                                </Card>
-                                <Card
-                                    shadow="sm"
-                                    padding="lg"
-                                    radius="md"
-                                    withBorder
-                                >
-                                    <Stack>
-                                        <Text>Order name</Text>
-                                        <Text>Order Product1</Text>
-                                        <Text>Order Product2</Text>
-                                    </Stack>
-                                </Card>
-                                <Card
-                                    shadow="sm"
-                                    padding="lg"
-                                    radius="md"
-                                    withBorder
-                                >
-                                    <Stack>
-                                        <Text>Order name</Text>
-                                        <Text>Order Product1</Text>
-                                        <Text>Order Product2</Text>
-                                    </Stack>
-                                </Card>
-                                <Card
-                                    shadow="sm"
-                                    padding="lg"
-                                    radius="md"
-                                    withBorder
-                                >
-                                    <Stack>
-                                        <Text>Order name</Text>
-                                        <Text>Order Product1</Text>
-                                        <Text>Order Product2</Text>
-                                    </Stack>
-                                </Card>
-                            </Stack>
-                        </ScrollArea>
-                    </Stack>
-                    <Divider
-                        variant="dotted"
-                        size={'xl'}
-                        orientation="vertical"
-                    />
-                    <Stack w={250} justify="flex-start">
-                        <Text>{'In progress'}</Text>
-                        <Card shadow="sm" padding="lg" radius="md" withBorder>
-                            <Stack>
-                                <Text>Order name</Text>
-                                <Text>Order Product1</Text>
-                                <Text>Order Product2</Text>
-                                <Text>Order Product3</Text>
-                                <Select
-                                    placeholder="Assignee"
-                                    itemComponent={SelectItem}
-                                    data={users}
-                                    searchable
-                                    maxDropdownHeight={400}
-                                    nothingFound="Nobody here"
-                                    filter={(value, item) =>
-                                        item.firstName
-                                            .toLowerCase()
-                                            .includes(
-                                                value.toLowerCase().trim(),
-                                            ) ||
-                                        item.lastName
-                                            .toLowerCase()
-                                            .includes(
-                                                value.toLowerCase().trim(),
-                                            )
+            <Container px={0} style={{ height: '80%' }}>
+                {isLoading || isOrdersLoading ? (
+                    <Center>
+                        <Loader />
+                    </Center>
+                ) : (
+                    <>
+                        <MediaQuery
+                            smallerThan="sm"
+                            styles={{ display: 'none' }}
+                        >
+                            <Group
+                                align={'flex-start'}
+                                style={{ height: '100%' }}
+                            >
+                                <Divider
+                                    variant="dotted"
+                                    size={'xl'}
+                                    orientation="vertical"
+                                />
+                                <OrdersColumn
+                                    title={'Todo'}
+                                    orders={
+                                        orders?.filter(
+                                            (order) =>
+                                                order.status ==
+                                                OrderStatus.Todo,
+                                        ) || []
                                     }
                                 />
-                                <Select
-                                    placeholder="Change status"
-                                    data={[
-                                        { value: 'Todo', label: 'Todo' },
-                                        {
-                                            value: 'InProgress',
-                                            label: 'In Progress',
-                                        },
-                                        { value: 'Done', label: 'Done' },
-                                    ]}
+                                <Divider
+                                    variant="dotted"
+                                    size={'xl'}
+                                    orientation="vertical"
                                 />
-                            </Stack>
-                        </Card>
-                    </Stack>
-                    <Divider
-                        variant="dotted"
-                        size={'xl'}
-                        orientation="vertical"
-                    />
-                    <Stack w={250} justify="flex-start">
-                        <Text>{'Done'}</Text>
-                        <Card shadow="sm" padding="lg" radius="md" withBorder>
-                            <Stack>
-                                <Text>Order name</Text>
-                                <Text>Order Product1</Text>
-                                <Text>Order Product2</Text>
-                                <Text>Order Product3</Text>
-                                <Select
-                                    placeholder="Assignee"
-                                    itemComponent={SelectItem}
-                                    data={users}
-                                    searchable
-                                    maxDropdownHeight={400}
-                                    nothingFound="Nobody here"
-                                    filter={(value, item) =>
-                                        item.firstName
-                                            .toLowerCase()
-                                            .includes(
-                                                value.toLowerCase().trim(),
-                                            ) ||
-                                        item.lastName
-                                            .toLowerCase()
-                                            .includes(
-                                                value.toLowerCase().trim(),
-                                            )
+                                <OrdersColumn
+                                    title={'In Progress'}
+                                    orders={
+                                        orders?.filter(
+                                            (order) =>
+                                                order.status ==
+                                                OrderStatus.InProgress,
+                                        ) || []
                                     }
                                 />
-                                <Select
-                                    placeholder="Change status"
+                                <Divider
+                                    variant="dotted"
+                                    size={'xl'}
+                                    orientation="vertical"
+                                />
+                                <OrdersColumn
+                                    title={'Done'}
+                                    orders={
+                                        orders?.filter(
+                                            (order) =>
+                                                order.status ==
+                                                OrderStatus.Done,
+                                        ) || []
+                                    }
+                                />
+                            </Group>
+                        </MediaQuery>
+                        <MediaQuery
+                            largerThan="sm"
+                            styles={{ display: 'none' }}
+                        >
+                            <Stack>
+                                <SegmentedControl
+                                    value={selectedColumn}
+                                    onChange={(value) =>
+                                        setSelectedColumn(
+                                            OrderStatus[
+                                                value as keyof typeof OrderStatus
+                                            ],
+                                        )
+                                    }
                                     data={[
-                                        { value: 'Todo', label: 'Todo' },
                                         {
-                                            value: 'InProgress',
-                                            label: 'In Progress',
+                                            label: 'Todo',
+                                            value: OrderStatus.Todo,
                                         },
-                                        { value: 'Done', label: 'Done' },
+                                        {
+                                            label: 'In Progress',
+                                            value: OrderStatus.InProgress,
+                                        },
+                                        {
+                                            label: 'Done',
+                                            value: OrderStatus.Done,
+                                        },
                                     ]}
                                 />
+                                <Center>
+                                    <OrdersColumn
+                                        title={''}
+                                        orders={
+                                            orders?.filter(
+                                                (order) =>
+                                                    order.status ==
+                                                    selectedColumn,
+                                            ) || []
+                                        }
+                                    />
+                                </Center>
                             </Stack>
-                        </Card>
-                    </Stack>
-                </Group>
+                        </MediaQuery>
+                    </>
+                )}
             </Container>
         </RequireAuth>
     );

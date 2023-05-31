@@ -25,7 +25,7 @@ const ProfileButton = ({ user }: ProfileButtonProps) => {
     return (
         <Menu>
             <Menu.Target>
-                <Button color="blue" size="lg" variant="subtle">
+                <Button size="lg" variant="subtle">
                     <Group>
                         <Avatar
                             variant="filled"

@@ -3,6 +3,7 @@ import { Card, Group, Image, Text } from '@mantine/core';
 import css from './product-list.module.scss';
 import { modals } from '@mantine/modals';
 import { ProductEditForm } from '../product-edit/ProductEditForm';
+import { ApiUrl } from '../../../api/api';
 
 interface Props {
     product: Product;
@@ -28,7 +29,7 @@ export const ProductCard = ({ product }: Props) => {
                 <div className={css.imageContainer}>
                     <Image
                         className={css.image}
-                        src={product.imageUrl}
+                        src={`${ApiUrl}/${product.imageUrl}`}
                         height={180}
                         withPlaceholder
                     />

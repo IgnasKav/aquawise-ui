@@ -11,8 +11,10 @@ import { RegisterResponse } from '../models/auth/RegisterResponse';
 import { UserInviteRequest } from '../components/users/models/UserInviteRequest';
 import { Product } from '../components/products/models/Product';
 import { CompanyClient } from '../models/companies/CompanyClient';
+import { Order } from '../components/orders/models/Order';
+import { OrderUpdateRequest } from '../components/orders/models/OrderUpdateRequest';
 
-const ApiUrl = process.env.API_URL;
+export const ApiUrl = process.env.API_URL;
 
 axios.defaults.baseURL = `${ApiUrl}`;
 
@@ -37,7 +39,7 @@ const requests = {
             : {};
         return axios.post(url, body, { headers }).then(responseBody);
     },
-    put: (url: string, body: object, isFormData: boolean) => {
+    put: (url: string, body: object, isFormData = false) => {
         const headers = isFormData
             ? { 'Content-Type': 'multipart/form-data' }
             : {};
@@ -87,6 +89,23 @@ const Companies = {
     getById: (id: string): Promise<Company> => requests.get(`/companies/${id}`),
     getClients: (id: string): Promise<CompanyClient[]> =>
         requests.get(`/companies/${id}/clients`),
+    getOrders: (id: string): Promise<Order[]> =>
+        requests.get(`/companies/${id}/orders`),
+    saveColor: (id: string, color: string | null): Promise<void> =>
+        requests.put(`/companies/${id}`, { brandColor: color }),
+};
+
+const Orders = {
+    update: (
+        companyId: string,
+        clientId: string,
+        orderId: string,
+        request: OrderUpdateRequest,
+    ): Promise<Order> =>
+        requests.put(
+            `/companies/${companyId}/clients/${clientId}/orders/${orderId}`,
+            request,
+        ),
 };
 
 const Products = {
@@ -105,6 +124,7 @@ const api = {
     Auth,
     Companies,
     Products,
+    Orders,
 };
 
 export { api, parseError };

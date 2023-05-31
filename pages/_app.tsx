@@ -17,12 +17,24 @@ import { ModalsProvider } from '@mantine/modals';
 
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter();
-    const [getCurrent] = useAuth((state) => [state.getCurrent]);
+    const [user, getCurrent] = useAuth((state) => [
+        state.user,
+        state.getCurrent,
+    ]);
     const jwt = getCookie('jwt');
     const [queryClient] = useState(() => new QueryClient());
+    // const [theme, setTheme] = useState<MantineThemeOverride>({
+    //     colorScheme: 'light',
+    // });
 
     useEffect(() => {
         getCurrent();
+        // if (user?.company) {
+        //     if (user.company.brandColor != null) {
+        //         console.log('CHANGE COLOR');
+        //         setTheme({ primaryColor: 'orange' });
+        //     }
+        // }
     }, [jwt]);
 
     return (
@@ -40,9 +52,20 @@ export default function App({ Component, pageProps }: AppProps) {
                         withGlobalStyles
                         withCSSVariables
                         withNormalizeCSS
-                        theme={{
-                            colorScheme: 'light',
-                        }}
+                        theme={
+                            !user
+                                ? {
+                                      colorScheme: 'light',
+                                  }
+                                : {
+                                      colorScheme: 'light',
+                                      primaryColor:
+                                          user.company.brandColor == null ||
+                                          user.company.brandColor == '#228be6'
+                                              ? 'blue'
+                                              : 'orange',
+                                  }
+                        }
                     >
                         <ModalsProvider>
                             <div className="appContainer">

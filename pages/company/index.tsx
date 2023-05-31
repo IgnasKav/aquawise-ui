@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Button,
     Card,
@@ -11,18 +11,26 @@ import {
 } from '@mantine/core';
 import { DropZoneComponent } from '../../components/common/dropzone/DropZone';
 import useAuth from '../../stores/useAuth';
+import { api } from '../../api/api';
 
 const CompanyEditForm = () => {
-    const [user, isLoading] = useAuth((state) => [state.user, state.isLoading]);
+    const [user, isLoading, getCurrent] = useAuth((state) => [
+        state.user,
+        state.isLoading,
+        state.getCurrent,
+    ]);
     const [image, setImage] = useState<File | null>(null);
     const [color, setColor] = useState<string | null>(null);
+
+    useEffect(() => {
+        setColor(user?.company.brandColor ?? null);
+    }, [user]);
 
     const handleDrop = (image: File) => {
         setImage(image);
     };
 
     const handleSave = async () => {
-        console.log(image);
         const formData = new FormData();
         if (image) {
             formData.append('image', new Blob([image]), image.name);
@@ -32,7 +40,10 @@ const CompanyEditForm = () => {
             formData.append('color', color);
         }
 
-        console.log(JSON.stringify(formData));
+        if (user != null) {
+            await api.Companies.saveColor(user.company.id, color);
+            getCurrent();
+        }
 
         // if (isCreateForm) {
         //     createProduct(formData);

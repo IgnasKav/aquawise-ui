@@ -2,7 +2,7 @@ import { Product } from '../models/Product';
 import { useForm, UseFormReturnType } from '@mantine/form';
 import { ProductFormDto } from '../models/ProductForm.dto';
 import { Button, NumberInput, Stack, TextInput } from '@mantine/core';
-import { api, parseError } from '../../../api/api';
+import { api, ApiUrl, parseError } from '../../../api/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Alert, AlertType } from '../../../models/Alert';
 import useAlert from '../../../stores/useAlert';
@@ -116,7 +116,6 @@ export const ProductEditForm = ({ isCreateForm, product, onSave }: Props) => {
         if (isCreateForm) {
             createProduct(formData);
         } else {
-            console.log('id', product.id);
             editProduct({ productId: product.id, product: formData });
         }
     };
@@ -147,7 +146,7 @@ export const ProductEditForm = ({ isCreateForm, product, onSave }: Props) => {
                 />
                 <DropZoneComponent
                     onDrop={handleDrop}
-                    imageUrl={product.imageUrl}
+                    imageUrl={`${ApiUrl}/${product.imageUrl}`}
                 />
                 <Button w={140} type="submit" radius="xl">
                     {isCreateForm ? 'Create Product' : 'Edit Product'}
