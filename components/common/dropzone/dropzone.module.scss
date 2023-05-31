@@ -1,0 +1,27 @@
+.dropzone {
+  background-color: transparent;
+  height: 300px;
+
+  &:hover {
+    background-color: transparent;
+  }
+  .iconAccepted {
+    color: var(--mantine-color-primary-6)
+  }
+  .iconRejected {
+    color: var(--mantine-color-red-6)
+  }
+  .iconIdle {
+    stroke-width: 1;
+    color: var(--mantine-color-gray-7)
+  }
+
+  .imageBackground {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.4;
+  }
+}
+

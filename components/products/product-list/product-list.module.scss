@@ -1,0 +1,73 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-gap: 1rem;
+}
+
+.card {
+  background-color: var(--mantine-color-white);
+  border-radius: var(--mantine-radius-md);
+  box-shadow: var(--mantine-shadow-md);
+  width: 260px;
+  height: 344px;
+  cursor: pointer;
+  margin: 0 auto;
+
+  &:hover {
+    .image {
+      transform: scale(1.03);
+    }
+  }
+
+  &.selected {
+    border: 2px solid #248ae6;
+
+    .image {
+      transform: scale(1.03);
+    }
+  }
+
+  .imageContainer {
+    height: 180px;
+    position: relative;
+
+    .image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      transition: transform 500ms ease;
+    }
+  }
+
+  .section {
+    border-bottom: 1px solid var(--mantine-color-gray-3);
+    margin-top: var(--mantine-spacing-md);
+    padding-left: var(--mantine-spacing-md);
+    padding-right: var(--mantine-spacing-md);
+    padding-bottom: var(--mantine-spacing-md);
+
+    .title {
+      font-size: var(--mantine-font-size-lg);
+      font-weight: 500;
+    }
+    .description {
+      height: 44px;
+      margin-top: 5px;
+      font-size: var(--mantine-font-size-sm);
+      color: var(--mantine-color-gray-6)
+    }
+  }
+  .priceSection {
+    margin-top: var(--mantine-spacing-md);
+
+    .price {
+      font-size: var(--mantine-font-size-xl);
+      font-weight: 700;
+      line-height: 1;
+    }
+  }
+}
+
+
