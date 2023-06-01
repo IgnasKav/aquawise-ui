@@ -1,4 +1,4 @@
-import { Button, Modal } from '@mantine/core';
+import { Button, Modal, Space } from '@mantine/core';
 import { Product } from '../models/Product';
 import { ProductEditForm } from './ProductEditForm';
 import { useState } from 'react';
@@ -10,6 +10,7 @@ export const CreateProductButton = () => {
     return (
         <>
             <Button onClick={() => setIsOpened(true)}>Add product</Button>
+            <Space></Space>
             <Modal
                 opened={isOpened}
                 onClose={() => setIsOpened(false)}

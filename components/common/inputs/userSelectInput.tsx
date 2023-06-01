@@ -28,7 +28,7 @@ export const UserSelectInput = ({ value, onChange }: Props) => {
                     <Avatar variant="filled" size="md" color="teal" radius="xl">
                         {firstName[0].toUpperCase() + lastName[0].toUpperCase()}
                     </Avatar>
-                    <Text size="sm">{firstName + lastName}</Text>
+                    <Text size="sm">{firstName + ' ' + lastName}</Text>
                 </Group>
             </div>
         ),

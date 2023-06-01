@@ -40,7 +40,7 @@ export const ProductCard = ({ product }: Props) => {
                     {product.name}
                 </Text>
                 <Text className={css.description} lineClamp={2}>
-                    Random
+                    Amount: {product.quantity}
                 </Text>
             </Card.Section>
             <Group className={css.priceSection}>
