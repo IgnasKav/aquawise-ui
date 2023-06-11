@@ -23,6 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
     ]);
     const jwt = getCookie('jwt');
     const [queryClient] = useState(() => new QueryClient());
+    const test = 'test';
     // const [theme, setTheme] = useState<MantineThemeOverride>({
     //     colorScheme: 'light',
     // });
