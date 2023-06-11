@@ -9,7 +9,7 @@ interface AuthState {
     user: User | null;
     isLoading: boolean;
     login: (req: LoginRequest) => Promise<void>;
-    getCurrent: () => Promise<void>;
+    getCurrent: () => Promise<User | undefined>;
     registerUser: (
         userRegistrationId: string,
         req: RegisterRequest,
@@ -34,6 +34,7 @@ const useAuth = create<AuthState>((set, get) => ({
         try {
             const user = await api.Auth.current();
             set(() => ({ user: user, isLoading: false }));
+            return user;
         } catch {
             get().logout();
             set(() => ({ isLoading: false }));
