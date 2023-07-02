@@ -91,7 +91,7 @@ const Companies = {
         requests.get(`/companies/${id}/clients`),
     getOrders: (id: string): Promise<Order[]> =>
         requests.get(`/companies/${id}/orders`),
-    saveColor: (id: string, color: string | null): Promise<void> =>
+    saveColor: (id: string, color: string | undefined): Promise<void> =>
         requests.put(`/companies/${id}`, { brandColor: color }),
 };
 

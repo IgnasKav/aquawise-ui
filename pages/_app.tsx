@@ -6,7 +6,7 @@ import {
     QueryClientProvider,
 } from '@tanstack/react-query';
 import Head from 'next/head';
-import { MantineProvider } from '@mantine/core';
+import {MantineProvider, MantineThemeOverride} from '@mantine/core';
 import '../styles/global.scss';
 import { AlertList } from '../components/alert/AlertList';
 import NavBar from '../components/common/nav-bar/NavBar';
@@ -14,6 +14,7 @@ import { getCookie } from 'cookies-next';
 import useAuth from '../stores/useAuth';
 import { useRouter } from 'next/router';
 import { ModalsProvider } from '@mantine/modals';
+import {ThemeColors} from "../components/common/theme/ThemeColors";
 
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter();
@@ -23,18 +24,26 @@ export default function App({ Component, pageProps }: AppProps) {
     ]);
     const jwt = getCookie('jwt');
     const [queryClient] = useState(() => new QueryClient());
-    // const [theme, setTheme] = useState<MantineThemeOverride>({
-    //     colorScheme: 'light',
-    // });
+
+    const [theme, setTheme] = useState<MantineThemeOverride>({
+        colorScheme: 'light',
+        primaryColor: 'blue'
+    });
+
+    useEffect(() => {
+        const brandColorHex = user?.company?.brandColor;
+
+        if(!brandColorHex) return;
+
+        const brandColorName = ThemeColors.getByHex(brandColorHex);
+
+        if(!brandColorName) return;
+
+        setTheme({ primaryColor:  brandColorName});
+    }, [user?.company.brandColor])
 
     useEffect(() => {
         getCurrent();
-        // if (user?.company) {
-        //     if (user.company.brandColor != null) {
-        //         console.log('CHANGE COLOR');
-        //         setTheme({ primaryColor: 'orange' });
-        //     }
-        // }
     }, [jwt]);
 
     return (
@@ -52,20 +61,7 @@ export default function App({ Component, pageProps }: AppProps) {
                         withGlobalStyles
                         withCSSVariables
                         withNormalizeCSS
-                        theme={
-                            !user
-                                ? {
-                                      colorScheme: 'light',
-                                  }
-                                : {
-                                      colorScheme: 'light',
-                                      primaryColor:
-                                          user.company.brandColor == null ||
-                                          user.company.brandColor == '#228be6'
-                                              ? 'blue'
-                                              : 'orange',
-                                  }
-                        }
+                        theme={theme}
                     >
                         <ModalsProvider>
                             <div className="appContainer">

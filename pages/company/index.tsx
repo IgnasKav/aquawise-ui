@@ -12,6 +12,7 @@ import {
 import { DropZoneComponent } from '../../components/common/dropzone/DropZone';
 import useAuth from '../../stores/useAuth';
 import { api } from '../../api/api';
+import {ThemeColor, ThemeColors} from "../../components/common/theme/ThemeColors";
 
 const CompanyEditForm = () => {
     const [user, isLoading, getCurrent] = useAuth((state) => [
@@ -20,10 +21,21 @@ const CompanyEditForm = () => {
         state.getCurrent,
     ]);
     const [image, setImage] = useState<File | null>(null);
-    const [color, setColor] = useState<string | null>(null);
+    const [themeColor, setThemeColor] = useState<ThemeColor | null>();
 
     useEffect(() => {
-        setColor(user?.company.brandColor ?? null);
+        const hex = user?.company?.brandColor;
+
+        if(!hex) return;
+
+        const name = ThemeColors.getByHex(hex);
+
+        if(!name) return;
+
+        setThemeColor({
+            name: name,
+            hex: hex
+        })
     }, [user]);
 
     const handleDrop = (image: File) => {
@@ -36,12 +48,12 @@ const CompanyEditForm = () => {
             formData.append('image', new Blob([image]), image.name);
         }
 
-        if (color) {
-            formData.append('color', color);
+        if (themeColor) {
+            formData.append('color', themeColor.hex);
         }
 
         if (user != null) {
-            await api.Companies.saveColor(user.company.id, color);
+            await api.Companies.saveColor(user.company.id, themeColor?.hex);
             getCurrent();
         }
 
@@ -53,8 +65,19 @@ const CompanyEditForm = () => {
         // }
     };
 
+    const handleColorSelect = (hex: string) => {
+        const name = ThemeColors.getByHex(hex);
+
+        if(!name) return;
+
+        setThemeColor({
+            name: name,
+            hex: hex
+        });
+    }
+
     const handleCancel = () => {
-        setColor(null);
+        setThemeColor(null);
         setImage(null);
     };
 
@@ -86,24 +109,11 @@ const CompanyEditForm = () => {
                         <ColorInput
                             label="Primary color"
                             format="hex"
-                            value={color ?? '#228be6'}
-                            onChange={setColor}
-                            swatches={[
-                                '#25262b',
-                                '#868e96',
-                                '#fa5252',
-                                '#e64980',
-                                '#be4bdb',
-                                '#7950f2',
-                                '#4c6ef5',
-                                '#228be6',
-                                '#15aabf',
-                                '#12b886',
-                                '#40c057',
-                                '#82c91e',
-                                '#fab005',
-                                '#fd7e14',
-                            ]}
+                            value={themeColor?.hex ?? ThemeColors.getByName('blue')}
+                            onChange={handleColorSelect}
+                            disallowInput
+                            withPicker={false}
+                            swatches={ThemeColors.getAll().map((color) => color.hex)}
                         />
                         <Text>
                             Primary color will change the way Aquawise mobile
