@@ -49,8 +49,10 @@ const requests = {
 };
 
 const Auth = {
-    login: (req: LoginRequest): Promise<LoginResponse> =>
-        requests.post('/auth/login', req),
+    login: (req: LoginRequest): Promise<LoginResponse> => {
+        console.log(axios.defaults.baseURL);
+        return requests.post('/auth/login', req)
+    },
     register: async (
         userRegistrationId: string,
         req: RegisterRequest,
