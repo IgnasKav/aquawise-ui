@@ -2,7 +2,7 @@ import { Product } from '../models/Product';
 import { Card, Group, Image, Text } from '@mantine/core';
 import css from './product-list.module.scss';
 import { modals } from '@mantine/modals';
-import { ProductEditForm } from '../product-edit/ProductEditForm';
+import { ProductEditForm } from '../product-forms/ProductEditForm';
 import { ApiUrl } from '../../../api/api';
 
 interface Props {
@@ -16,7 +16,6 @@ export const ProductCard = ({ product }: Props) => {
             title: 'Edit product',
             children: (
                 <ProductEditForm
-                    isCreateForm={false}
                     product={product}
                     onSave={() => modals.close('productEditModal')}
                 />

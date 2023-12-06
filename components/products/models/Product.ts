@@ -5,13 +5,13 @@ export class Product {
     name: string;
     quantity: number;
     price: number;
-    imageUrl: string;
+    imageUrl?: string;
 
     constructor(data?: Partial<Product>) {
         this.id = data?.id ?? uuid();
         this.name = data?.name ?? '';
         this.quantity = data?.quantity ?? 0;
         this.price = data?.price ?? 0;
-        this.imageUrl = data?.imageUrl ?? '';
+        this.imageUrl = data?.imageUrl;
     }
 }

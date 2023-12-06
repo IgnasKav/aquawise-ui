@@ -6,7 +6,7 @@ import {
     QueryClientProvider,
 } from '@tanstack/react-query';
 import Head from 'next/head';
-import {MantineProvider, MantineThemeOverride} from '@mantine/core';
+import { MantineProvider, MantineThemeOverride } from '@mantine/core';
 import '../styles/global.scss';
 import { AlertList } from '../components/alert/AlertList';
 import NavBar from '../components/common/nav-bar/NavBar';
@@ -14,7 +14,7 @@ import { getCookie } from 'cookies-next';
 import useAuth from '../stores/useAuth';
 import { useRouter } from 'next/router';
 import { ModalsProvider } from '@mantine/modals';
-import {ThemeColors} from "../components/common/theme/ThemeColors";
+import { ThemeColors } from '../components/common/theme/ThemeColors';
 
 export default function App({ Component, pageProps }: AppProps) {
     const router = useRouter();
@@ -27,20 +27,20 @@ export default function App({ Component, pageProps }: AppProps) {
 
     const [theme, setTheme] = useState<MantineThemeOverride>({
         colorScheme: 'light',
-        primaryColor: 'blue'
+        primaryColor: 'blue',
     });
 
     useEffect(() => {
         const brandColorHex = user?.company?.brandColor;
 
-        if(!brandColorHex) return;
+        if (!brandColorHex) return;
 
         const brandColorName = ThemeColors.getByHex(brandColorHex);
 
-        if(!brandColorName) return;
+        if (!brandColorName) return;
 
-        setTheme({ primaryColor:  brandColorName});
-    }, [user?.company.brandColor])
+        setTheme({ primaryColor: brandColorName });
+    }, [user?.company?.brandColor]);
 
     useEffect(() => {
         getCurrent();
