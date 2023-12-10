@@ -1,9 +1,8 @@
 import {Alert as MantineAlert} from '@mantine/core';
-import {IconAlertCircle} from "@tabler/icons";
 import {motion} from 'framer-motion';
 import { Alert, AlertType } from '../../models/Alert';
 import useAlert from "../../stores/useAlert";
-
+import { IconAlertCircle } from '@tabler/icons-react';
 interface Props {
     alert: Alert,
     className: string;

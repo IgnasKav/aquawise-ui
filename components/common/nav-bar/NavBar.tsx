@@ -1,11 +1,8 @@
 import {
-    Burger,
     Button,
     Card,
     Group,
     MantineSize,
-    MediaQuery,
-    Stack,
 } from '@mantine/core';
 import { AiOutlineHome, AiOutlineMobile, AiOutlineTeam } from 'react-icons/ai';
 import { useRouter } from 'next/router';
@@ -41,7 +38,7 @@ const NavButton = ({
         <Button
             variant={router.pathname == to ? 'light' : 'subtle'}
             size={size}
-            leftIcon={icon}
+            leftSection={icon}
             onClick={to ? () => router.push(to) : onClick}
         >
             {title}
@@ -52,7 +49,7 @@ const NavButton = ({
 const NavBar = () => {
     const [user, isLoading] = useAuth((state) => [state.user, state.isLoading]);
     const [authModalOpened, setAuthModalOpened] = useState<boolean>(false);
-    const [opened, setOpened] = useState(false);
+    // const [opened, setOpened] = useState(false);
 
     return (
         <div className={css.navContainer}>
@@ -63,179 +60,81 @@ const NavBar = () => {
                 p="md"
                 withBorder
             >
-                <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-                    <Group position="apart">
-                        <Group>
-                            {!user && (
+                <Group justify="space-between">
+                    <Group>
+                        {!user && (
+                            <NavButton
+                                to="/"
+                                title="Home"
+                                icon={<AiOutlineHome />}
+                            />
+                        )}
+                        {user && user.role == UserRole.Support && (
+                            <NavButton
+                                to="/companies"
+                                title="Companies"
+                                icon={<HiOutlineOfficeBuilding />}
+                            />
+                        )}
+                        {user && user.role == UserRole.Admin && (
+                            <>
                                 <NavButton
-                                    to="/"
-                                    title="Home"
-                                    icon={<AiOutlineHome />}
+                                    to="/clients"
+                                    title="Clients"
+                                    icon={<AiOutlineMobile />}
                                 />
-                            )}
-                            {user && user.role == UserRole.Support && (
                                 <NavButton
-                                    to="/companies"
-                                    title="Companies"
-                                    icon={<HiOutlineOfficeBuilding />}
+                                    to="/products"
+                                    title="Products"
+                                    icon={<BsBoxSeam />}
                                 />
-                            )}
-                            {user && user.role == UserRole.Admin && (
-                                <>
-                                    <NavButton
-                                        to="/clients"
-                                        title="Clients"
-                                        icon={<AiOutlineMobile />}
-                                    />
-                                    <NavButton
-                                        to="/products"
-                                        title="Products"
-                                        icon={<BsBoxSeam />}
-                                    />
-                                    <NavButton
-                                        to="/orders"
-                                        title="Orders"
-                                        icon={<HiOutlineColorSwatch />}
-                                    />
-                                    <NavButton
-                                        to="/users"
-                                        title="Team"
-                                        icon={<AiOutlineTeam />}
-                                    />
-                                </>
-                            )}
-                            {user && user.role == UserRole.User && (
-                                <>
-                                    <NavButton
-                                        to="/clients"
-                                        title="Clients"
-                                        icon={<AiOutlineMobile />}
-                                    />
-                                    <NavButton
-                                        to="/products"
-                                        title="Products"
-                                        icon={<BsBoxSeam />}
-                                    />
-                                    <NavButton
-                                        to="/orders"
-                                        title="Orders"
-                                        icon={<HiOutlineColorSwatch />}
-                                    />
-                                </>
-                            )}
-                        </Group>
-                        <Group>
-                            {user ? (
-                                <ProfileButton user={user} />
-                            ) : (
                                 <NavButton
-                                    title="Log in"
-                                    onClick={() => setAuthModalOpened(true)}
+                                    to="/orders"
+                                    title="Orders"
+                                    icon={<HiOutlineColorSwatch />}
                                 />
-                            )}
-                        </Group>
-                        <AuthModal
-                            isOpened={authModalOpened}
-                            onClose={() => setAuthModalOpened(false)}
-                        />
+                                <NavButton
+                                    to="/users"
+                                    title="Team"
+                                    icon={<AiOutlineTeam />}
+                                />
+                            </>
+                        )}
+                        {user && user.role == UserRole.User && (
+                            <>
+                                <NavButton
+                                    to="/clients"
+                                    title="Clients"
+                                    icon={<AiOutlineMobile />}
+                                />
+                                <NavButton
+                                    to="/products"
+                                    title="Products"
+                                    icon={<BsBoxSeam />}
+                                />
+                                <NavButton
+                                    to="/orders"
+                                    title="Orders"
+                                    icon={<HiOutlineColorSwatch />}
+                                />
+                            </>
+                        )}
                     </Group>
-                </MediaQuery>
-                <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-                    <Stack>
-                        <Group position="apart">
-                            <Burger
-                                size={'xs'}
-                                opened={opened}
-                                onClick={() => setOpened((o) => !o)}
+                    <Group>
+                        {user ? (
+                            <ProfileButton user={user} />
+                        ) : (
+                            <NavButton
+                                title="Log in"
+                                onClick={() => setAuthModalOpened(true)}
                             />
-                            <Group>
-                                {!user && (
-                                    <NavButton
-                                        to="/"
-                                        title="Home"
-                                        icon={<AiOutlineHome />}
-                                    />
-                                )}
-                                {user && user.role == UserRole.Support && (
-                                    <NavButton
-                                        to="/companies"
-                                        title="Companies"
-                                        icon={<HiOutlineOfficeBuilding />}
-                                    />
-                                )}
-                                {user && user.role == UserRole.Admin && (
-                                    <>
-                                        <NavButton
-                                            to="/clients"
-                                            title="Clients"
-                                            icon={<AiOutlineMobile />}
-                                        />
-                                        {opened && (
-                                            <Stack>
-                                                <NavButton
-                                                    to="/products"
-                                                    title="Products"
-                                                    icon={<BsBoxSeam />}
-                                                />
-                                                <NavButton
-                                                    to="/orders"
-                                                    title="Orders"
-                                                    icon={
-                                                        <HiOutlineColorSwatch />
-                                                    }
-                                                />
-                                                <NavButton
-                                                    to="/users"
-                                                    title="Team"
-                                                    icon={<AiOutlineTeam />}
-                                                />
-                                            </Stack>
-                                        )}
-                                    </>
-                                )}
-                                {user && user.role == UserRole.User && (
-                                    <>
-                                        <NavButton
-                                            to="/clients"
-                                            title="Clients"
-                                            icon={<AiOutlineMobile />}
-                                        />
-                                        {opened && (
-                                            <Stack>
-                                                <NavButton
-                                                    to="/products"
-                                                    title="Products"
-                                                    icon={<BsBoxSeam />}
-                                                />
-                                                <NavButton
-                                                    to="/orders"
-                                                    title="Orders"
-                                                    icon={
-                                                        <HiOutlineColorSwatch />
-                                                    }
-                                                />
-                                            </Stack>
-                                        )}
-                                    </>
-                                )}
-                            </Group>
-                            <Group>
-                                {user ? (
-                                    <ProfileButton user={user} />
-                                ) : (
-                                    <NavButton
-                                        title="Log in"
-                                        onClick={() => setAuthModalOpened(true)}
-                                    />
-                                )}
-                            </Group>
-                            <AuthModal
-                                isOpened={authModalOpened}
-                                onClose={() => setAuthModalOpened(false)}
-                            />
-                        </Group>
-                    </Stack>
-                </MediaQuery>
+                        )}
+                    </Group>
+                    <AuthModal
+                        isOpened={authModalOpened}
+                        onClose={() => setAuthModalOpened(false)}
+                    />
+                </Group>
             </Card>
             <NavBarLoader
                 className={classNames({ [css.hidden]: !isLoading })}
