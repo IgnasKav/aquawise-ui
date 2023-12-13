@@ -1,23 +1,25 @@
-import useAlert from "../../stores/useAlert";
-import {AlertComponent} from "./Alert";
-import css from './alert-list.module.scss';
-import {AnimatePresence} from "framer-motion"
+'use client';
 
+import useAlert from '../../stores/useAlert';
+import { AlertComponent } from './Alert';
+import css from './alert-list.module.scss';
+// import { AnimatePresence } from 'framer-motion';
 
 export function AlertList() {
     const [alerts] = useAlert((state) => [state.alerts, state.createAlert]);
 
-    return(
+    return (
         <div className={`${css.alertListContainer}`}>
-            <AnimatePresence initial={false}>
-                {alerts.map(alert =>
-                    <AlertComponent
-                        key={alert.id}
-                        className={`${css.alertContainer}`}
-                        alert={alert}
-                    />
-                )}
-            </AnimatePresence>
+            {alerts.map((alert) => (
+                <AlertComponent
+                    key={alert.id}
+                    className={`${css.alertContainer}`}
+                    alert={alert}
+                />
+            ))}
+            {/* <AnimatePresence initial={false}>
+                
+            </AnimatePresence> */}
         </div>
-    )
+    );
 }

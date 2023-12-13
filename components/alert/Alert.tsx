@@ -1,15 +1,14 @@
-import {Alert as MantineAlert} from '@mantine/core';
-import {motion} from 'framer-motion';
+import { Alert as MantineAlert } from '@mantine/core';
+// import { motion } from 'framer-motion';
 import { Alert, AlertType } from '../../models/Alert';
-import useAlert from "../../stores/useAlert";
+import useAlert from '../../stores/useAlert';
 import { IconAlertCircle } from '@tabler/icons-react';
 interface Props {
-    alert: Alert,
+    alert: Alert;
     className: string;
-
 }
 
-export function AlertComponent({alert, className}: Props) {
+export function AlertComponent({ alert, className }: Props) {
     const [removeAlert] = useAlert((state) => [state.removeAlert]);
 
     const getAlertColour = (): string => {
@@ -27,27 +26,27 @@ export function AlertComponent({alert, className}: Props) {
         }
 
         return colour;
-    }
+    };
 
     const alertColour = getAlertColour();
 
     return (
-        <motion.div
-            layout
-            initial={{ opacity: 0, y: 20, scale: 0.3 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+        // <motion.div
+        //     layout
+        //     initial={{ opacity: 0, y: 20, scale: 0.3 }}
+        //     animate={{ opacity: 1, y: 0, scale: 1 }}
+        //     exit={{ opacity: 0, scale: 0.5, transition: { duration: 0.2 } }}
+        // >
+        <MantineAlert
+            icon={<IconAlertCircle size="1rem" />}
+            className={className}
+            title={alert.title}
+            color={alertColour}
+            withCloseButton
+            onClose={() => removeAlert(alert.id)}
         >
-            <MantineAlert
-                icon={<IconAlertCircle size="1rem" />}
-                className={className}
-                title={alert.title}
-                color={alertColour}
-                withCloseButton
-                onClose={() => removeAlert(alert.id)}
-            >
-                {alert.message}
-            </MantineAlert>
-        </motion.div>
+            {alert.message}
+        </MantineAlert>
+        // </motion.div>
     );
 }

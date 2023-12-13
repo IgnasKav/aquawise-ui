@@ -1,4 +1,5 @@
-import { useRouter } from 'next/router';
+'use client';
+
 import {
     Avatar,
     Button,
@@ -13,6 +14,7 @@ import { FiLogOut } from 'react-icons/fi';
 import { User } from '../../../models/User';
 import useAuth from '../../../stores/useAuth';
 import { HiOutlineOfficeBuilding } from 'react-icons/hi';
+import { useRouter } from 'next/navigation';
 
 interface ProfileButtonProps {
     user: User;

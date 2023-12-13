@@ -1,11 +1,11 @@
 import { Center, Text } from '@mantine/core';
 
-const Home = () => {
+export default async function HomePage() {
     return (
         <Center>
             <Text
                 fw={700}
-                size={100}
+                size="xl"
                 variant="gradient"
                 gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
             >
@@ -13,6 +13,4 @@ const Home = () => {
             </Text>
         </Center>
     );
-};
-
-export default Home;
+}

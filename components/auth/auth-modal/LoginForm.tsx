@@ -1,3 +1,5 @@
+'use client';
+
 import {
     Anchor,
     Button,
@@ -13,6 +15,7 @@ import { parseError } from '../../../api/api';
 import { Alert, AlertType } from '../../../models/Alert';
 import { AxiosError } from 'axios';
 import { motion } from 'framer-motion';
+import { signIn } from 'next-auth/react';
 
 interface Props {
     switchToRegistration: () => void;
@@ -42,6 +45,12 @@ export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
         const { email, password } = form.values;
 
         try {
+            const result = await signIn('credentials', {
+                redirect: false,
+                email: email,
+                password,
+            });
+
             await login({ email, password });
             closeModal();
             const alert = new Alert({
@@ -106,7 +115,7 @@ export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
                         error={form.errors.password}
                         radius="md"
                     />
-                    <Group position={'apart'}>
+                    <Group className="" position={'apart'}>
                         <Anchor
                             component="button"
                             type="button"

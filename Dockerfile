@@ -1,3 +1,5 @@
+ARG NEXT_PUBLIC_API
+
 FROM node:16-alpine as build
 
 WORKDIR /app

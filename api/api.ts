@@ -15,9 +15,9 @@ import { Order } from '../components/orders/models/Order';
 import { OrderUpdateRequest } from '../components/orders/models/OrderUpdateRequest';
 
 import * as dotenv from 'dotenv';
-dotenv.config({ path: `../ a.env` });
+dotenv.config({ path: `.env` });
 
-export const ApiUrl = process.env.API_URL;
+export const ApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 axios.defaults.baseURL = `${ApiUrl}`;
 
@@ -53,7 +53,6 @@ const requests = {
 
 const Auth = {
     login: (req: LoginRequest): Promise<LoginResponse> => {
-        console.log(axios.defaults.baseURL);
         return requests.post('/auth/login', req);
     },
     register: async (
