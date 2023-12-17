@@ -1,5 +1,3 @@
-'use client';
-
 import {
     Avatar,
     Button,
@@ -9,19 +7,16 @@ import {
     Stack,
     Text,
 } from '@mantine/core';
-import { AiFillCaretDown, AiOutlineUser } from 'react-icons/ai';
-import { FiLogOut } from 'react-icons/fi';
+import { AiFillCaretDown } from 'react-icons/ai';
 import { User } from '../../../models/User';
-import useAuth from '../../../stores/useAuth';
-import { HiOutlineOfficeBuilding } from 'react-icons/hi';
 import { useRouter } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 
 interface ProfileButtonProps {
     user: User;
 }
 
 const ProfileButton = ({ user }: ProfileButtonProps) => {
-    const [logout] = useAuth((state) => [state.logout]);
     const router = useRouter();
 
     return (
@@ -43,31 +38,23 @@ const ProfileButton = ({ user }: ProfileButtonProps) => {
                 </Button>
             </Menu.Target>
             <Menu.Dropdown>
-                <Stack spacing={0} px={12} py={10}>
+                <Stack px={12} py={10}>
                     <Text>Signed in as</Text>
                     <Text fw={700}>{user.email}</Text>
                 </Stack>
 
                 <Divider />
-                <Menu.Item
-                    icon={<AiOutlineUser />}
-                    onClick={() => router.push('/')}
-                >
+                <Menu.Item onClick={() => router.push('/')}>
                     Your profile
                 </Menu.Item>
-                <Menu.Item
-                    icon={<HiOutlineOfficeBuilding />}
-                    onClick={() => router.push('/company')}
-                >
+                <Menu.Item onClick={() => router.push('/company')}>
                     Your company
                 </Menu.Item>
                 <Divider />
                 <Menu.Item
                     color={'red'}
-                    icon={<FiLogOut />}
                     onClick={() => {
-                        logout();
-                        router.push('/');
+                        signOut({ redirect: false });
                     }}
                 >
                     Logout

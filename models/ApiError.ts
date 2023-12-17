@@ -17,7 +17,7 @@ export class ApiError {
         return new Alert({
             type: AlertType.error,
             title: 'Error',
-            message: this.message
+            message: this.message,
         });
     }
 }

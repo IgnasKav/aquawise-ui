@@ -7,13 +7,13 @@ import {
 } from '@mantine/core';
 import { useForm, UseFormReturnType } from '@mantine/form';
 import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
 import { UserRole } from '../../models/User';
 import { UserInviteRequest } from './models/UserInviteRequest';
 import useAlert from '../../stores/useAlert';
-import { api, parseError } from '../../api/api';
+import { api } from '../../api/api';
 import { Alert, AlertType } from '../../models/Alert';
 import useAuth from '../../stores/useAuth';
+import { ApiError } from '../../models/ApiError';
 
 export const UserInviteForm = () => {
     const [user] = useAuth((state) => [state.user]);
@@ -28,9 +28,8 @@ export const UserInviteForm = () => {
             });
             createAlert(alert);
         },
-        onError: (error: AxiosError) => {
-            const alert = parseError(error).toAlert();
-            createAlert(alert);
+        onError: (error: ApiError) => {
+            createAlert(error.toAlert());
         },
     });
 

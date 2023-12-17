@@ -1,13 +1,13 @@
 import { Button } from '@mantine/core';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import { api, parseError } from '../../../api/api';
+import { api } from '../../../api/api';
 import { Alert, AlertType } from '../../../models/Alert';
 import useAlert from '../../../stores/useAlert';
 import { Product } from '../models/Product';
 import { ProductFormDto } from '../models/ProductForm.dto';
 import { ProductQueryKeys } from '../models/ProductQueryKeys';
 import { ProductForm } from './ProductForm';
+import { ApiError } from '../../../models/ApiError';
 
 interface Props {
     onSave?: () => void;
@@ -32,9 +32,8 @@ const useCreateProduct = (onSave?: () => void) => {
             createAlert(alert);
             await queryClient.invalidateQueries([ProductQueryKeys.ProductList]);
         },
-        onError: (error: AxiosError) => {
-            const alert = parseError(error).toAlert();
-            createAlert(alert);
+        onError: (error: ApiError) => {
+            createAlert(error.toAlert());
         },
     });
 };

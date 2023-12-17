@@ -9,13 +9,10 @@ import {
     TextInput,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import useAuth from '../../../stores/useAuth';
 import useAlert from '../../../stores/useAlert';
-import { parseError } from '../../../api/api';
-import { Alert, AlertType } from '../../../models/Alert';
-import { AxiosError } from 'axios';
 import { motion } from 'framer-motion';
 import { signIn } from 'next-auth/react';
+import { Alert, AlertType } from '../../../models/Alert';
 
 interface Props {
     switchToRegistration: () => void;
@@ -23,7 +20,6 @@ interface Props {
 }
 
 export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
-    const [login] = useAuth((state) => [state.login]);
     const [createAlert] = useAlert((state) => [state.createAlert]);
 
     const form = useForm({
@@ -44,27 +40,26 @@ export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
     const handleLogin = async () => {
         const { email, password } = form.values;
 
-        try {
-            const result = await signIn('credentials', {
-                redirect: false,
-                email: email,
-                password,
+        const res = await signIn('credentials', {
+            redirect: false,
+            email: email,
+            password,
+        });
+
+        if (!res) return;
+
+        if (!res?.ok) {
+            const alert = new Alert({
+                type: AlertType.error,
+                title: 'Failed to login',
+                message: res.error ?? '',
             });
 
-            await login({ email, password });
-            closeModal();
-            const alert = new Alert({
-                message: 'Successfuly logged in',
-                type: AlertType.success,
-                title: 'Success!',
-            });
             createAlert(alert);
-        } catch (error) {
-            if (error instanceof AxiosError) {
-                const alert = parseError(error).toAlert();
-                createAlert(alert);
-            }
+            return;
         }
+
+        closeModal();
     };
 
     return (
@@ -73,17 +68,6 @@ export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
             animate={{ x: 0 }}
             transition={{ duration: 0.25 }}
         >
-            {/*<Group grow mb="md" mt="md">*/}
-            {/*    <GoogleButton radius="xl">Google</GoogleButton>*/}
-            {/*    <FacebookButton radius="xl">Facebook</FacebookButton>*/}
-            {/*</Group>*/}
-
-            {/*<Divider*/}
-            {/*    label="Or continue with email"*/}
-            {/*    labelPosition="center"*/}
-            {/*    my="lg"*/}
-            {/*/>*/}
-
             <form onSubmit={form.onSubmit(() => handleLogin())}>
                 <Stack>
                     <TextInput
@@ -115,11 +99,10 @@ export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
                         error={form.errors.password}
                         radius="md"
                     />
-                    <Group className="" position={'apart'}>
+                    <Group justify="space-between">
                         <Anchor
                             component="button"
                             type="button"
-                            color="dimmed"
                             size="xs"
                             onClick={() => switchToRegistration()}
                         >

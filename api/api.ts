@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { LoginRequest } from '../models/auth/LoginRequest';
 import { RegisterRequest } from '../models/auth/RegisterRequest';
 import { LoginResponse } from '../models/auth/LoginResponse';
@@ -28,11 +28,17 @@ axios.interceptors.request.use((config) => {
     return config;
 });
 
+axios.interceptors.response.use(
+    (response) => response, // Simply return the response for successful requests
+    (error) => {
+        // This function is called for all failed requests
+        const data = error.response?.data as Partial<ApiError>;
+        const parsedError = new ApiError(data);
+        return Promise.reject(parsedError);
+    },
+);
+
 const responseBody = (response: AxiosResponse) => response.data;
-const parseError = (error: AxiosError): ApiError => {
-    const data = error.response?.data as Partial<ApiError>;
-    return new ApiError(data);
-};
 
 const requests = {
     get: (url: string) => axios.get(url).then(responseBody),
@@ -131,4 +137,4 @@ const api = {
     Orders,
 };
 
-export { api, parseError };
+export { api };

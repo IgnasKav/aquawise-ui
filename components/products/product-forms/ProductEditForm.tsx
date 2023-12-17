@@ -1,13 +1,13 @@
 import { Product } from '../models/Product';
 import { ProductFormDto } from '../models/ProductForm.dto';
 import { Button } from '@mantine/core';
-import { api, parseError } from '../../../api/api';
+import { api } from '../../../api/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Alert, AlertType } from '../../../models/Alert';
 import useAlert from '../../../stores/useAlert';
-import { AxiosError } from 'axios';
 import { ProductQueryKeys } from '../models/ProductQueryKeys';
 import { ProductForm } from './ProductForm';
+import { ApiError } from '../../../models/ApiError';
 
 interface ProductUpdateMutation {
     productId: string;
@@ -38,9 +38,8 @@ const useProductEdit = (onSave?: () => void) => {
                     ProductQueryKeys.ProductList,
                 ]);
             },
-            onError: (error: AxiosError) => {
-                const alert = parseError(error).toAlert();
-                createAlert(alert);
+            onError: (error: ApiError) => {
+                createAlert(error.toAlert());
             },
         },
     );

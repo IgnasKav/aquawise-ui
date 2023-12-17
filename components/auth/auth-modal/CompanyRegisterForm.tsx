@@ -1,19 +1,27 @@
-import {Anchor, Button, Group, LoadingOverlay, Stack, Text, TextInput,} from '@mantine/core';
-import {useForm, UseFormReturnType} from '@mantine/form';
-import {useMutation} from '@tanstack/react-query';
-import {CompanyCreateDto} from '../../../models/companies/CompanyCreate.dto';
-import {useState} from 'react';
+import {
+    Anchor,
+    Button,
+    Group,
+    LoadingOverlay,
+    Stack,
+    Text,
+    TextInput,
+} from '@mantine/core';
+import { useForm, UseFormReturnType } from '@mantine/form';
+import { useMutation } from '@tanstack/react-query';
+import { CompanyCreateDto } from '../../../models/companies/CompanyCreate.dto';
+import { useState } from 'react';
 import AnimatedCheckIcon from '../utils/AnimatedCheckIcon';
 import useAlert from '../../../stores/useAlert';
-import {api, parseError} from '../../../api/api';
-import {AxiosError} from "axios";
-import {motion} from 'framer-motion';
+import { api } from '../../../api/api';
+import { motion } from 'framer-motion';
+import { ApiError } from '../../../models/ApiError';
 
 interface Props {
     switchToLogin: () => void;
 }
 
-export const CompanyRegisterForm = ({switchToLogin}: Props) => {
+export const CompanyRegisterForm = ({ switchToLogin }: Props) => {
     const [createAlert] = useAlert((state) => [state.createAlert]);
     const [isSuccess, setSuccess] = useState(false);
 
@@ -21,8 +29,8 @@ export const CompanyRegisterForm = ({switchToLogin}: Props) => {
         onSuccess: () => {
             setSuccess(true);
         },
-        onError: (error: AxiosError) => {
-            const alert = parseError(error).toAlert();
+        onError: (error: ApiError) => {
+            const alert = error.toAlert();
             createAlert(alert);
         },
     });
@@ -43,8 +51,8 @@ export const CompanyRegisterForm = ({switchToLogin}: Props) => {
 
     return (
         <motion.div
-            initial={{x: 50}}
-            animate={{x: 0}}
+            initial={{ x: 50 }}
+            animate={{ x: 0 }}
             transition={{ duration: 0.25 }}
         >
             <form onSubmit={form.onSubmit(() => mutate(form.values))}>
@@ -53,8 +61,8 @@ export const CompanyRegisterForm = ({switchToLogin}: Props) => {
                     <Stack align="center">
                         <AnimatedCheckIcon />
                         <Text color="green" fw={700} align={'center'}>
-                            Your application has been received! You will receive an email once your application is
-                            reviewed.
+                            Your application has been received! You will receive
+                            an email once your application is reviewed.
                         </Text>
                     </Stack>
                 ) : (

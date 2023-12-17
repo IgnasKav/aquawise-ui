@@ -1,6 +1,8 @@
 import NextAuth, { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { api } from '../../../../api/api';
+import { LoginResponse } from '../../../../models/auth/LoginResponse';
+import { ApiError } from '../../../../models/ApiError';
 
 const nextAuthOptions: AuthOptions = {
     secret: 'paslaptis',
@@ -20,10 +22,17 @@ const nextAuthOptions: AuthOptions = {
             authorize: async (credentials) => {
                 if (!credentials) return null;
 
-                const res = await api.Auth.login({
-                    email: credentials.email,
-                    password: credentials.password,
-                });
+                let res: LoginResponse | null = null;
+
+                try {
+                    res = await api.Auth.login({
+                        email: credentials.email,
+                        password: credentials.password,
+                    });
+                } catch (error) {
+                    const e = error as ApiError;
+                    throw new Error(e.message);
+                }
 
                 if (!res) return null;
 

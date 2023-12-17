@@ -10,13 +10,13 @@ import {
 } from '@mantine/core';
 import { useForm, UseFormReturnType } from '@mantine/form';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { api, parseError } from '../../api/api';
+import { api } from '../../api/api';
 import { useEffect } from 'react';
 import { RegisterRequest } from '../../models/auth/RegisterRequest';
 import useAuth from '../../stores/useAuth';
 import { useRouter } from 'next/router';
-import { AxiosError } from 'axios';
 import useAlert from '../../stores/useAlert';
+import { ApiError } from '../../models/ApiError';
 
 interface RegisterFormArgs {
     companyRegistrationId?: string;
@@ -61,9 +61,8 @@ export const RegisterForm = ({
             registerUser(userRegistrationId, req),
         {
             onSuccess: () => router.push('/'),
-            onError: (error: AxiosError) => {
-                const alert = parseError(error).toAlert();
-                createAlert(alert);
+            onError: (error: ApiError) => {
+                createAlert(error.toAlert());
             },
         },
     );
@@ -73,9 +72,8 @@ export const RegisterForm = ({
             registerAdmin(companyRegistrationId, req),
         {
             onSuccess: () => router.push('/'),
-            onError: (error: AxiosError) => {
-                const alert = parseError(error).toAlert();
-                createAlert(alert);
+            onError: (error: ApiError) => {
+                createAlert(error.toAlert());
             },
         },
     );

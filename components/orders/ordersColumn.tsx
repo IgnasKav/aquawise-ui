@@ -11,10 +11,10 @@ import {
 import React from 'react';
 import { UserSelectInput } from '../common/inputs/userSelectInput';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api, parseError } from '../../api/api';
-import { AxiosError } from 'axios';
+import { api } from '../../api/api';
 import useAlert from '../../stores/useAlert';
 import { OrderUpdateRequest } from './models/OrderUpdateRequest';
+import { ApiError } from '../../models/ApiError';
 
 interface Props {
     title: string;
@@ -38,9 +38,8 @@ export const OrdersColumn = ({ title, orders }: Props) => {
             onSuccess: async () => {
                 await queryClient.invalidateQueries(['orders']);
             },
-            onError: (error: AxiosError) => {
-                const alert = parseError(error).toAlert();
-                createAlert(alert);
+            onError: (error: ApiError) => {
+                createAlert(error.toAlert());
             },
         },
     );
@@ -95,8 +94,7 @@ export const OrdersColumn = ({ title, orders }: Props) => {
                                     obj,
                                 ) {
                                     return acc + (obj.price ?? 0);
-                                },
-                                0)}€`}</Text>
+                                }, 0)}€`}</Text>
                                 <UserSelectInput
                                     value={order.responsibleUser?.id ?? null}
                                     onChange={(value) =>
