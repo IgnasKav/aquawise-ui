@@ -9,7 +9,7 @@ import {
 } from '@mantine/core';
 import { useForm, UseFormReturnType } from '@mantine/form';
 import { useMutation } from '@tanstack/react-query';
-import { CompanyCreateDto } from '../../../models/companies/CompanyCreate.dto';
+import { CompanyCreateDto } from '../../../app/companies/models/CompanyCreate.dto';
 import { useState } from 'react';
 import AnimatedCheckIcon from '../utils/AnimatedCheckIcon';
 import useAlert from '../../../stores/useAlert';

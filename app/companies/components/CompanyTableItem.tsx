@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { TableRow, TableCell } from '@/components/ui/table';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from 'api/api';
-import { Company, CompanyStatus } from 'models/companies/Company';
+import { Company, CompanyStatus } from 'app/companies/models/Company';
 
 type CompanyTableItemProps = {
     company: Company;

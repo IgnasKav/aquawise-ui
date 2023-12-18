@@ -1,4 +1,4 @@
-import { Company } from './companies/Company';
+import { Company } from '../app/companies/models/Company';
 
 export class User {
     id: string;

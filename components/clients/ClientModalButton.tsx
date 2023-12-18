@@ -1,6 +1,6 @@
 import { Button, Modal, Table } from '@mantine/core';
 import { useState } from 'react';
-import { Device } from '../../models/companies/CompanyClient';
+import { Device } from '../../app/companies/models/CompanyClient';
 
 interface ClientModalButtonArgs {
     devices: Device[];
