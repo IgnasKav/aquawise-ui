@@ -1,33 +1,28 @@
 'use client';
 
-import { MantineSize, Button } from '@mantine/core';
 import { usePathname, useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import classNames from 'classnames';
 
 interface NavButtonProps {
-    to?: string;
+    to: string;
     title: string;
-    onClick?: () => void;
     icon?: React.ReactNode;
-    size?: MantineSize;
 }
 
-export default function NavButton({
-    to,
-    title,
-    icon = '',
-    size = 'lg',
-    onClick,
-}: NavButtonProps) {
+export default function NavButton({ to, title, icon = null }: NavButtonProps) {
     const pathName = usePathname();
     const router = useRouter();
 
     return (
         <Button
-            variant={pathName == to ? 'light' : 'subtle'}
-            size={size}
-            leftSection={icon}
-            onClick={to ? () => router.push(to) : onClick}
+            variant="ghost"
+            onClick={() => router.push(to)}
+            className={classNames({
+                'bg-accent text-accent-foreground': pathName == to,
+            })}
         >
+            <div className="mr-2 h-4 w-4 flex items-center">{icon}</div>
             {title}
         </Button>
     );

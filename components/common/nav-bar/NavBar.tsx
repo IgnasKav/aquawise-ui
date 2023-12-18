@@ -1,16 +1,21 @@
 'use client';
 
 import { Card, Group } from '@mantine/core';
-import { AiOutlineHome, AiOutlineMobile, AiOutlineTeam } from 'react-icons/ai';
 import css from './nav-bar.module.scss';
-import { HiOutlineColorSwatch, HiOutlineOfficeBuilding } from 'react-icons/hi';
-import { User, UserRole } from '../../../models/User';
-import { BsBoxSeam } from 'react-icons/bs';
 import NavButton from './NavButton';
-import AuthModal from '../../auth/auth-modal/AuthModal';
 import ProfileButton from './ProfileButton';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
+import { User, UserRole } from 'models/User';
+import AuthModal from 'components/auth/auth-modal/AuthModal';
+import {
+    Building2,
+    Home,
+    Smartphone,
+    Package,
+    Users,
+    ScrollText,
+} from 'lucide-react';
 
 interface NavbarProps {
     session: Session | null;
@@ -19,7 +24,6 @@ interface NavbarProps {
 const NavBar = ({ session: initialSession }: NavbarProps) => {
     const { data: clientSession } = useSession();
     const session = clientSession ?? initialSession;
-    console.log('sessiong', session);
     const user = session?.user as User | undefined;
 
     return (
@@ -27,20 +31,14 @@ const NavBar = ({ session: initialSession }: NavbarProps) => {
             <Card shadow="md" radius="lg" p="md" withBorder>
                 <Group justify="space-between">
                     <Group>
-                        {!user && (
-                            <NavButton
-                                to="/"
-                                title="Home"
-                                icon={<AiOutlineHome />}
-                            />
-                        )}
+                        <NavButton to="/" title="Home" icon={<Home />} />
                         {user && (
                             <>
                                 {user.role == UserRole.Admin && (
                                     <NavButton
                                         to="/companies"
                                         title="Companies"
-                                        icon={<HiOutlineOfficeBuilding />}
+                                        icon={<Building2 />}
                                     />
                                 )}
                                 {user.role == UserRole.Admin && (
@@ -48,22 +46,22 @@ const NavBar = ({ session: initialSession }: NavbarProps) => {
                                         <NavButton
                                             to="/clients"
                                             title="Clients"
-                                            icon={<AiOutlineMobile />}
+                                            icon={<Smartphone />}
                                         />
                                         <NavButton
                                             to="/products"
                                             title="Products"
-                                            icon={<BsBoxSeam />}
+                                            icon={<Package />}
                                         />
                                         <NavButton
                                             to="/orders"
                                             title="Orders"
-                                            icon={<HiOutlineColorSwatch />}
+                                            icon={<ScrollText />}
                                         />
                                         <NavButton
                                             to="/users"
                                             title="Team"
-                                            icon={<AiOutlineTeam />}
+                                            icon={<Users />}
                                         />
                                     </>
                                 )}
@@ -72,17 +70,17 @@ const NavBar = ({ session: initialSession }: NavbarProps) => {
                                         <NavButton
                                             to="/clients"
                                             title="Clients"
-                                            icon={<AiOutlineMobile />}
+                                            icon={<Smartphone />}
                                         />
                                         <NavButton
                                             to="/products"
                                             title="Products"
-                                            icon={<BsBoxSeam />}
+                                            icon={<Package />}
                                         />
                                         <NavButton
                                             to="/orders"
                                             title="Orders"
-                                            icon={<HiOutlineColorSwatch />}
+                                            icon={<ScrollText />}
                                         />
                                     </>
                                 )}

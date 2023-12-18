@@ -6,6 +6,9 @@ import '@mantine/core/styles.css';
 import { SessionProvider } from '../wrapped/SessionProvider';
 import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from './api/auth/[...nextauth]/route';
+import ClientProviders from '../utils/ClientProviders';
+import 'styles/global.css';
+import { ThemeProvider } from 'utils/ThemeProvider';
 
 export default async function RootLayout({
     children,
@@ -35,10 +38,6 @@ export default async function RootLayout({
     //     // setTheme({ primaryColor: brandColorName });
     // }, [user?.company?.brandColor]);
 
-    // useEffect(() => {
-    //     getCurrent();
-    // }, [jwt]);
-
     return (
         <html lang="en">
             <head>
@@ -48,11 +47,18 @@ export default async function RootLayout({
                 <SessionProvider>
                     <MantineProvider theme={theme}>
                         <ModalsProvider>
-                            <div className="appContainer">
-                                <NavBar session={session} />
-                                {children}
-                                <AlertList />
-                            </div>
+                            <ClientProviders>
+                                <ThemeProvider
+                                    attribute="class"
+                                    defaultTheme="system"
+                                    enableSystem
+                                    disableTransitionOnChange
+                                >
+                                    <NavBar session={session} />
+                                    {children}
+                                    <AlertList />
+                                </ThemeProvider>
+                            </ClientProviders>
                         </ModalsProvider>
                     </MantineProvider>
                 </SessionProvider>

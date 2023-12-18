@@ -2,7 +2,6 @@ import axios, { AxiosResponse } from 'axios';
 import { LoginRequest } from '../models/auth/LoginRequest';
 import { RegisterRequest } from '../models/auth/RegisterRequest';
 import { LoginResponse } from '../models/auth/LoginResponse';
-import { getCookie } from 'cookies-next';
 import { ApiError } from '../models/ApiError';
 import { User } from '../models/User';
 import { CompanyCreateDto } from '../models/companies/CompanyCreate.dto';
@@ -13,16 +12,15 @@ import { Product } from '../components/products/models/Product';
 import { CompanyClient } from '../models/companies/CompanyClient';
 import { Order } from '../components/orders/models/Order';
 import { OrderUpdateRequest } from '../components/orders/models/OrderUpdateRequest';
-
-import * as dotenv from 'dotenv';
-dotenv.config({ path: `.env` });
+import { getServerSession } from 'next-auth';
+import { nextAuthOptions } from '../app/api/auth/[...nextauth]/route';
 
 export const ApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 axios.defaults.baseURL = `${ApiUrl}`;
 
-axios.interceptors.request.use((config) => {
-    const token = getCookie('jwt');
+axios.interceptors.request.use(async (config) => {
+    const token = (await getServerSession(nextAuthOptions))?.user?.jwt;
     if (token && config?.headers)
         config.headers.Authorization = `Bearer ${token}`;
     return config;
