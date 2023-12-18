@@ -14,13 +14,32 @@ import { Order } from '../components/orders/models/Order';
 import { OrderUpdateRequest } from '../components/orders/models/OrderUpdateRequest';
 import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from '../app/api/auth/[...nextauth]/route';
+import { getSession } from 'next-auth/react';
 
 export const ApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 axios.defaults.baseURL = `${ApiUrl}`;
 
+// this file is used by server and client components, which get session differently
+const getJwt = async (): Promise<string | undefined> => {
+    let jwt = '';
+
+    // server side
+    if (typeof window === 'undefined') {
+        // @ts-expect-error user type is wrong in next auth
+        jwt = (await getServerSession(nextAuthOptions))?.user?.jwt;
+    }
+    // client side
+    else {
+        // @ts-expect-error user type is wrong in next auth
+        jwt = (await getSession())?.user?.jwt;
+    }
+
+    return jwt;
+};
+
 axios.interceptors.request.use(async (config) => {
-    const token = (await getServerSession(nextAuthOptions))?.user?.jwt;
+    const token = await getJwt();
     if (token && config?.headers)
         config.headers.Authorization = `Bearer ${token}`;
     return config;

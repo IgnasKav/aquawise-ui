@@ -1,16 +1,25 @@
 import { api } from '../../api/api';
-import CompanyList from './components/CompanyList';
+import CompanyTable from './components/CompanyTable';
 import { RequireAuth } from '../../components/auth/RequireAuth';
+import {
+    HydrationBoundary,
+    QueryClient,
+    dehydrate,
+} from '@tanstack/react-query';
 
 export default async function Companies() {
-    const companies = await api.Companies.getAll();
-    // const { mutate } = useMutation(api.Companies.confirmApplication, {
-    //     onSuccess: () => queryClient.invalidateQueries(['clients']),
-    // });
+    const queryClient = new QueryClient();
+
+    await queryClient.prefetchQuery({
+        queryKey: ['companies'],
+        queryFn: () => api.Companies.getAll(),
+    });
 
     return (
         <RequireAuth>
-            <CompanyList companies={companies} />
+            <HydrationBoundary state={dehydrate(queryClient)}>
+                <CompanyTable />
+            </HydrationBoundary>
         </RequireAuth>
     );
 }
