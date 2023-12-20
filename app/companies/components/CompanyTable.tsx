@@ -19,24 +19,26 @@ const CompanyTable = () => {
     });
 
     return (
-        <Card>
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Code</TableHead>
-                        <TableHead>Email</TableHead>
-                        <TableHead>Phone</TableHead>
-                        <TableHead>Status</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {companies?.map((c) => (
-                        <CompanyTableItem key={c.id} company={c} />
-                    ))}
-                </TableBody>
-            </Table>
-        </Card>
+        <>
+            <Card>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Code</TableHead>
+                            <TableHead>Email</TableHead>
+                            <TableHead>Phone</TableHead>
+                            <TableHead>Status</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {companies?.map((c) => (
+                            <CompanyTableItem key={c.id} company={c} />
+                        ))}
+                    </TableBody>
+                </Table>
+            </Card>
+        </>
     );
 };
 

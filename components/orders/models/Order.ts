@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { Client } from '../../clients/models/Client';
+import { Client } from '../../../app/clients/models/Client';
 import { OrderItem } from './OrderItem';
 import { User } from '../../../models/User';
 

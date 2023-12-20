@@ -1,9 +1,9 @@
-import { Product } from '../models/Product';
+import { Product } from '../../models/Product';
 import { Card, Group, Image, Text } from '@mantine/core';
 import css from './product-list.module.scss';
 import { modals } from '@mantine/modals';
-import { ProductEditForm } from '../product-forms/ProductEditForm';
-import { ApiUrl } from '../../../api/api';
+import { ProductEditForm } from '../forms/ProductEditForm';
+import { ApiUrl } from '../../../../api/api';
 
 interface Props {
     product: Product;

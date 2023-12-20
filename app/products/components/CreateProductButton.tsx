@@ -1,6 +1,8 @@
+'use client';
+
 import { Button, Modal, Space } from '@mantine/core';
 import { useState } from 'react';
-import { ProductCreateForm } from './ProducCreateForm';
+import { ProductCreateForm } from './forms/ProducCreateForm';
 
 export const CreateProductButton = () => {
     const [isOpened, setIsOpened] = useState<boolean>(false);

@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { Product } from '../../products/models/Product';
+import { Product } from '../../../app/products/models/Product';
 
 export class OrderItem {
     id: string;

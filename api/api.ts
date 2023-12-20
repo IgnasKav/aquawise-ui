@@ -8,7 +8,7 @@ import { CompanyCreateDto } from '../app/companies/models/CompanyCreate.dto';
 import { Company } from '../app/companies/models/Company';
 import { RegisterResponse } from '../models/auth/RegisterResponse';
 import { UserInviteRequest } from '../components/users/models/UserInviteRequest';
-import { Product } from '../components/products/models/Product';
+import { Product } from '../app/products/models/Product';
 import { CompanyClient } from '../app/companies/models/CompanyClient';
 import { Order } from '../components/orders/models/Order';
 import { OrderUpdateRequest } from '../components/orders/models/OrderUpdateRequest';

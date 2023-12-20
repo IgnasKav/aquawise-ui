@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { Company } from '../../../app/companies/models/Company';
+import { Company } from '../../companies/models/Company';
 
 export class Client {
     id: string;

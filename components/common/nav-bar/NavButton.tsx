@@ -14,10 +14,14 @@ export default function NavButton({ to, title, icon = null }: NavButtonProps) {
     const pathName = usePathname();
     const router = useRouter();
 
+    const navigate = () => {
+        router.push(to);
+    };
+
     return (
         <Button
             variant="ghost"
-            onClick={() => router.push(to)}
+            onClick={() => navigate()}
             className={classNames({
                 'bg-accent text-accent-foreground': pathName == to,
             })}

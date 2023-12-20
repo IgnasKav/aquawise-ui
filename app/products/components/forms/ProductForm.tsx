@@ -1,9 +1,9 @@
 import { Stack, TextInput, NumberInput } from '@mantine/core';
 import { useState } from 'react';
-import { ApiUrl } from '../../../api/api';
-import { DropZoneComponent } from '../../common/dropzone/DropZone';
-import { Product } from '../models/Product';
-import { ProductFormDto } from '../models/ProductForm.dto';
+import { ApiUrl } from '../../../../api/api';
+import { DropZoneComponent } from '../../../../components/common/dropzone/DropZone';
+import { Product } from '../../models/Product';
+import { ProductFormDto } from '../../models/ProductForm.dto';
 import { UseFormReturnType, useForm } from '@mantine/form';
 
 const useProductForm = (product: Product): UseFormReturnType<ProductFormDto> =>

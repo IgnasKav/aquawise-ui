@@ -1,13 +1,14 @@
+'use client';
+
 import { Button } from '@mantine/core';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
-import { api } from '../../../api/api';
-import { Alert, AlertType } from '../../../models/Alert';
-import useAlert from '../../../stores/useAlert';
-import { Product } from '../models/Product';
-import { ProductFormDto } from '../models/ProductForm.dto';
-import { ProductQueryKeys } from '../models/ProductQueryKeys';
+import { Alert, AlertType } from '../../../../models/Alert';
+import useAlert from '../../../../stores/useAlert';
+import { Product } from '../../models/Product';
+import { ProductFormDto } from '../../models/ProductForm.dto';
 import { ProductForm } from './ProductForm';
-import { ApiError } from '../../../models/ApiError';
+import { ApiError } from '../../../../models/ApiError';
+import { api } from 'api/api';
 
 interface Props {
     onSave?: () => void;
@@ -30,7 +31,7 @@ const useCreateProduct = (onSave?: () => void) => {
             }
 
             createAlert(alert);
-            await queryClient.invalidateQueries([ProductQueryKeys.ProductList]);
+            await queryClient.invalidateQueries(['products']);
         },
         onError: (error: ApiError) => {
             createAlert(error.toAlert());
