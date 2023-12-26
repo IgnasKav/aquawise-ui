@@ -18,7 +18,8 @@ const useCreateProduct = (onSave?: () => void) => {
     const queryClient = useQueryClient();
     const [createAlert] = useAlert((state) => [state.createAlert]);
 
-    return useMutation(api.Products.create, {
+    const mutation = useMutation({
+        mutationFn: api.Products.create,
         onSuccess: async () => {
             const alert = new Alert({
                 message: 'Product created',
@@ -31,12 +32,14 @@ const useCreateProduct = (onSave?: () => void) => {
             }
 
             createAlert(alert);
-            await queryClient.invalidateQueries(['products']);
+            await queryClient.invalidateQueries({ queryKey: ['products'] });
         },
         onError: (error: ApiError) => {
             createAlert(error.toAlert());
         },
     });
+
+    return mutation;
 };
 
 export const ProductCreateForm = (props: Props) => {
