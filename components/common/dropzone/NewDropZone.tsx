@@ -49,7 +49,7 @@ const DropZone = ({ title }: DropZoneProps) => {
             <div
                 {...getRootProps()}
                 className={cn(
-                    'relative flex items-center justify-center h-12 w-full border rounded-md',
+                    'relative flex items-center justify-center h-12 w-full border rounded-md mb-3',
                     { 'ring-1 ring-ring': isDragActive || isFocused },
                     { 'ring-1 ring-red-500': isDragReject },
                     { 'ring-1 ring-green-500': isDragAccept },

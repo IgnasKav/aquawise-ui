@@ -11,7 +11,7 @@ export type InputProps = {
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ({ id, label, error, required, className, ...props }, ref) => {
         return (
-            <div className="grid w-full max-w-sm items-center">
+            <div className="grid w-full items-center">
                 <Label htmlFor={id} className="mb-2">
                     {label}
                     {required && <span className="text-red-500">&nbsp;*</span>}

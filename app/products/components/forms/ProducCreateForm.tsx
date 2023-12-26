@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@mantine/core';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Alert, AlertType } from '../../../../models/Alert';
 import useAlert from '../../../../stores/useAlert';
@@ -58,11 +57,5 @@ export const ProductCreateForm = (props: Props) => {
         createProduct(formData);
     };
 
-    return (
-        <ProductForm product={product} {...props} onSave={handleSave}>
-            <Button w={140} type="submit" radius="xl">
-                Create Product
-            </Button>
-        </ProductForm>
-    );
+    return <ProductForm product={product} {...props} onSave={handleSave} />;
 };

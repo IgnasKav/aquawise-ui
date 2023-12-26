@@ -55,6 +55,7 @@ const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
 
         return (
             <Input
+                ref={ref}
                 onChange={handleOnChange}
                 value={formattedValue}
                 {...props}

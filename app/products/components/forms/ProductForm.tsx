@@ -1,6 +1,5 @@
 'use client';
 
-import { Stack } from '@mantine/core';
 import { Product } from '../../models/Product';
 import { z } from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -8,7 +7,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { NumberInput } from 'components/common/inputs/NumberInput';
 import { DropZone } from 'components/common/dropzone/NewDropZone';
-import { useState } from 'react';
 
 // const useProductForm = (product: Product): UseFormReturnType<ProductFormDto> =>
 //     useForm({
@@ -48,14 +46,9 @@ type ProductFormDto = z.infer<typeof ProductFormSchema>;
 interface ProductFormProps {
     product: Product;
     onSave: (formValues: ProductFormDto, image?: File) => void;
-    children: React.ReactNode;
 }
 
-export const ProductForm = ({
-    product,
-    onSave,
-    children,
-}: ProductFormProps) => {
+export const ProductForm = ({ product, onSave }: ProductFormProps) => {
     const {
         register,
         formState: { errors },
@@ -75,39 +68,30 @@ export const ProductForm = ({
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack>
-                <Input
-                    id="product-name"
-                    label="Product name"
-                    type="text"
-                    {...register('name')}
-                    error={errors.name?.message}
-                    required
-                />
-                <Input
-                    id="quantity"
-                    label="Quantity"
-                    type="number"
-                    {...register('quantity')}
-                    error={errors.quantity?.message}
-                    required
-                />
-                <NumberInput
-                    id="price"
-                    label="Price"
-                    {...register('price')}
-                    error={errors.price?.message}
-                    required
-                />
-                <DropZone title="Add images" />
-                {/* <DropZoneComponent
-                    onDrop={handleDrop}
-                    imageUrl={
-                        product.imageUrl && `${ApiUrl}/${product.imageUrl}`
-                    }
-                /> */}
-                {children}
-            </Stack>
+            <Input
+                id="product-name"
+                label="Product name"
+                type="text"
+                {...register('name')}
+                error={errors.name?.message}
+                required
+            />
+            <Input
+                id="quantity"
+                label="Quantity"
+                type="number"
+                {...register('quantity')}
+                error={errors.quantity?.message}
+                required
+            />
+            <NumberInput
+                id="price"
+                label="Price"
+                {...register('price')}
+                error={errors.price?.message}
+                required
+            />
+            <DropZone title="Add images" />
         </form>
     );
 };

@@ -3,11 +3,7 @@
 import Image from 'next/image';
 import { ImagePreview } from './models/ImagePreview';
 import { Dispatch, SetStateAction } from 'react';
-
-type DropZoneImagePreviewProps = {
-    images: ImagePreview[];
-    setImages: Dispatch<SetStateAction<ImagePreview[]>>;
-};
+import { XCircle } from 'lucide-react';
 
 type ImagePreviewProps = {
     previewUrl: string;
@@ -20,7 +16,7 @@ const ImagePreview = ({ previewUrl, onRemove }: ImagePreviewProps) => {
     };
 
     return (
-        <div className="relative w-fit">
+        <div className="relative w-[90px]">
             <Image
                 className="border rounded"
                 src={previewUrl}
@@ -31,32 +27,41 @@ const ImagePreview = ({ previewUrl, onRemove }: ImagePreviewProps) => {
             />
             <div
                 onClick={handleRemove}
-                className="absolute top-[-3px] right-[-3px] h-[15px] w-[15px] cursor-pointer flex justify-center items-center"
+                className="absolute top-[-3px] right-[-3px] h-[24px] w-[24px] cursor-pointer"
             >
-                <div className="absolute rounded-full h-full w-full bg-red-600 hover:bg-red-700"></div>
-                <div className="h-[2px] w-[8px] bg-white z-10"></div>
+                <div className="absolute left-[2px] top-[2px] rounded-full h-[20px] w-[20px] bg-background"></div>
+                <XCircle
+                    className="absolute stroke-red-600 hover:stroke-red-700"
+                    size={24}
+                    strokeWidth={2}
+                />
             </div>
         </div>
     );
+};
+
+type DropZoneImagePreviewProps = {
+    images: ImagePreview[];
+    setImages: Dispatch<SetStateAction<ImagePreview[]>>;
 };
 
 const DropZoneImagePreview = ({
     images,
     setImages,
 }: DropZoneImagePreviewProps) => {
-    const onRemove = (previewUrl: string) => {
+    const handleRemove = (previewUrl: string) => {
         setImages((oldImages) =>
             oldImages.filter((image) => image.previewUrl !== previewUrl),
         );
     };
 
     return (
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
             {images.map((image) => (
                 <ImagePreview
                     key={image.previewUrl}
                     previewUrl={image.previewUrl}
-                    onRemove={onRemove}
+                    onRemove={handleRemove}
                 />
             ))}
         </div>

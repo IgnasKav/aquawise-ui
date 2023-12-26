@@ -19,7 +19,7 @@ export const CreateProductButton = () => {
                 <DialogTrigger asChild>
                     <Button>Add product</Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className="grid h-screen w-screen max-w-screen-md sm:h-fit sm:w-[434px]">
                     <DialogHeader>
                         <DialogTitle>Create Product</DialogTitle>
                         <DialogDescription>
