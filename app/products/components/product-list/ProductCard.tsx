@@ -1,9 +1,10 @@
+'use client';
+
 import { Product } from '../../models/Product';
-import { Card, Group, Image, Text } from '@mantine/core';
-import css from './product-list.module.scss';
 import { modals } from '@mantine/modals';
 import { ProductEditForm } from '../forms/ProductEditForm';
 import { ApiUrl } from '../../../../api/api';
+import Image from 'next/image';
 
 interface Props {
     product: Product;
@@ -23,28 +24,25 @@ export const ProductCard = ({ product }: Props) => {
         });
 
     return (
-        <Card className={css.card} withBorder onClick={() => openEditModal()}>
-            <Card.Section>
-                <div className={css.imageContainer}>
-                    <Image
-                        className={css.image}
-                        src={`${ApiUrl}/${product.imageUrl}`}
-                        height={180}
-                        withPlaceholder
-                    />
-                </div>
-            </Card.Section>
-            <Card.Section className={css.section}>
-                <Text className={css.title} lineClamp={1}>
-                    {product.name}
-                </Text>
-                <Text className={css.description} lineClamp={2}>
-                    Amount: {product.quantity}
-                </Text>
-            </Card.Section>
-            <Group className={css.priceSection}>
-                <Text className={css.price}>€{product.price}</Text>
-            </Group>
-        </Card>
+        <div
+            className="w-[240px] cursor-pointer"
+            onClick={() => openEditModal()}
+        >
+            <div className="overflow-hidden rounded-xl">
+                <Image
+                    className="h-auto w-[240px] object-cover transition-all hover:scale-105 aspect-square"
+                    src={`${ApiUrl}/${product.imageUrl}`}
+                    alt="Product Image"
+                    width={240}
+                    height={240}
+                />
+            </div>
+            <div className="space-y-1 text-sm mt-2">
+                <h3 className="text-base font-medium leading-none">
+                    €{product.price}
+                </h3>
+                <p className="text-sm text-muted-foreground">{product.name}</p>
+            </div>
+        </div>
     );
 };

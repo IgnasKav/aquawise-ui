@@ -9,10 +9,13 @@ import {
     Stack,
     Text,
 } from '@mantine/core';
-import { DropZoneComponent } from '../../components/common/dropzone/DropZone';
+import { DropZoneComponent } from '../../app/shared/components/dropzone/DropZone';
 import useAuth from '../../stores/useAuth';
 import { api } from '../../api/api';
-import {ThemeColor, ThemeColors} from "../../components/common/theme/ThemeColors";
+import {
+    ThemeColor,
+    ThemeColors,
+} from '../../components/common/theme/ThemeColors';
 
 const CompanyEditForm = () => {
     const [user, isLoading, getCurrent] = useAuth((state) => [
@@ -26,16 +29,16 @@ const CompanyEditForm = () => {
     useEffect(() => {
         const hex = user?.company?.brandColor;
 
-        if(!hex) return;
+        if (!hex) return;
 
         const name = ThemeColors.getByHex(hex);
 
-        if(!name) return;
+        if (!name) return;
 
         setThemeColor({
             name: name,
-            hex: hex
-        })
+            hex: hex,
+        });
     }, [user]);
 
     const handleDrop = (image: File) => {
@@ -68,13 +71,13 @@ const CompanyEditForm = () => {
     const handleColorSelect = (hex: string) => {
         const name = ThemeColors.getByHex(hex);
 
-        if(!name) return;
+        if (!name) return;
 
         setThemeColor({
             name: name,
-            hex: hex
+            hex: hex,
         });
-    }
+    };
 
     const handleCancel = () => {
         setThemeColor(null);
@@ -109,11 +112,15 @@ const CompanyEditForm = () => {
                         <ColorInput
                             label="Primary color"
                             format="hex"
-                            value={themeColor?.hex ?? ThemeColors.getByName('blue')}
+                            value={
+                                themeColor?.hex ?? ThemeColors.getByName('blue')
+                            }
                             onChange={handleColorSelect}
                             disallowInput
                             withPicker={false}
-                            swatches={ThemeColors.getAll().map((color) => color.hex)}
+                            swatches={ThemeColors.getAll().map(
+                                (color) => color.hex,
+                            )}
                         />
                         <Text>
                             Primary color will change the way Aquawise mobile

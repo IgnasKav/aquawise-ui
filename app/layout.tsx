@@ -54,9 +54,11 @@ export default async function RootLayout({
                                     enableSystem
                                     disableTransitionOnChange
                                 >
-                                    <NavBar session={session} />
-                                    {children}
-                                    <AlertList />
+                                    <div className="max-w-screen-2xl mx-auto px-8">
+                                        <NavBar session={session} />
+                                        {children}
+                                        <AlertList />
+                                    </div>
                                 </ThemeProvider>
                             </ClientProviders>
                         </ModalsProvider>

@@ -24,7 +24,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     ref={ref}
                     {...props}
                 />
-                <div className="h-2 text-xs text-red-500">{error}</div>
+                <div className="h-4 text-xs text-red-500">{error}</div>
             </div>
         );
     },

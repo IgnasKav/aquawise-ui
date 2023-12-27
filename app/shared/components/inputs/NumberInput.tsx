@@ -1,5 +1,5 @@
 import { Input, InputProps } from '@/components/ui/input';
-import { forwardRef, useState } from 'react';
+import { ChangeEvent, forwardRef, useState } from 'react';
 
 type NumberInputProps = InputProps;
 
@@ -36,16 +36,12 @@ const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
             value ? formatNumber(value.toString()) : '',
         );
 
-        const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
             const rawValue = e.target.value;
             const value = formatNumber(rawValue);
             setFormattedValue(value);
 
             if (onChange) {
-                const test = value.replaceAll(',', '');
-
-                console.log(test);
-
                 onChange({
                     ...e,
                     target: { ...e.target, value: value.replaceAll(',', '') },

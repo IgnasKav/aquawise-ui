@@ -1,7 +1,6 @@
 'use client';
 
 import { ProductCard } from './ProductCard';
-import css from './product-list.module.scss';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../../../api/api';
 
@@ -11,8 +10,10 @@ export const ProductList = () => {
         queryFn: () => api.Products.getAll(),
     });
 
+    console.log('data', products);
+
     return (
-        <div className={css.grid}>
+        <div className="grid grid-cols-4 gap-4">
             {products?.map((product) => (
                 <ProductCard key={product.id} product={product} />
             ))}

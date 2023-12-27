@@ -1,6 +1,7 @@
+'use client';
+
 import { Product } from '../../models/Product';
 import { ProductFormDto } from '../../models/ProductForm.dto';
-import { Button } from '@mantine/core';
 import { api } from '../../../../api/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Alert, AlertType } from '../../../../models/Alert';
@@ -14,59 +15,57 @@ interface ProductUpdateMutation {
 }
 
 const useProductEdit = (onSave?: () => void) => {
-    const queryClient = useQueryClient();
+    // const queryClient = useQueryClient();
     const [createAlert] = useAlert((state) => [state.createAlert]);
 
-    return useMutation(
-        ({ productId, product }: ProductUpdateMutation) =>
+    const mutation = useMutation({
+        mutationFn: ({ productId, product }: ProductUpdateMutation) =>
             api.Products.update(productId, product),
-        {
-            onSuccess: async () => {
-                const alert = new Alert({
-                    message: 'Product edited',
-                    type: AlertType.success,
-                    title: 'Success!',
-                });
+        onSuccess: async () => {
+            const alert = new Alert({
+                message: 'Product edited',
+                type: AlertType.success,
+                title: 'Success!',
+            });
 
-                if (onSave) {
-                    onSave();
-                }
+            if (onSave) {
+                onSave();
+            }
 
-                createAlert(alert);
-                await queryClient.invalidateQueries(['products']);
-            },
-            onError: (error: ApiError) => {
-                createAlert(error.toAlert());
-            },
+            createAlert(alert);
+            // await queryClient.invalidateQueries({ queryKey: ['products'] });
         },
-    );
+        onError: (error: ApiError) => {
+            createAlert(error.toAlert());
+        },
+    });
+
+    return mutation;
 };
 
-interface Props {
+interface ProductEditFormProps {
     product: Product;
     onSave?: () => void;
 }
 
-export const ProductEditForm = (props: Props) => {
-    const { mutate: editProduct } = useProductEdit(props.onSave);
+export const ProductEditForm = ({ product, onSave }: ProductEditFormProps) => {
+    const { mutate: editProduct } = useProductEdit(onSave);
 
-    const handleSave = async (values: ProductFormDto, image?: File) => {
+    const handleSave = async (values: ProductFormDto, images?: File[]) => {
+        if (!images) return;
+
+        const image = images[0];
+
+        if (!image) return;
+
         const formData = new FormData();
-        if (image) {
-            formData.append('image', new Blob([image]), image.name);
-        }
+        formData.append('image', new Blob([image]), image.name);
 
         const productData = JSON.stringify(values);
         formData.append('product', productData);
 
-        editProduct({ productId: props.product.id, product: formData });
+        editProduct({ productId: product.id, product: formData });
     };
 
-    return (
-        <ProductForm {...props} onSave={handleSave}>
-            <Button w={140} type="submit" radius="xl">
-                Edit Product
-            </Button>
-        </ProductForm>
-    );
+    return <ProductForm product={product} onSave={handleSave}></ProductForm>;
 };

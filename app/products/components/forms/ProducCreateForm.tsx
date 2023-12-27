@@ -8,8 +8,9 @@ import { ProductFormDto } from '../../models/ProductForm.dto';
 import { ProductForm } from './ProductForm';
 import { ApiError } from '../../../../models/ApiError';
 import { api } from 'api/api';
+import { forwardRef } from 'react';
 
-interface Props {
+interface ProductCreateFormProps {
     onSave?: () => void;
 }
 
@@ -41,11 +42,21 @@ const useCreateProduct = (onSave?: () => void) => {
     return mutation;
 };
 
-export const ProductCreateForm = (props: Props) => {
+export const ProductCreateForm = forwardRef<
+    HTMLFormElement,
+    ProductCreateFormProps
+>((props: ProductCreateFormProps, ref) => {
     const { mutate: createProduct } = useCreateProduct(props.onSave);
     const product = new Product();
 
-    const handleSave = async (values: ProductFormDto, image?: File) => {
+    const handleSave = async (values: ProductFormDto, images?: File[]) => {
+        console.log('handling save');
+        console.log('images', images);
+
+        if (!images) return;
+
+        const image = images[0];
+
         if (!image) return;
 
         const formData = new FormData();
@@ -54,8 +65,17 @@ export const ProductCreateForm = (props: Props) => {
         const productData = JSON.stringify(values);
         formData.append('product', productData);
 
-        createProduct(formData);
+        await createProduct(formData);
     };
 
-    return <ProductForm product={product} {...props} onSave={handleSave} />;
-};
+    return (
+        <ProductForm
+            ref={ref}
+            product={product}
+            {...props}
+            onSave={handleSave}
+        />
+    );
+});
+
+ProductCreateForm.displayName = 'ProductCreateForm';

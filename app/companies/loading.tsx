@@ -1,5 +1,5 @@
-import TableLoader from '../../components/loaders/TableLoader';
+import TableLoader from '../shared/components/loaders/TableLoader';
 
-const LOL = () => <TableLoader />;
+const Loading = () => <TableLoader />;
 
-export default LOL;
+export default Loading;

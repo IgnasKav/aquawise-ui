@@ -8,25 +8,27 @@ import { DropZoneImagePreview } from './DropZoneImagePreview';
 
 type DropZoneProps = {
     title: string;
+    onChange: (images: ImagePreview[]) => void;
 };
 
 // file size cannot be determined on drop
-const DropZone = ({ title }: DropZoneProps) => {
+const DropZone = ({ title, onChange }: DropZoneProps) => {
     const [images, setImages] = useState<ImagePreview[]>([]);
 
     useEffect(() => {
-        console.log('files', images);
-    }, [images]);
+        onChange(images);
+    }, [images, onChange]);
 
-    const onDrop = useCallback((acceptedFiles: File[]) => {
-        const newFiles = acceptedFiles.map((file) =>
-            Object.assign(file, { previewUrl: URL.createObjectURL(file) }),
-        );
+    const handleDrop = useCallback(
+        (acceptedFiles: File[]) => {
+            const newFiles = acceptedFiles.map((file) =>
+                Object.assign(file, { previewUrl: URL.createObjectURL(file) }),
+            );
 
-        console.log('new files', newFiles);
-
-        setImages((oldFiles) => [...oldFiles, ...newFiles]);
-    }, []);
+            setImages([...images, ...newFiles]);
+        },
+        [images],
+    );
 
     const {
         getRootProps,
@@ -36,7 +38,7 @@ const DropZone = ({ title }: DropZoneProps) => {
         isDragReject,
         isDragAccept,
     } = useDropzone({
-        onDrop,
+        onDrop: handleDrop,
         maxFiles: 5,
         maxSize: 1000000,
         accept: {

@@ -11,8 +11,18 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
+import { createRef } from 'react';
 
 export const CreateProductButton = () => {
+    const formRef = createRef<HTMLFormElement>();
+
+    const handleClick = () => {
+        const submitButton = formRef.current?.querySelector<HTMLButtonElement>(
+            'button[type="submit"]',
+        );
+        submitButton?.click();
+    };
+
     return (
         <>
             <Dialog>
@@ -27,10 +37,10 @@ export const CreateProductButton = () => {
                         </DialogDescription>
                     </DialogHeader>
 
-                    <ProductCreateForm />
+                    <ProductCreateForm ref={formRef} />
 
                     <DialogFooter>
-                        <Button type="submit">Create Product</Button>
+                        <Button onClick={handleClick}>Create Product</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
