@@ -45,7 +45,7 @@ const useCreateProduct = (onSave?: () => void) => {
 export const ProductCreateForm = forwardRef<
     HTMLFormElement,
     ProductCreateFormProps
->((props: ProductCreateFormProps, ref) => {
+>((props, ref) => {
     const { mutate: createProduct } = useCreateProduct(props.onSave);
     const product = new Product();
 

@@ -8,6 +8,7 @@ import { Alert, AlertType } from '../../../../models/Alert';
 import useAlert from '../../../../stores/useAlert';
 import { ProductForm } from './ProductForm';
 import { ApiError } from '../../../../models/ApiError';
+import { forwardRef } from 'react';
 
 interface ProductUpdateMutation {
     productId: string;
@@ -15,7 +16,7 @@ interface ProductUpdateMutation {
 }
 
 const useProductEdit = (onSave?: () => void) => {
-    // const queryClient = useQueryClient();
+    const queryClient = useQueryClient();
     const [createAlert] = useAlert((state) => [state.createAlert]);
 
     const mutation = useMutation({
@@ -33,7 +34,7 @@ const useProductEdit = (onSave?: () => void) => {
             }
 
             createAlert(alert);
-            // await queryClient.invalidateQueries({ queryKey: ['products'] });
+            await queryClient.invalidateQueries({ queryKey: ['products'] });
         },
         onError: (error: ApiError) => {
             createAlert(error.toAlert());
@@ -48,7 +49,10 @@ interface ProductEditFormProps {
     onSave?: () => void;
 }
 
-export const ProductEditForm = ({ product, onSave }: ProductEditFormProps) => {
+export const ProductEditForm = forwardRef<
+    HTMLFormElement,
+    ProductEditFormProps
+>(({ product, onSave }, ref) => {
     const { mutate: editProduct } = useProductEdit(onSave);
 
     const handleSave = async (values: ProductFormDto, images?: File[]) => {
@@ -67,5 +71,13 @@ export const ProductEditForm = ({ product, onSave }: ProductEditFormProps) => {
         editProduct({ productId: product.id, product: formData });
     };
 
-    return <ProductForm product={product} onSave={handleSave}></ProductForm>;
-};
+    return (
+        <ProductForm
+            product={product}
+            onSave={handleSave}
+            ref={ref}
+        ></ProductForm>
+    );
+});
+
+ProductEditForm.displayName = 'ProductEditForm';

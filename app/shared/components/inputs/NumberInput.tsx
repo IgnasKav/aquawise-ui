@@ -1,7 +1,11 @@
 import { Input, InputProps } from '@/components/ui/input';
-import { ChangeEvent, forwardRef, useState } from 'react';
+import { ChangeEvent } from 'react';
+import { Control, Controller } from 'react-hook-form';
 
-type NumberInputProps = InputProps;
+type NumberInputProps = InputProps & {
+    control: Control<any>;
+    name: string;
+};
 
 const formatNumber = (value: string) => {
     const containsMoreThanOneDot = value.split('.').length - 1 > 1;
@@ -30,35 +34,32 @@ const formatNumber = (value: string) => {
     }).format(number);
 };
 
-const NumberInput = forwardRef<HTMLInputElement, NumberInputProps>(
-    ({ value, onChange, ...props }, ref) => {
-        const [formattedValue, setFormattedValue] = useState<string>(
-            value ? formatNumber(value.toString()) : '',
-        );
+const NumberInput = ({ control, name, label, ...props }: NumberInputProps) => {
+    return (
+        <Controller
+            control={control}
+            name={name}
+            render={({ field: { onChange, onBlur, value, ref } }) => {
+                const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+                    const rawValue = e.target.value;
+                    const formatted = formatNumber(rawValue);
+                    onChange(formatted);
+                };
 
-        const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-            const rawValue = e.target.value;
-            const value = formatNumber(rawValue);
-            setFormattedValue(value);
-
-            if (onChange) {
-                onChange({
-                    ...e,
-                    target: { ...e.target, value: value.replaceAll(',', '') },
-                });
-            }
-        };
-
-        return (
-            <Input
-                ref={ref}
-                onChange={handleOnChange}
-                value={formattedValue}
-                {...props}
-            ></Input>
-        );
-    },
-);
+                return (
+                    <Input
+                        label={label}
+                        {...props}
+                        ref={ref}
+                        onBlur={onBlur}
+                        value={value ? formatNumber(value.toString()) : ''}
+                        onChange={handleOnChange}
+                    />
+                );
+            }}
+        />
+    );
+};
 
 NumberInput.displayName = 'NumberInput';
 
