@@ -1,8 +1,9 @@
 import { Input, InputProps } from '@/components/ui/input';
 import { ChangeEvent } from 'react';
-import { Control, Controller } from 'react-hook-form';
+import { Control, useController } from 'react-hook-form';
 
 type NumberInputProps = InputProps & {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     control: Control<any>;
     name: string;
 };
@@ -35,32 +36,27 @@ const formatNumber = (value: string) => {
 };
 
 const NumberInput = ({ control, name, label, ...props }: NumberInputProps) => {
-    return (
-        <Controller
-            control={control}
-            name={name}
-            render={({ field: { onChange, onBlur, value, ref } }) => {
-                const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-                    const rawValue = e.target.value;
-                    const formatted = formatNumber(rawValue);
-                    onChange(formatted);
-                };
+    const { field } = useController({
+        name,
+        control,
+    });
 
-                return (
-                    <Input
-                        label={label}
-                        {...props}
-                        ref={ref}
-                        onBlur={onBlur}
-                        value={value ? formatNumber(value.toString()) : ''}
-                        onChange={handleOnChange}
-                    />
-                );
-            }}
+    const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+        console.log('handle on change');
+        const rawValue = e.target.value;
+        const formatted = formatNumber(rawValue);
+        field.onChange(formatted);
+    };
+
+    return (
+        <Input
+            label={label}
+            onChange={handleOnChange}
+            value={field.value}
+            ref={field.ref}
+            {...props}
         />
     );
 };
-
-NumberInput.displayName = 'NumberInput';
 
 export { NumberInput };

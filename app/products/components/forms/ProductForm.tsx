@@ -49,15 +49,8 @@ export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
             handleSubmit,
         } = useForm<ProductFormDto>({
             resolver: zodResolver(ProductFormSchema),
-            defaultValues: { ...product, price: 123 },
+            defaultValues: product,
         });
-
-        const test = useForm<ProductFormDto>({
-            resolver: zodResolver(ProductFormSchema),
-            defaultValues: { ...product, price: 123 },
-        });
-
-        console.log(test);
 
         const onSubmit: SubmitHandler<ProductFormDto> = (data) => {
             onSave(data, images);
@@ -87,9 +80,8 @@ export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
                 />
                 <NumberInput
                     control={control}
-                    id="price"
+                    name="price"
                     label="Price"
-                    {...register('price')}
                     error={errors.price?.message}
                     required
                 />
