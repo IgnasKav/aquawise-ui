@@ -35,13 +35,17 @@ export const ProductCard = ({ product }: Props) => {
             <DialogTrigger asChild>
                 <div className="w-[240px] cursor-pointer">
                     <div className="overflow-hidden rounded-xl">
-                        <Image
-                            className="h-auto w-[240px] object-cover transition-all hover:scale-105 aspect-square"
-                            src={`${ApiUrl}/${product.imageUrl}`}
-                            alt="Product Image"
-                            width={240}
-                            height={240}
-                        />
+                        {product.images && product.images.length > 0 ? (
+                            <Image
+                                className="h-auto w-[240px] object-cover transition-all hover:scale-105 aspect-square"
+                                src={`${ApiUrl}/${product.images[0].imageUrl}`}
+                                alt="Product Image"
+                                width={240}
+                                height={240}
+                            />
+                        ) : (
+                            'no pic'
+                        )}
                     </div>
                     <div className="space-y-1 text-sm mt-2">
                         <h3 className="text-base font-medium leading-none">

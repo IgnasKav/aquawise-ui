@@ -6,8 +6,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { DropZone } from 'app/shared/components/dropzone/DropZone';
-import { forwardRef, useState } from 'react';
-import { ImagePreview } from 'app/shared/components/dropzone/models/ImagePreview';
+import { forwardRef, useEffect, useState } from 'react';
+import { ImageFile } from 'app/shared/components/dropzone/models/ImageFile';
 import { NumberInput } from 'app/shared/components/inputs/NumberInput';
 
 const ProductFormSchema = z.object({
@@ -34,13 +34,17 @@ const ProductFormSchema = z.object({
 type ProductFormDto = z.infer<typeof ProductFormSchema>;
 
 interface ProductFormProps {
-    product: Product;
+    product?: Product;
     onSave: (formValues: ProductFormDto, images?: File[]) => void;
 }
 
 export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
     ({ product, onSave }, ref) => {
-        const [images, setImages] = useState<ImagePreview[]>([]);
+        useEffect(() => {
+            console.log('product', product);
+        }, [product]);
+
+        const [images, setImages] = useState<ImageFile[]>([]);
 
         const {
             register,

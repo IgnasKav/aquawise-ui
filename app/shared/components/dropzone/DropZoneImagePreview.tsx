@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { ImagePreview } from './models/ImagePreview';
+import { ImageFile } from './models/ImageFile';
 import { Dispatch, SetStateAction } from 'react';
 import { XCircle } from 'lucide-react';
 
@@ -41,8 +41,8 @@ const ImagePreview = ({ previewUrl, onRemove }: ImagePreviewProps) => {
 };
 
 type DropZoneImagePreviewProps = {
-    images: ImagePreview[];
-    setImages: Dispatch<SetStateAction<ImagePreview[]>>;
+    images: ImageFile[];
+    setImages: Dispatch<SetStateAction<ImageFile[]>>;
 };
 
 const DropZoneImagePreview = ({

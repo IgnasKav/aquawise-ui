@@ -3,17 +3,17 @@
 import { cn } from '@/lib/utils';
 import { useCallback, useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { ImagePreview } from './models/ImagePreview';
+import { ImageFile } from './models/ImageFile';
 import { DropZoneImagePreview } from './DropZoneImagePreview';
 
 type DropZoneProps = {
     title: string;
-    onChange: (images: ImagePreview[]) => void;
+    onChange: (images: ImageFile[]) => void;
 };
 
 // file size cannot be determined on drop
 const DropZone = ({ title, onChange }: DropZoneProps) => {
-    const [images, setImages] = useState<ImagePreview[]>([]);
+    const [images, setImages] = useState<ImageFile[]>([]);
 
     useEffect(() => {
         onChange(images);

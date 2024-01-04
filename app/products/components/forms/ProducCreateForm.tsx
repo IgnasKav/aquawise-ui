@@ -3,7 +3,6 @@
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Alert, AlertType } from '../../../../models/Alert';
 import useAlert from '../../../../stores/useAlert';
-import { Product } from '../../models/Product';
 import { ProductFormDto } from '../../models/ProductForm.dto';
 import { ProductForm } from './ProductForm';
 import { ApiError } from '../../../../models/ApiError';
@@ -47,20 +46,15 @@ export const ProductCreateForm = forwardRef<
     ProductCreateFormProps
 >((props, ref) => {
     const { mutate: createProduct } = useCreateProduct(props.onSave);
-    const product = new Product();
 
     const handleSave = async (values: ProductFormDto, images?: File[]) => {
-        console.log('handling save');
-        console.log('images', images);
-
-        if (!images) return;
-
-        const image = images[0];
-
-        if (!image) return;
+        if (!images || images.length === 0) return;
 
         const formData = new FormData();
-        formData.append('image', new Blob([image]), image.name);
+
+        images.forEach((image) => {
+            formData.append(`images`, new Blob([image]), image.name);
+        });
 
         const productData = JSON.stringify(values);
         formData.append('product', productData);
@@ -68,14 +62,7 @@ export const ProductCreateForm = forwardRef<
         await createProduct(formData);
     };
 
-    return (
-        <ProductForm
-            ref={ref}
-            product={product}
-            {...props}
-            onSave={handleSave}
-        />
-    );
+    return <ProductForm ref={ref} {...props} onSave={handleSave} />;
 });
 
 ProductCreateForm.displayName = 'ProductCreateForm';

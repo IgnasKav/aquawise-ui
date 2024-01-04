@@ -1,3 +1,3 @@
-export type ImagePreview = {
+export type ImageFile = {
     previewUrl: string;
 } & File;
