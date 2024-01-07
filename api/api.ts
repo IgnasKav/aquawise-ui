@@ -15,6 +15,7 @@ import { OrderUpdateRequest } from '../components/orders/models/OrderUpdateReque
 import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from '../app/api/auth/[...nextauth]/route';
 import { getSession } from 'next-auth/react';
+import { ImagesApi as Images } from './images/imagesApi';
 
 export const ApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -152,6 +153,7 @@ const api = {
     Companies,
     Products,
     Orders,
+    Images,
 };
 
-export { api };
+export { api, requests };

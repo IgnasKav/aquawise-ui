@@ -2,8 +2,9 @@
 
 import Image from 'next/image';
 import { ImageFile } from './models/ImageFile';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { XCircle } from 'lucide-react';
+import useImages from 'stores/useImages';
 
 type ImagePreviewProps = {
     previewUrl: string;
@@ -41,14 +42,24 @@ const ImagePreview = ({ previewUrl, onRemove }: ImagePreviewProps) => {
 };
 
 type DropZoneImagePreviewProps = {
-    images: ImageFile[];
+    newImages: ImageFile[];
     setImages: Dispatch<SetStateAction<ImageFile[]>>;
 };
 
 const DropZoneImagePreview = ({
-    images,
+    newImages,
     setImages,
 }: DropZoneImagePreviewProps) => {
+    const [previews, setPreviews] = useState<string[]>([]);
+    const [savedImages] = useImages((state) => [state.images]);
+
+    useEffect(() => {
+        console.log('preview', savedImages);
+        const newImageUrls = newImages.map((image) => image.previewUrl);
+
+        setPreviews([...savedImages, ...newImageUrls]);
+    }, [savedImages, newImages]);
+
     const handleRemove = (previewUrl: string) => {
         setImages((oldImages) =>
             oldImages.filter((image) => image.previewUrl !== previewUrl),
@@ -57,10 +68,10 @@ const DropZoneImagePreview = ({
 
     return (
         <div className="flex flex-wrap gap-2">
-            {images.map((image) => (
+            {previews.map((preview) => (
                 <ImagePreview
-                    key={image.previewUrl}
-                    previewUrl={image.previewUrl}
+                    key={preview}
+                    previewUrl={preview}
                     onRemove={handleRemove}
                 />
             ))}

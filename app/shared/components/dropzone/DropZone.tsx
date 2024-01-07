@@ -1,10 +1,12 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { ImageFile } from './models/ImageFile';
 import { DropZoneImagePreview } from './DropZoneImagePreview';
+import { api } from 'api/api';
+import useImages from 'stores/useImages';
 
 type DropZoneProps = {
     title: string;
@@ -15,20 +17,34 @@ type DropZoneProps = {
 const DropZone = ({ title, onChange }: DropZoneProps) => {
     const [images, setImages] = useState<ImageFile[]>([]);
 
+    const [savedImages, setSavedImages] = useImages((state) => [
+        state.images,
+        state.setImages,
+    ]);
+
     useEffect(() => {
         onChange(images);
     }, [images, onChange]);
 
-    const handleDrop = useCallback(
-        (acceptedFiles: File[]) => {
-            const newFiles = acceptedFiles.map((file) =>
-                Object.assign(file, { previewUrl: URL.createObjectURL(file) }),
-            );
+    const saveImage = async (image: ImageFile) => {
+        const formData = new FormData();
+        formData.append(`image`, new Blob([image]), image.name);
+        const res = await api.Images.save(formData);
 
-            setImages([...images, ...newFiles]);
-        },
-        [images],
-    );
+        setSavedImages([...savedImages, res.imageUrl]);
+    };
+
+    const handleDrop = async (acceptedFiles: File[]) => {
+        const newFiles = acceptedFiles.map((file) =>
+            Object.assign(file, { previewUrl: URL.createObjectURL(file) }),
+        );
+
+        for (const file of newFiles) {
+            await saveImage(file);
+        }
+
+        setImages([...images, ...newFiles]);
+    };
 
     const {
         getRootProps,
@@ -67,7 +83,7 @@ const DropZone = ({ title, onChange }: DropZoneProps) => {
                     {...getInputProps()}
                 />
             </div>
-            <DropZoneImagePreview images={images} setImages={setImages} />
+            <DropZoneImagePreview newImages={images} setImages={setImages} />
         </>
     );
 };

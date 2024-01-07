@@ -9,6 +9,8 @@ import { DropZone } from 'app/shared/components/dropzone/DropZone';
 import { forwardRef, useEffect, useState } from 'react';
 import { ImageFile } from 'app/shared/components/dropzone/models/ImageFile';
 import { NumberInput } from 'app/shared/components/inputs/NumberInput';
+import useImages from 'stores/useImages';
+import { ApiUrl } from 'api/api';
 
 const ProductFormSchema = z.object({
     name: z.string().min(1, 'Name is required'),
@@ -40,11 +42,18 @@ interface ProductFormProps {
 
 export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
     ({ product, onSave }, ref) => {
-        useEffect(() => {
-            console.log('product', product);
-        }, [product]);
+        const [setImages] = useImages((state) => [state.setImages]);
+        const [newImages, setNewImages] = useState<ImageFile[]>([]);
 
-        const [images, setImages] = useState<ImageFile[]>([]);
+        useEffect(() => {
+            const urls = product?.images?.map(
+                (image) => `${ApiUrl}/${image.imageUrl}`,
+            );
+
+            if (urls) {
+                setImages([...urls]);
+            }
+        }, [product, setImages]);
 
         const {
             register,
@@ -57,7 +66,7 @@ export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
         });
 
         const onSubmit: SubmitHandler<ProductFormDto> = (data) => {
-            onSave(data, images);
+            onSave(data, newImages);
         };
 
         return (
@@ -89,7 +98,7 @@ export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
                     error={errors.price?.message}
                     required
                 />
-                <DropZone title="Add images" onChange={setImages} />
+                <DropZone title="Add images" onChange={setNewImages} />
 
                 <button className="hidden" type="submit">
                     submit
