@@ -1,7 +1,6 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { ImageFile } from './models/ImageFile';
 import { DropZoneImagePreview } from './DropZoneImagePreview';
@@ -14,24 +13,22 @@ type DropZoneProps = {
 };
 
 // file size cannot be determined on drop
-const DropZone = ({ title, onChange }: DropZoneProps) => {
-    const [images, setImages] = useState<ImageFile[]>([]);
-
+const DropZone = ({ title }: DropZoneProps) => {
     const [savedImages, setSavedImages] = useImages((state) => [
         state.images,
         state.setImages,
     ]);
 
-    useEffect(() => {
-        onChange(images);
-    }, [images, onChange]);
-
-    const saveImage = async (image: ImageFile) => {
+    const saveImages = async (images: ImageFile[]) => {
         const formData = new FormData();
-        formData.append(`image`, new Blob([image]), image.name);
+
+        images.forEach((image) => {
+            formData.append(`images`, new Blob([image]), image.name);
+        });
+
         const res = await api.Images.save(formData);
 
-        setSavedImages([...savedImages, res.imageUrl]);
+        setSavedImages([...savedImages, ...res]);
     };
 
     const handleDrop = async (acceptedFiles: File[]) => {
@@ -39,11 +36,7 @@ const DropZone = ({ title, onChange }: DropZoneProps) => {
             Object.assign(file, { previewUrl: URL.createObjectURL(file) }),
         );
 
-        for (const file of newFiles) {
-            await saveImage(file);
-        }
-
-        setImages([...images, ...newFiles]);
+        await saveImages(newFiles);
     };
 
     const {
@@ -83,7 +76,7 @@ const DropZone = ({ title, onChange }: DropZoneProps) => {
                     {...getInputProps()}
                 />
             </div>
-            <DropZoneImagePreview newImages={images} setImages={setImages} />
+            <DropZoneImagePreview />
         </>
     );
 };

@@ -1,33 +1,41 @@
 'use client';
-
-import Image from 'next/image';
-import { ImageFile } from './models/ImageFile';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { XCircle } from 'lucide-react';
 import useImages from 'stores/useImages';
+import { ImageDto } from 'api/images/models/ImageEntity';
+import Image from 'next/image';
+import { ApiUrl, api } from 'api/api';
+import { useMutation } from '@tanstack/react-query';
 
 type ImagePreviewProps = {
-    previewUrl: string;
-    onRemove: (previewUrl: string) => void;
+    image: ImageDto;
 };
 
-const ImagePreview = ({ previewUrl, onRemove }: ImagePreviewProps) => {
-    const handleRemove = () => {
-        onRemove(previewUrl);
-    };
+const ImagePreview = ({ image }: ImagePreviewProps) => {
+    const [images, setImages] = useImages((state) => [
+        state.images,
+        state.setImages,
+    ]);
+
+    const { mutate: deleteImages } = useMutation({
+        mutationFn: api.Images.delete,
+        onSuccess: () => {
+            const filteredImages = images.filter((x) => x.id !== image.id);
+            setImages(filteredImages);
+        },
+    });
 
     return (
         <div className="relative w-[90px]">
             <Image
                 className="border rounded"
-                src={previewUrl}
+                src={`${ApiUrl}/${image.imageUrl}`}
                 width={100}
                 height={100}
                 alt="Product image"
-                onLoad={() => URL.revokeObjectURL(previewUrl)}
+                onLoad={() => URL.revokeObjectURL(image.imageUrl)}
             />
             <div
-                onClick={handleRemove}
+                onClick={() => deleteImages({ images: [image] })}
                 className="absolute top-[-3px] right-[-3px] h-[24px] w-[24px] cursor-pointer"
             >
                 <div className="absolute left-[2px] top-[2px] rounded-full h-[20px] w-[20px] bg-background"></div>
@@ -41,39 +49,13 @@ const ImagePreview = ({ previewUrl, onRemove }: ImagePreviewProps) => {
     );
 };
 
-type DropZoneImagePreviewProps = {
-    newImages: ImageFile[];
-    setImages: Dispatch<SetStateAction<ImageFile[]>>;
-};
-
-const DropZoneImagePreview = ({
-    newImages,
-    setImages,
-}: DropZoneImagePreviewProps) => {
-    const [previews, setPreviews] = useState<string[]>([]);
-    const [savedImages] = useImages((state) => [state.images]);
-
-    useEffect(() => {
-        console.log('preview', savedImages);
-        const newImageUrls = newImages.map((image) => image.previewUrl);
-
-        setPreviews([...savedImages, ...newImageUrls]);
-    }, [savedImages, newImages]);
-
-    const handleRemove = (previewUrl: string) => {
-        setImages((oldImages) =>
-            oldImages.filter((image) => image.previewUrl !== previewUrl),
-        );
-    };
+const DropZoneImagePreview = () => {
+    const [images] = useImages((state) => [state.images]);
 
     return (
         <div className="flex flex-wrap gap-2">
-            {previews.map((preview) => (
-                <ImagePreview
-                    key={preview}
-                    previewUrl={preview}
-                    onRemove={handleRemove}
-                />
+            {images.map((image) => (
+                <ImagePreview key={image.id} image={image} />
             ))}
         </div>
     );

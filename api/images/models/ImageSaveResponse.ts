@@ -1,4 +1,3 @@
-export type ImageSaveResponse = {
-    imageId: string;
-    imageUrl: string;
-};
+import { ImageDto } from './ImageEntity';
+
+export type ImageSaveResponse = ImageDto[];

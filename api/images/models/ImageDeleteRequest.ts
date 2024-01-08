@@ -1,3 +1,5 @@
+import { ImageDto } from './ImageEntity';
+
 export type ImageDeleteRequest = {
-    imageId: string;
+    images: ImageDto[];
 };
