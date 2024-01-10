@@ -6,29 +6,43 @@ import { ImageFile } from './models/ImageFile';
 import { DropZoneImagePreview } from './DropZoneImagePreview';
 import { api } from 'api/api';
 import useImages from 'stores/useImages';
+import { Control, useController } from 'react-hook-form';
 
 type DropZoneProps = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    control: Control<any>;
+    name: string;
     title: string;
-    onChange: (images: ImageFile[]) => void;
+    error?: string;
 };
 
 // file size cannot be determined on drop
-const DropZone = ({ title }: DropZoneProps) => {
-    const [savedImages, setSavedImages] = useImages((state) => [
+const DropZone = ({ control, name, title, error }: DropZoneProps) => {
+    const { field } = useController({
+        name,
+        control,
+    });
+
+    const [images, setSavedImages] = useImages((state) => [
         state.images,
         state.setImages,
     ]);
 
-    const saveImages = async (images: ImageFile[]) => {
+    const saveImages = async (newImages: ImageFile[]) => {
         const formData = new FormData();
 
-        images.forEach((image) => {
+        newImages.forEach((image) => {
             formData.append(`images`, new Blob([image]), image.name);
         });
 
         const res = await api.Images.save(formData);
 
-        setSavedImages([...savedImages, ...res]);
+        const savedImages = [...images, ...res];
+
+        console.log('setting saved images', savedImages);
+
+        setSavedImages(savedImages);
+        field.onChange(savedImages);
     };
 
     const handleDrop = async (acceptedFiles: File[]) => {
@@ -76,6 +90,7 @@ const DropZone = ({ title }: DropZoneProps) => {
                     {...getInputProps()}
                 />
             </div>
+            {error && <div className="text-red-500">{error}</div>}
             <DropZoneImagePreview />
         </>
     );

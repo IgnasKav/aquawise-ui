@@ -16,6 +16,7 @@ import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from '../app/api/auth/[...nextauth]/route';
 import { getSession } from 'next-auth/react';
 import { ImagesApi as Images } from './images/imagesApi';
+import { ProductFormDto } from 'app/products/components/forms/ProductForm';
 
 export const ApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -140,8 +141,8 @@ const Products = {
     getAll: (): Promise<Product[] | undefined> => requests.get('/products'),
     getById: (productId: string): Promise<Company> =>
         requests.get(`/products/${productId}`),
-    create: (req: FormData): Promise<Product> =>
-        requests.post('/products', req, true),
+    create: (req: ProductFormDto): Promise<Product> =>
+        requests.post('/products', req),
     update: (productId: string, req: FormData): Promise<Product> =>
         requests.put(`/products/${productId}`, req, true),
     delete: (productId: string): Promise<void> =>

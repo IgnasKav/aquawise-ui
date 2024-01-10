@@ -3,17 +3,18 @@
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { Alert, AlertType } from '../../../../models/Alert';
 import useAlert from '../../../../stores/useAlert';
-import { ProductFormDto } from '../../models/ProductForm.dto';
-import { ProductForm } from './ProductForm';
+import { ProductForm, ProductFormDto } from './ProductForm';
 import { ApiError } from '../../../../models/ApiError';
 import { api } from 'api/api';
 import { forwardRef } from 'react';
+import { Subject } from 'rxjs';
+import { Product } from 'app/products/models/Product';
 
 interface ProductCreateFormProps {
-    onSave?: () => void;
+    onCloseTrigger: Subject<void>;
 }
 
-const useCreateProduct = (onSave?: () => void) => {
+const useCreateProduct = () => {
     const queryClient = useQueryClient();
     const [createAlert] = useAlert((state) => [state.createAlert]);
 
@@ -25,10 +26,6 @@ const useCreateProduct = (onSave?: () => void) => {
                 type: AlertType.success,
                 title: 'Success!',
             });
-
-            if (onSave) {
-                onSave();
-            }
 
             createAlert(alert);
             await queryClient.invalidateQueries({ queryKey: ['products'] });
@@ -45,24 +42,28 @@ export const ProductCreateForm = forwardRef<
     HTMLFormElement,
     ProductCreateFormProps
 >((props, ref) => {
-    const { mutate: createProduct } = useCreateProduct(props.onSave);
+    const { mutate: createProduct } = useCreateProduct();
 
-    const handleSave = async (values: ProductFormDto, images?: File[]) => {
-        if (!images || images.length === 0) return;
-
-        const formData = new FormData();
-
-        images.forEach((image) => {
-            formData.append(`images`, new Blob([image]), image.name);
-        });
-
-        const productData = JSON.stringify(values);
-        formData.append('product', productData);
-
-        await createProduct(formData);
+    const handleSave = async (values: ProductFormDto) => {
+        await createProduct(values);
     };
 
-    return <ProductForm ref={ref} {...props} onSave={handleSave} />;
+    const product: Product = {
+        id: '',
+        name: '',
+        quantity: 1,
+        price: 0,
+        images: [],
+    };
+
+    return (
+        <ProductForm
+            product={product}
+            ref={ref}
+            {...props}
+            onSave={handleSave}
+        />
+    );
 });
 
 ProductCreateForm.displayName = 'ProductCreateForm';

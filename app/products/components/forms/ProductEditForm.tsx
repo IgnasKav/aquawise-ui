@@ -1,12 +1,11 @@
 'use client';
 
 import { Product } from '../../models/Product';
-import { ProductFormDto } from '../../models/ProductForm.dto';
 import { api } from '../../../../api/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Alert, AlertType } from '../../../../models/Alert';
 import useAlert from '../../../../stores/useAlert';
-import { ProductForm } from './ProductForm';
+import { ProductForm, ProductFormDto } from './ProductForm';
 import { ApiError } from '../../../../models/ApiError';
 import { forwardRef } from 'react';
 
