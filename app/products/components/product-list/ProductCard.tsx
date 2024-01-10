@@ -7,7 +7,6 @@ import {
     DialogHeader,
     DialogFooter,
     Dialog,
-    DialogTrigger,
     DialogContent,
     DialogTitle,
     DialogDescription,
@@ -36,33 +35,39 @@ export const ProductCard = ({ product }: Props) => {
         };
     }, [onSubmitSubject]);
 
+    const handleDialogClose = () => {
+        onCloseSubject.next();
+        setDialogOpen(false);
+    };
+
     return (
-        <Dialog open={dialogOpen} onOpenChange={() => onCloseSubject.next()}>
-            <DialogTrigger asChild>
-                <div className="w-[240px] cursor-pointer">
-                    <div className="overflow-hidden rounded-xl">
-                        {product.images && product.images.length > 0 ? (
-                            <Image
-                                className="h-auto w-[240px] object-cover transition-all hover:scale-105 aspect-square"
-                                src={`${ApiUrl}/${product.images[0].imageUrl}`}
-                                alt="Product Image"
-                                width={240}
-                                height={240}
-                            />
-                        ) : (
-                            'no pic'
-                        )}
-                    </div>
-                    <div className="space-y-1 text-sm mt-2">
-                        <h3 className="text-base font-medium leading-none">
-                            €{product.price}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                            {product.name}
-                        </p>
-                    </div>
+        <Dialog open={dialogOpen} onOpenChange={handleDialogClose}>
+            <div
+                className="w-[240px] cursor-pointer"
+                onClick={() => setDialogOpen(true)}
+            >
+                <div className="overflow-hidden rounded-xl">
+                    {product.images && product.images.length > 0 ? (
+                        <Image
+                            className="h-auto w-[240px] object-cover transition-all hover:scale-105 aspect-square"
+                            src={`${ApiUrl}/${product.images[0].imageUrl}`}
+                            alt="Product Image"
+                            width={240}
+                            height={240}
+                        />
+                    ) : (
+                        'no pic'
+                    )}
                 </div>
-            </DialogTrigger>
+                <div className="space-y-1 text-sm mt-2">
+                    <h3 className="text-base font-medium leading-none">
+                        €{product.price}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                        {product.name}
+                    </p>
+                </div>
+            </div>
             <DialogContent className="grid h-screen w-screen max-w-screen-md sm:h-fit sm:w-[434px]">
                 <DialogHeader>
                     <DialogTitle>Edit Product</DialogTitle>

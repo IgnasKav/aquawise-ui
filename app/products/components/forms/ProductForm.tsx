@@ -51,16 +51,7 @@ interface ProductFormProps {
 }
 
 export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
-    (
-        {
-            id,
-            product,
-            onSave,
-            onCloseSubject: onCloseTrigger,
-            onSubmitSubject: onSubmitTrigger,
-        },
-        ref,
-    ) => {
+    ({ id, product, onSave, onCloseSubject, onSubmitSubject }, ref) => {
         const [setImages] = useImages((state) => [state.setImages]);
 
         const {
@@ -88,14 +79,14 @@ export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
         }, [getValues, setImages]);
 
         useEffect(() => {
-            const subscription = onCloseTrigger.subscribe(() => {
+            const subscription = onCloseSubject.subscribe(() => {
                 onClose();
             });
 
             return () => {
                 subscription.unsubscribe();
             };
-        }, [onCloseTrigger]);
+        }, [onCloseSubject]);
 
         const onClose = () => {
             setImages([]);
@@ -103,7 +94,7 @@ export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
 
         const onSubmit: SubmitHandler<ProductFormDto> = async (data) => {
             await onSave(data);
-            onSubmitTrigger.next();
+            onSubmitSubject.next();
         };
 
         return (
