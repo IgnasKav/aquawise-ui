@@ -10,10 +10,6 @@ import { forwardRef } from 'react';
 import { Subject } from 'rxjs';
 import { Product } from 'app/products/models/Product';
 
-interface ProductCreateFormProps {
-    onCloseTrigger: Subject<void>;
-}
-
 const useCreateProduct = () => {
     const queryClient = useQueryClient();
     const [createAlert] = useAlert((state) => [state.createAlert]);
@@ -38,6 +34,11 @@ const useCreateProduct = () => {
     return mutation;
 };
 
+type ProductCreateFormProps = {
+    id: string;
+    onCloseTrigger: Subject<void>;
+};
+
 export const ProductCreateForm = forwardRef<
     HTMLFormElement,
     ProductCreateFormProps
@@ -45,6 +46,7 @@ export const ProductCreateForm = forwardRef<
     const { mutate: createProduct } = useCreateProduct();
 
     const handleSave = async (values: ProductFormDto) => {
+        console.log('handle save', values);
         await createProduct(values);
     };
 

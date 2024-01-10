@@ -53,7 +53,7 @@ const DropZoneImagePreview = () => {
     const [images] = useImages((state) => [state.images]);
 
     return (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 mt-2">
             {images.map((image) => (
                 <ImagePreview key={image.id} image={image} />
             ))}

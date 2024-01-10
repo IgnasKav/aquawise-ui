@@ -9,7 +9,6 @@ import { DropZone } from 'app/shared/components/dropzone/DropZone';
 import { forwardRef, useEffect } from 'react';
 import { NumberInput } from 'app/shared/components/inputs/NumberInput';
 import useImages from 'stores/useImages';
-import { api } from 'api/api';
 import { Subject } from 'rxjs';
 
 const ProductFormSchema = z.object({
@@ -44,33 +43,39 @@ const ProductFormSchema = z.object({
 export type ProductFormDto = z.infer<typeof ProductFormSchema>;
 
 interface ProductFormProps {
+    id: string;
     product: Product | ProductFormDto;
-    onSave: (formValues: ProductFormDto, images?: File[]) => void;
+    onSave: (formValues: ProductFormDto) => void;
     onCloseTrigger: Subject<void>;
 }
 
 export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
-    ({ product, onSave, onCloseTrigger }, ref) => {
-        const [images, setImages] = useImages((state) => [
-            state.images,
-            state.setImages,
-        ]);
+    ({ id, product, onSave, onCloseTrigger }, ref) => {
+        const [setImages] = useImages((state) => [state.setImages]);
 
         const {
             register,
             formState: { errors },
             control,
+            getValues,
             handleSubmit,
         } = useForm<ProductFormDto>({
             resolver: zodResolver(ProductFormSchema),
-            defaultValues: product,
+            defaultValues: {
+                name: product.name,
+                quantity: product.quantity,
+                price: product.price,
+                images: product.images,
+            },
         });
+
+        useEffect(() => {
+            console.log('default values', getValues());
+        }, [getValues]);
 
         useEffect(() => {
             const subscription = onCloseTrigger.subscribe(() => {
                 console.log('Dialog closing');
-                // console.log('product images', product?.images);
-                // console.log('images', images);
                 onClose();
             });
 
@@ -79,27 +84,18 @@ export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
             };
         }, [onCloseTrigger]);
 
-        const onSubmit: SubmitHandler<ProductFormDto> = (data) => {
-            console.log('blokas', data);
-            onSave(data);
+        const onClose = () => {
+            setImages([]);
         };
 
-        const onClose = async () => {
-            const tempImages = images?.filter(
-                (x) => !product?.images?.includes(x),
-            );
-
-            console.log('temp images', tempImages);
-
-            if (tempImages.length > 0) {
-                await api.Images.delete({ images: tempImages });
-            }
-
-            setImages([]);
+        const onSubmit: SubmitHandler<ProductFormDto> = (data) => {
+            console.log('on submit');
+            onSave(data);
         };
 
         return (
             <form
+                id={id}
                 className="flex flex-col gap-2"
                 ref={ref}
                 onSubmit={handleSubmit(onSubmit)}
@@ -133,10 +129,6 @@ export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
                     title="Add images"
                     error={errors.images?.message}
                 />
-
-                <button className="hidden" type="submit">
-                    submit
-                </button>
             </form>
         );
     },

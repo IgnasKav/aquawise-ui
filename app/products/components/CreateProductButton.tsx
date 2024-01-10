@@ -11,19 +11,10 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import { createRef } from 'react';
 import { Subject } from 'rxjs';
 
 export const CreateProductButton = () => {
-    const formRef = createRef<HTMLFormElement>();
     const onCloseTrigger = new Subject<void>();
-
-    const handleClick = () => {
-        const submitButton = formRef.current?.querySelector<HTMLButtonElement>(
-            'button[type="submit"]',
-        );
-        submitButton?.click();
-    };
 
     const handleDialogClose = () => {
         onCloseTrigger.next();
@@ -44,12 +35,14 @@ export const CreateProductButton = () => {
                     </DialogHeader>
 
                     <ProductCreateForm
-                        ref={formRef}
+                        id="product-create-form"
                         onCloseTrigger={onCloseTrigger}
                     />
 
                     <DialogFooter>
-                        <Button onClick={handleClick}>Create Product</Button>
+                        <Button type="submit" form="product-create-form">
+                            Create Product
+                        </Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

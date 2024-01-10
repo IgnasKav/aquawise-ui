@@ -70,11 +70,11 @@ const DropZone = ({ control, name, title, error }: DropZoneProps) => {
     });
 
     return (
-        <>
+        <div>
             <div
                 {...getRootProps()}
                 className={cn(
-                    'relative flex items-center justify-center h-12 w-full border rounded-md mb-3',
+                    'relative flex items-center justify-center h-12 w-full border rounded-md mb-[3px]',
                     { 'ring-1 ring-ring': isDragActive || isFocused },
                     { 'ring-1 ring-red-500': isDragReject },
                     { 'ring-1 ring-green-500': isDragAccept },
@@ -90,9 +90,9 @@ const DropZone = ({ control, name, title, error }: DropZoneProps) => {
                     {...getInputProps()}
                 />
             </div>
-            {error && <div className="text-red-500">{error}</div>}
+            {error && <div className="text-xs text-red-500">{error}</div>}
             <DropZoneImagePreview />
-        </>
+        </div>
     );
 };
 

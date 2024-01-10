@@ -8,10 +8,11 @@ import useAlert from '../../../../stores/useAlert';
 import { ProductForm, ProductFormDto } from './ProductForm';
 import { ApiError } from '../../../../models/ApiError';
 import { forwardRef } from 'react';
+import { Subject } from 'rxjs';
 
 interface ProductUpdateMutation {
     productId: string;
-    product: FormData;
+    product: ProductFormDto;
 }
 
 const useProductEdit = (onSave?: () => void) => {
@@ -43,37 +44,30 @@ const useProductEdit = (onSave?: () => void) => {
     return mutation;
 };
 
-interface ProductEditFormProps {
+type ProductEditFormProps = {
+    id: string;
     product: Product;
     onSave?: () => void;
-}
+    onCloseTrigger: Subject<void>;
+};
 
 export const ProductEditForm = forwardRef<
     HTMLFormElement,
     ProductEditFormProps
->(({ product, onSave }, ref) => {
+>(({ id, product, onSave, onCloseTrigger }, ref) => {
     const { mutate: editProduct } = useProductEdit(onSave);
 
-    const handleSave = async (values: ProductFormDto, images?: File[]) => {
-        if (!images) return;
-
-        const image = images[0];
-
-        if (!image) return;
-
-        const formData = new FormData();
-        formData.append('image', new Blob([image]), image.name);
-
-        const productData = JSON.stringify(values);
-        formData.append('product', productData);
-
-        editProduct({ productId: product.id, product: formData });
+    // change
+    const handleSave = async (values: ProductFormDto) => {
+        editProduct({ productId: product.id, product: values });
     };
 
     return (
         <ProductForm
+            id={id}
             product={product}
             onSave={handleSave}
+            onCloseTrigger={onCloseTrigger}
             ref={ref}
         ></ProductForm>
     );

@@ -143,8 +143,8 @@ const Products = {
         requests.get(`/products/${productId}`),
     create: (req: ProductFormDto): Promise<Product> =>
         requests.post('/products', req),
-    update: (productId: string, req: FormData): Promise<Product> =>
-        requests.put(`/products/${productId}`, req, true),
+    update: (productId: string, req: ProductFormDto): Promise<Product> =>
+        requests.put(`/products/${productId}`, req),
     delete: (productId: string): Promise<void> =>
         requests.del(`/products/${productId}`),
 };

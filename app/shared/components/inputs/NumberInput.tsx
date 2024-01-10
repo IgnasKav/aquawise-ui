@@ -42,7 +42,6 @@ const NumberInput = ({ control, name, label, ...props }: NumberInputProps) => {
     });
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-        console.log('handle on change');
         const rawValue = e.target.value;
         const formatted = formatNumber(rawValue);
         field.onChange(formatted);

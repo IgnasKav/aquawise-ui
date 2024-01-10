@@ -15,6 +15,7 @@ import {
 import { ProductEditForm } from '../forms/ProductEditForm';
 import { Button } from '@/components/ui/button';
 import { createRef } from 'react';
+import { Subject } from 'rxjs';
 
 interface Props {
     product: Product;
@@ -22,16 +23,14 @@ interface Props {
 
 export const ProductCard = ({ product }: Props) => {
     const formRef = createRef<HTMLFormElement>();
+    const onCloseTrigger = new Subject<void>();
 
-    const handleClick = () => {
-        const submitButton = formRef.current?.querySelector<HTMLButtonElement>(
-            'button[type="submit"]',
-        );
-        submitButton?.click();
+    const handleDialogClose = () => {
+        onCloseTrigger.next();
     };
 
     return (
-        <Dialog>
+        <Dialog onOpenChange={handleDialogClose}>
             <DialogTrigger asChild>
                 <div className="w-[240px] cursor-pointer">
                     <div className="overflow-hidden rounded-xl">
@@ -65,10 +64,17 @@ export const ProductCard = ({ product }: Props) => {
                     </DialogDescription>
                 </DialogHeader>
 
-                <ProductEditForm product={product} ref={formRef} />
+                <ProductEditForm
+                    id="product-edit-form"
+                    product={product}
+                    ref={formRef}
+                    onCloseTrigger={onCloseTrigger}
+                />
 
                 <DialogFooter>
-                    <Button onClick={handleClick}>Edit Product</Button>
+                    <Button type="submit" form="product-edit-form">
+                        Edit Product
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
