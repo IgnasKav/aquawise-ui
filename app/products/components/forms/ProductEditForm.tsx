@@ -67,7 +67,7 @@ export const ProductEditForm = forwardRef<
             id={id}
             product={product}
             onSave={handleSave}
-            onCloseTrigger={onCloseTrigger}
+            onCloseSubject={onCloseTrigger}
             ref={ref}
         ></ProductForm>
     );

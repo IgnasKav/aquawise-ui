@@ -36,7 +36,8 @@ const useCreateProduct = () => {
 
 type ProductCreateFormProps = {
     id: string;
-    onCloseTrigger: Subject<void>;
+    onCloseSubject: Subject<void>;
+    onSubmitSubject: Subject<void>;
 };
 
 export const ProductCreateForm = forwardRef<
@@ -46,7 +47,6 @@ export const ProductCreateForm = forwardRef<
     const { mutate: createProduct } = useCreateProduct();
 
     const handleSave = async (values: ProductFormDto) => {
-        console.log('handle save', values);
         await createProduct(values);
     };
 

@@ -39,8 +39,6 @@ const DropZone = ({ control, name, title, error }: DropZoneProps) => {
 
         const savedImages = [...images, ...res];
 
-        console.log('setting saved images', savedImages);
-
         setSavedImages(savedImages);
         field.onChange(savedImages);
     };
