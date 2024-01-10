@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/dialog';
 import { ProductEditForm } from '../forms/ProductEditForm';
 import { Button } from '@/components/ui/button';
-import { createRef } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Subject } from 'rxjs';
 
 interface Props {
@@ -22,15 +22,22 @@ interface Props {
 }
 
 export const ProductCard = ({ product }: Props) => {
-    const formRef = createRef<HTMLFormElement>();
-    const onCloseTrigger = new Subject<void>();
+    const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+    const onCloseSubject = new Subject<void>();
+    const onSubmitSubject = useMemo(() => new Subject<void>(), []);
 
-    const handleDialogClose = () => {
-        onCloseTrigger.next();
-    };
+    useEffect(() => {
+        const subscription = onSubmitSubject.subscribe(() => {
+            setDialogOpen(false);
+        });
+
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, [onSubmitSubject]);
 
     return (
-        <Dialog onOpenChange={handleDialogClose}>
+        <Dialog open={dialogOpen} onOpenChange={() => onCloseSubject.next()}>
             <DialogTrigger asChild>
                 <div className="w-[240px] cursor-pointer">
                     <div className="overflow-hidden rounded-xl">
@@ -67,8 +74,8 @@ export const ProductCard = ({ product }: Props) => {
                 <ProductEditForm
                     id="product-edit-form"
                     product={product}
-                    ref={formRef}
-                    onCloseTrigger={onCloseTrigger}
+                    onCloseSubject={onCloseSubject}
+                    onSubmitSubject={onSubmitSubject}
                 />
 
                 <DialogFooter>

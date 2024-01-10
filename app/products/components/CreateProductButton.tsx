@@ -21,7 +21,6 @@ export const CreateProductButton = () => {
 
     useEffect(() => {
         const subscription = onSubmitSubject.subscribe(() => {
-            console.log('submitting in parent');
             setDialogOpen(false);
         });
 

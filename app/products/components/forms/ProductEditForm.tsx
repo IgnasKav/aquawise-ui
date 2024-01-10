@@ -48,13 +48,14 @@ type ProductEditFormProps = {
     id: string;
     product: Product;
     onSave?: () => void;
-    onCloseTrigger: Subject<void>;
+    onCloseSubject: Subject<void>;
+    onSubmitSubject: Subject<void>;
 };
 
 export const ProductEditForm = forwardRef<
     HTMLFormElement,
     ProductEditFormProps
->(({ id, product, onSave, onCloseTrigger }, ref) => {
+>(({ id, product, onSave, onCloseSubject, onSubmitSubject }, ref) => {
     const { mutate: editProduct } = useProductEdit(onSave);
 
     // change
@@ -67,7 +68,8 @@ export const ProductEditForm = forwardRef<
             id={id}
             product={product}
             onSave={handleSave}
-            onCloseSubject={onCloseTrigger}
+            onCloseSubject={onCloseSubject}
+            onSubmitSubject={onSubmitSubject}
             ref={ref}
         ></ProductForm>
     );
