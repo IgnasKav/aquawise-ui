@@ -1,5 +1,5 @@
 import { Input, InputProps } from '@/components/ui/input';
-import { ChangeEvent } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import { Control, useController } from 'react-hook-form';
 
 type NumberInputProps = InputProps & {
@@ -8,50 +8,59 @@ type NumberInputProps = InputProps & {
     name: string;
 };
 
-const formatNumber = (value: string) => {
-    const containsMoreThanOneDot = value.split('.').length - 1 > 1;
+const formatNumberForDisplay = (value: number) => {
+    return new Intl.NumberFormat('en-US', {
+        maximumFractionDigits: 2,
+    }).format(value);
+};
 
-    if (containsMoreThanOneDot) {
+const sanitize = (value: string): string => {
+    value = value.replace(/[^\d.,]/g, '');
+
+    const numberOfDots = value.split('.').length - 1;
+
+    if (numberOfDots > 1) {
         return value.slice(0, -1);
     }
 
-    if (value.endsWith('.')) {
-        return value;
+    if (numberOfDots === 1) {
+        const decimal = value.split('.')[1];
+
+        if (decimal.length > 2) {
+            return value.slice(0, -1);
+        }
     }
 
-    const sanitizedValue = value.replaceAll(',', '');
+    return value;
+};
 
-    let number = parseFloat(sanitizedValue);
-    const minNumber = -99999999999999;
-    const maxNumber = 99999999999999;
+const parseNumber = (value: string) => {
+    value = value.replaceAll(',', '');
 
-    if (number < minNumber) number = minNumber;
-    if (number > maxNumber) number = maxNumber;
-
-    if (!number || isNaN(number)) return '';
-
-    return new Intl.NumberFormat('en-US', {
-        maximumFractionDigits: 2,
-    }).format(number);
+    return parseFloat(value) || 0;
 };
 
 const NumberInput = ({ control, name, label, ...props }: NumberInputProps) => {
-    const { field } = useController({
-        name,
-        control,
-    });
+    const { field } = useController({ name, control });
+    const [displayValue, setDisplayValue] = useState('');
+
+    useEffect(() => {
+        setDisplayValue(formatNumberForDisplay(field.value));
+    }, [field.value]);
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
         const rawValue = e.target.value;
-        const formatted = formatNumber(rawValue);
-        field.onChange(formatted);
+        const sanitizedValue = sanitize(rawValue);
+        const numericValue = parseNumber(sanitizedValue);
+        field.onChange(numericValue); // Update form state with numeric value
+        setDisplayValue(sanitizedValue); // Update local state for display
     };
 
     return (
         <Input
             label={label}
             onChange={handleOnChange}
-            value={field.value}
+            value={displayValue}
             ref={field.ref}
             {...props}
         />
