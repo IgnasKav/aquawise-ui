@@ -5,7 +5,8 @@ import { ImageSaveResponse } from './models/ImageSaveResponse';
 const ImagesApi = {
     save: (req: FormData): Promise<ImageSaveResponse> =>
         requests.post('/images', req, true),
-    delete: (req: ImageDeleteRequest) => requests.post('/images/delete', req),
+    delete: (req: ImageDeleteRequest): Promise<void> =>
+        requests.post('/images/delete', req),
 };
 
 export { ImagesApi };

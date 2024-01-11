@@ -10,6 +10,8 @@ import { forwardRef, useEffect } from 'react';
 import { NumberInput } from 'app/shared/components/inputs/NumberInput';
 import useImages from 'stores/useImages';
 import { Subject } from 'rxjs';
+import { useMutation } from '@tanstack/react-query';
+import { api } from 'api/api';
 
 const ProductFormSchema = z.object({
     name: z.string().min(1, 'Name is required'),
@@ -52,7 +54,14 @@ interface ProductFormProps {
 
 export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
     ({ id, product, onSave, onCloseSubject, onSubmitSubject }, ref) => {
-        const [setImages] = useImages((state) => [state.setImages]);
+        const [images, setImages] = useImages((state) => [
+            state.images,
+            state.setImages,
+        ]);
+
+        const { mutate: deleteImages } = useMutation({
+            mutationFn: api.Images.delete,
+        });
 
         const {
             register,
@@ -80,17 +89,23 @@ export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
 
         useEffect(() => {
             const subscription = onCloseSubject.subscribe(() => {
-                onClose();
+                const imagesWithoutRelation = images.filter(
+                    (image) => !image.productId,
+                );
+
+                console.log('no relation', imagesWithoutRelation);
+
+                if (imagesWithoutRelation.length > 0) {
+                    deleteImages({ images: imagesWithoutRelation });
+                }
+
+                setImages([]);
             });
 
             return () => {
                 subscription.unsubscribe();
             };
-        }, [onCloseSubject]);
-
-        const onClose = () => {
-            setImages([]);
-        };
+        }, [onCloseSubject, images, setImages]);
 
         const onSubmit: SubmitHandler<ProductFormDto> = async (data) => {
             await onSave(data);

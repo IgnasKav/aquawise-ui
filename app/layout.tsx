@@ -18,26 +18,6 @@ export default async function RootLayout({
     const session = await getServerSession(nextAuthOptions);
     const theme = createTheme({});
 
-    // const { setColorScheme } = useMantineColorScheme();
-    // setColorScheme('dark');
-
-    // const [theme, setTheme] = useState<MantineThemeOverride>({
-    //     colorScheme: 'light',
-    //     primaryColor: 'blue',
-    // });
-
-    // useEffect(() => {
-    //     const brandColorHex = user?.company?.brandColor;
-
-    //     if (!brandColorHex) return;
-
-    //     const brandColorName = ThemeColors.getByHex(brandColorHex);
-
-    //     if (!brandColorName) return;
-
-    //     // setTheme({ primaryColor: brandColorName });
-    // }, [user?.company?.brandColor]);
-
     return (
         <html lang="en">
             <head>
