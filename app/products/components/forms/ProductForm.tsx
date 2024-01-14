@@ -80,8 +80,6 @@ export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
                     (image) => !image.productId,
                 );
 
-                console.log('no relation', imagesWithoutRelation);
-
                 if (imagesWithoutRelation.length > 0) {
                     deleteImages({ images: imagesWithoutRelation });
                 }

@@ -3,6 +3,10 @@
 import { Product } from '../../models/Product';
 import { ApiUrl } from '../../../../api/api';
 import Image from 'next/image';
+import { ProductEditForm } from '../forms/ProductEditForm';
+import { useEffect, useMemo, useState } from 'react';
+import { Subject } from 'rxjs';
+
 import {
     DialogHeader,
     DialogFooter,
@@ -11,10 +15,14 @@ import {
     DialogTitle,
     DialogDescription,
 } from '@/components/ui/dialog';
-import { ProductEditForm } from '../forms/ProductEditForm';
 import { Button } from '@/components/ui/button';
-import { useEffect, useMemo, useState } from 'react';
-import { Subject } from 'rxjs';
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from '@/components/ui/carousel';
 
 interface Props {
     product: Product;
@@ -42,24 +50,35 @@ export const ProductCard = ({ product }: Props) => {
 
     return (
         <Dialog open={dialogOpen} onOpenChange={handleDialogClose}>
-            <div
-                className="w-[240px] cursor-pointer"
-                onClick={() => setDialogOpen(true)}
-            >
+            <div className="group w-[240px] cursor-pointer">
                 <div className="overflow-hidden rounded-xl">
                     {product.images && product.images.length > 0 ? (
-                        <Image
-                            className="h-auto w-[240px] object-cover transition-all hover:scale-105 aspect-square"
-                            src={`${ApiUrl}/${product.images[0].imageUrl}`}
-                            alt="Product Image"
-                            width={240}
-                            height={240}
-                        />
+                        <Carousel className="w-full max-w-xs">
+                            <CarouselContent>
+                                {product.images.map((image) => (
+                                    <CarouselItem key={image.id}>
+                                        <Image
+                                            onClick={() => setDialogOpen(true)}
+                                            className="rounded-xl h-auto w-[240px] object-cover transition-all aspect-square"
+                                            src={`${ApiUrl}/${image.imageUrl}`}
+                                            alt="Product Image"
+                                            width={240}
+                                            height={240}
+                                        />
+                                    </CarouselItem>
+                                ))}
+                            </CarouselContent>
+                            <CarouselPrevious className="absolute left-2 z-10 scale-0 group-hover:scale-100 transition-transform duration-300 ease-in-out" />
+                            <CarouselNext className="absolute right-2 z-10 scale-0 group-hover:scale-100 transition-transform duration-300 ease-in-out" />
+                        </Carousel>
                     ) : (
-                        'no pic'
+                        <></>
                     )}
                 </div>
-                <div className="space-y-1 text-sm mt-2">
+                <div
+                    className="space-y-1 text-sm mt-2"
+                    onClick={() => setDialogOpen(true)}
+                >
                     <h3 className="text-base font-medium leading-none">
                         €{product.price}
                     </h3>
