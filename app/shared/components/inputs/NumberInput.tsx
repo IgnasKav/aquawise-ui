@@ -6,7 +6,10 @@ type NumberInputProps = InputProps & {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     control: Control<any>;
     name: string;
+    type?: NumberInputTypes;
 };
+
+type NumberInputTypes = 'int' | 'float';
 
 const formatNumberForDisplay = (value: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -14,7 +17,13 @@ const formatNumberForDisplay = (value: number) => {
     }).format(value);
 };
 
-const sanitize = (value: string): string => {
+const sanitizeInt = (value: string): string => {
+    value = value.replace(/[^\d,]/g, '');
+
+    return value;
+};
+
+const sanitizeFloat = (value: string): string => {
     value = value.replace(/[^\d.,]/g, '');
 
     const numberOfDots = value.split('.').length - 1;
@@ -34,13 +43,28 @@ const sanitize = (value: string): string => {
     return value;
 };
 
+const sanitize = (value: string, type?: NumberInputTypes) => {
+    switch (type) {
+        case 'int':
+            return sanitizeInt(value);
+        default:
+            return sanitizeFloat(value);
+    }
+};
+
 const parseNumber = (value: string) => {
     value = value.replaceAll(',', '');
 
     return parseFloat(value) || 0;
 };
 
-const NumberInput = ({ control, name, label, ...props }: NumberInputProps) => {
+const NumberInput = ({
+    control,
+    name,
+    label,
+    type,
+    ...props
+}: NumberInputProps) => {
     const { field } = useController({ name, control });
     const [displayValue, setDisplayValue] = useState('');
 
@@ -50,7 +74,7 @@ const NumberInput = ({ control, name, label, ...props }: NumberInputProps) => {
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
         const rawValue = e.target.value;
-        const sanitizedValue = sanitize(rawValue);
+        const sanitizedValue = sanitize(rawValue, type);
         const numericValue = parseNumber(sanitizedValue);
         field.onChange(numericValue); // Update form state with numeric value
         setDisplayValue(sanitizedValue); // Update local state for display

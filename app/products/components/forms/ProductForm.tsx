@@ -114,11 +114,11 @@ export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
                     error={errors.name?.message}
                     required
                 />
-                <Input
-                    id="quantity"
+                <NumberInput
+                    control={control}
+                    name="quantity"
                     label="Quantity"
-                    type="number"
-                    {...register('quantity')}
+                    type="int"
                     error={errors.quantity?.message}
                     required
                 />
