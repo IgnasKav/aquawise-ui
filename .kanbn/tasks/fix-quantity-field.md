@@ -1,10 +1,11 @@
 ---
 created: 2024-01-11T21:59:05.124Z
-updated: 2024-01-14T18:36:51.502Z
+updated: 2024-01-14T18:58:02.366Z
 assigned: ""
 progress: 0
 tags: []
 started: 2024-01-14T18:36:51.502Z
+completed: 2024-01-14T18:58:02.366Z
 ---
 
 # Fix quantity field
