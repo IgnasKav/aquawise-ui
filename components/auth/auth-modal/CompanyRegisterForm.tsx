@@ -11,7 +11,6 @@ import { useForm, UseFormReturnType } from '@mantine/form';
 import { useMutation } from '@tanstack/react-query';
 import { CompanyCreateDto } from '../../../app/companies/models/CompanyCreate.dto';
 import { useState } from 'react';
-import AnimatedCheckIcon from '../utils/AnimatedCheckIcon';
 import useAlert from '../../../stores/useAlert';
 import { api } from '../../../api/api';
 import { motion } from 'framer-motion';
@@ -59,7 +58,7 @@ export const CompanyRegisterForm = ({ switchToLogin }: Props) => {
                 <LoadingOverlay visible={isLoading} overlayBlur={0.5} />
                 {isSuccess ? (
                     <Stack align="center">
-                        <AnimatedCheckIcon />
+                        {/* <AnimatedCheckIcon /> */}
                         <Text color="green" fw={700} align={'center'}>
                             Your application has been received! You will receive
                             an email once your application is reviewed.
