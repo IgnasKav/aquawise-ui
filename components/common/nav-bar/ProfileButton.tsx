@@ -1,16 +1,15 @@
-import {
-    Avatar,
-    Button,
-    Divider,
-    Group,
-    Menu,
-    Stack,
-    Text,
-} from '@mantine/core';
-import { AiFillCaretDown } from 'react-icons/ai';
 import { User } from '../../../models/User';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface ProfileButtonProps {
     user: User;
@@ -20,47 +19,44 @@ const ProfileButton = ({ user }: ProfileButtonProps) => {
     const router = useRouter();
 
     return (
-        <Menu>
-            <Menu.Target>
-                <Button size="lg" variant="subtle">
-                    <Group>
-                        <Avatar
-                            variant="filled"
-                            size="md"
-                            color="teal"
-                            radius="xl"
-                        >
-                            {user.firstName[0].toUpperCase() +
-                                user.lastName[0].toUpperCase()}
-                        </Avatar>
-                        <AiFillCaretDown size={'10px'} />
-                    </Group>
-                </Button>
-            </Menu.Target>
-            <Menu.Dropdown>
-                <Stack px={12} py={10}>
-                    <Text>Signed in as</Text>
-                    <Text fw={700}>{user.email}</Text>
-                </Stack>
-
-                <Divider />
-                <Menu.Item onClick={() => router.push('/')}>
-                    Your profile
-                </Menu.Item>
-                <Menu.Item onClick={() => router.push('/company')}>
-                    Your company
-                </Menu.Item>
-                <Divider />
-                <Menu.Item
-                    color={'red'}
-                    onClick={() => {
-                        signOut({ redirect: false });
-                    }}
-                >
-                    Logout
-                </Menu.Item>
-            </Menu.Dropdown>
-        </Menu>
+        <>
+            <DropdownMenu>
+                <DropdownMenuTrigger>
+                    <Avatar>
+                        <AvatarFallback>
+                            {`${user.firstName[0].toUpperCase()} ${user.lastName[0].toUpperCase()}`}
+                        </AvatarFallback>
+                    </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                    <DropdownMenuLabel>
+                        <div className="flex flex-col space-y-1">
+                            <p className="text-sm font-medium leading-none">
+                                {`${user.firstName} ${user.lastName}`}
+                            </p>
+                            <p className="text-xs leading-none text-muted-foreground">
+                                {user.email}
+                            </p>
+                        </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => router.push('/')}>
+                        Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => router.push('/company')}>
+                        Company
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                        onClick={() => {
+                            signOut({ redirect: false });
+                        }}
+                    >
+                        Logout
+                    </DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+        </>
     );
 };
 
