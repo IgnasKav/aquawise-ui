@@ -16,22 +16,9 @@ import { api } from 'api/api';
 const ProductFormSchema = z.object({
     name: z.string().min(1, 'Name is required'),
     quantity: z
-        .string()
-        .min(1, 'Quantity is required')
-        .transform((val) => parseFloat(val))
-        .refine(
-            (val) => !isNaN(val) && val >= 0,
-            'Quantity must be greater than 0',
-        )
-        .refine((val) => val % 1 === 0, 'Quantity must be an integer'),
-    price: z
-        .string()
-        .min(1, 'Price is required')
-        .transform((val) => parseFloat(val))
-        .refine(
-            (val) => !isNaN(val) && val >= 0,
-            'Price must be greater than 0',
-        ),
+        .number()
+        .min(1, 'Quantity is required and should be greater than 0'),
+    price: z.number().min(1, 'Price is required and should be greater than 0'),
     images: z
         .array(
             z.object({

@@ -62,6 +62,7 @@ const NumberInput = ({ control, name, label, ...props }: NumberInputProps) => {
             onChange={handleOnChange}
             value={displayValue}
             ref={field.ref}
+            inputMode="decimal"
             {...props}
         />
     );
