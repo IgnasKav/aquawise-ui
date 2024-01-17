@@ -1,4 +1,3 @@
-import { RequireAuth } from '../../components/auth/RequireAuth';
 import { ProductList } from './components/product-list/ProductList';
 import { CreateProductButton } from './components/CreateProductButton';
 import {
@@ -7,6 +6,7 @@ import {
     dehydrate,
 } from '@tanstack/react-query';
 import { api } from 'api/api';
+import AuthGuard from 'app/auth/AuthGuard';
 
 const Products = async () => {
     const queryClient = new QueryClient();
@@ -17,12 +17,12 @@ const Products = async () => {
     });
 
     return (
-        <RequireAuth>
+        <AuthGuard>
             <HydrationBoundary state={dehydrate(queryClient)}>
                 <CreateProductButton />
                 <ProductList />
             </HydrationBoundary>
-        </RequireAuth>
+        </AuthGuard>
     );
 };
 

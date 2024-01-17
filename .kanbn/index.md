@@ -13,11 +13,12 @@ completedColumns:
 
 ## In Progress
 
-- [fix-login-dialog](tasks/fix-login-dialog.md)
+- [fix-auth-dialogs](tasks/fix-auth-dialogs.md)
 
 ## Done
 
 - [implement-image-slider-on-product-card](tasks/implement-image-slider-on-product-card.md)
+- [fix-auth-midleware](tasks/fix-auth-midleware.md)
 - [implement-route-guards](tasks/implement-route-guards.md)
 - [fix-profile-dropdown](tasks/fix-profile-dropdown.md)
 - [fix-nav-bar](tasks/fix-nav-bar.md)

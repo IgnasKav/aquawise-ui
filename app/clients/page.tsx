@@ -4,10 +4,10 @@ import {
     dehydrate,
 } from '@tanstack/react-query';
 import { api } from 'api/api';
-import { RequireAuth } from 'components/auth/RequireAuth';
 import { User } from 'models/User';
 import { getServerSession } from 'next-auth';
 import ClientsTable from './components/ClientsTable';
+import AuthGuard from 'app/auth/AuthGuard';
 
 export default async function Clients() {
     const session = await getServerSession();
@@ -23,10 +23,10 @@ export default async function Clients() {
     });
 
     return (
-        <RequireAuth>
+        <AuthGuard>
             <HydrationBoundary state={dehydrate(queryClient)}>
                 <ClientsTable user={user} />
             </HydrationBoundary>
-        </RequireAuth>
+        </AuthGuard>
     );
 }

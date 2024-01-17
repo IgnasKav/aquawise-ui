@@ -1,6 +1,6 @@
+import AuthGuard from 'app/auth/AuthGuard';
 import { api } from '../../api/api';
 import CompanyTable from './components/CompanyTable';
-import { RequireAuth } from '../../components/auth/RequireAuth';
 import {
     HydrationBoundary,
     QueryClient,
@@ -16,10 +16,10 @@ export default async function Companies() {
     });
 
     return (
-        <RequireAuth>
+        <AuthGuard>
             <HydrationBoundary state={dehydrate(queryClient)}>
                 <CompanyTable />
             </HydrationBoundary>
-        </RequireAuth>
+        </AuthGuard>
     );
 }
