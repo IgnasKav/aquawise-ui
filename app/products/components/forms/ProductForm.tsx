@@ -107,7 +107,6 @@ export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
                 <Input
                     id="product-name"
                     label="Product name"
-                    type="text"
                     {...register('name')}
                     error={errors.name?.message}
                     required

@@ -7,7 +7,6 @@ const publicRoutes = ['/'];
 export async function middleware(req: NextRequest) {
     const token = await getToken({ req });
     const isPublicRoute = publicRoutes.includes(req.nextUrl.pathname);
-
     if (!token && !isPublicRoute) {
         const absoluteURL = new URL('/', req.nextUrl.origin);
         return NextResponse.redirect(absoluteURL.toString());

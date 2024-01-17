@@ -11,9 +11,9 @@ completedColumns:
 
 ## Todo
 
-- [fix-login-dialog](tasks/fix-login-dialog.md)
-
 ## In Progress
+
+- [fix-login-dialog](tasks/fix-login-dialog.md)
 
 ## Done
 

@@ -1,18 +1,21 @@
 'use client';
 
-import {
-    Anchor,
-    Button,
-    Group,
-    PasswordInput,
-    Stack,
-    TextInput,
-} from '@mantine/core';
-import { useForm } from '@mantine/form';
 import useAlert from '../../../stores/useAlert';
 import { motion } from 'framer-motion';
 import { signIn } from 'next-auth/react';
 import { Alert, AlertType } from '../../../models/Alert';
+import { z } from 'zod';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+
+const LoginFormSchema = z.object({
+    email: z.string().email(),
+    password: z.string().min(6),
+});
+
+type LoginFormDto = z.infer<typeof LoginFormSchema>;
 
 interface Props {
     switchToRegistration: () => void;
@@ -22,27 +25,20 @@ interface Props {
 export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
     const [createAlert] = useAlert((state) => [state.createAlert]);
 
-    const form = useForm({
-        initialValues: {
-            email: '',
-            password: '',
-        },
-        validate: {
-            email: (val: string) =>
-                /^\S+@\S+$/.test(val) ? null : 'Invalid email',
-            password: (val: string) =>
-                val.length < 6
-                    ? 'Password should include at least 6 characters'
-                    : null,
-        },
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+    } = useForm<LoginFormDto>({
+        resolver: zodResolver(LoginFormSchema),
     });
 
-    const handleLogin = async () => {
-        const { email, password } = form.values;
+    const onSubmit: SubmitHandler<LoginFormDto> = async (data) => {
+        const { email, password } = data;
 
         const res = await signIn('credentials', {
             redirect: false,
-            email: email,
+            email,
             password,
         });
 
@@ -60,6 +56,7 @@ export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
         }
 
         closeModal();
+        console.log('submitting data:', data);
     };
 
     return (
@@ -68,51 +65,33 @@ export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
             animate={{ x: 0 }}
             transition={{ duration: 0.25 }}
         >
-            <form onSubmit={form.onSubmit(() => handleLogin())}>
-                <Stack>
-                    <TextInput
-                        required
-                        label="Email"
-                        placeholder="Email"
-                        value={form.values.email}
-                        onChange={(event) =>
-                            form.setFieldValue(
-                                'email',
-                                event.currentTarget.value,
-                            )
-                        }
-                        error={form.errors.email}
-                        radius="md"
-                    />
-
-                    <PasswordInput
-                        required
-                        label="Password"
-                        placeholder="Password"
-                        value={form.values.password}
-                        onChange={(event) =>
-                            form.setFieldValue(
-                                'password',
-                                event.currentTarget.value,
-                            )
-                        }
-                        error={form.errors.password}
-                        radius="md"
-                    />
-                    <Group justify="space-between">
-                        <Anchor
-                            component="button"
-                            type="button"
-                            size="xs"
-                            onClick={() => switchToRegistration()}
-                        >
-                            {`Don't have an account? Apply here`}
-                        </Anchor>
-                        <Button w={140} type="submit" radius="xl">
-                            Login
-                        </Button>
-                    </Group>
-                </Stack>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Input
+                    id="email"
+                    label="Email"
+                    placeholder="Email"
+                    {...register('email')}
+                    error={errors.email?.message}
+                    required
+                />
+                <Input
+                    id="password"
+                    label="Password"
+                    placeholder="Password"
+                    type="password"
+                    {...register('password')}
+                    error={errors.password?.message}
+                    required
+                />
+                <div className="flex justify-between">
+                    <div
+                        className="self-center underline cursor-pointer"
+                        onClick={() => switchToRegistration()}
+                    >
+                        {`Don't have an account? Apply here`}
+                    </div>
+                    <Button type="submit">Login</Button>
+                </div>
             </form>
         </motion.div>
     );
