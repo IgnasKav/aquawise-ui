@@ -6,7 +6,7 @@ import { CompanyRegisterForm } from './CompanyRegisterForm';
 import { Modal } from '@mantine/core';
 import { AnimatePresence } from 'framer-motion';
 import css from './auth-modal.module.scss';
-import NavButton from '../../common/nav-bar/NavButton';
+import { Button } from '@/components/ui/button';
 
 const AuthModal = () => {
     const [isOpened, setIsOpened] = useState(false);
@@ -19,7 +19,7 @@ const AuthModal = () => {
 
     return (
         <>
-            <NavButton title="Log in" onClick={() => setIsOpened(true)} />
+            <Button onClick={() => setIsOpened(true)}>Log in</Button>
             <Modal
                 opened={isOpened}
                 onClose={handleClose}

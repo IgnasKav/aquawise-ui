@@ -49,7 +49,7 @@ const ProfileButton = ({ user }: ProfileButtonProps) => {
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                         onClick={() => {
-                            signOut({ redirect: false });
+                            signOut();
                         }}
                     >
                         Logout
