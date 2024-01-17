@@ -11,6 +11,8 @@ completedColumns:
 
 ## Todo
 
+- [change-toasts-from-mantine-to-shadcn](tasks/change-toasts-from-mantine-to-shadcn.md)
+
 ## In Progress
 
 - [fix-auth-dialogs](tasks/fix-auth-dialogs.md)

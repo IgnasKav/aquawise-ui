@@ -4,7 +4,6 @@ import { RegisterRequest } from '../models/auth/RegisterRequest';
 import { LoginResponse } from '../models/auth/LoginResponse';
 import { ApiError } from '../models/ApiError';
 import { User } from '../models/User';
-import { CompanyCreateDto } from '../app/companies/models/CompanyCreate.dto';
 import { Company } from '../app/companies/models/Company';
 import { RegisterResponse } from '../models/auth/RegisterResponse';
 import { UserInviteRequest } from '../components/users/models/UserInviteRequest';
@@ -17,6 +16,7 @@ import { nextAuthOptions } from '../app/api/auth/[...nextauth]/route';
 import { getSession } from 'next-auth/react';
 import { ImagesApi as Images } from './images/imagesApi';
 import { ProductFormDto } from 'app/products/components/forms/ProductForm';
+import { CompanyRegisterFormDto } from 'components/auth/auth-modal/CompanyRegisterForm';
 
 export const ApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -109,10 +109,8 @@ const Companies = {
     getAll: (): Promise<Company[] | undefined> => requests.get(`/companies`),
     getByApplicationId: (applicationId: string): Promise<Company> =>
         requests.get(`/companies/application/${applicationId}`),
-
-    create: (createRequest: CompanyCreateDto): Promise<Company> =>
+    create: (createRequest: CompanyRegisterFormDto): Promise<Company> =>
         requests.post('/companies', createRequest),
-
     confirmApplication: (applicationId: string): Promise<Company> =>
         requests.post(`/companies/confirm/${applicationId}`, {}),
     getById: (id: string): Promise<Company> => requests.get(`/companies/${id}`),

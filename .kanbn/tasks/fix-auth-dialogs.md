@@ -1,6 +1,6 @@
 ---
 created: 2024-01-14T21:48:17.123Z
-updated: 2024-01-17T18:33:09.817Z
+updated: 2024-01-17T22:59:15.015Z
 assigned: ""
 progress: 0
 tags: []
@@ -14,4 +14,7 @@ For some reason login dialog does not open
 ## Sub-tasks
 
 - [x] fix login dialog
-- [ ] fix register dialog
+- [x] fix company register dialog
+- [ ] fix admin register page
+- [ ] try to animate dialog size change
+- [ ] in company register form on success- display toast

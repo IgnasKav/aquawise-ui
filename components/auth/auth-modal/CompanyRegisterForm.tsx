@@ -1,20 +1,24 @@
-import {
-    Anchor,
-    Button,
-    Group,
-    LoadingOverlay,
-    Stack,
-    Text,
-    TextInput,
-} from '@mantine/core';
-import { useForm, UseFormReturnType } from '@mantine/form';
+import { Stack, Text } from '@mantine/core';
 import { useMutation } from '@tanstack/react-query';
-import { CompanyCreateDto } from '../../../app/companies/models/CompanyCreate.dto';
-import { useState } from 'react';
 import useAlert from '../../../stores/useAlert';
 import { api } from '../../../api/api';
 import { motion } from 'framer-motion';
 import { ApiError } from '../../../models/ApiError';
+import { z } from 'zod';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import SpinnerIcon from 'app/shared/components/loaders/SpinnerIcon';
+
+const CompanyRegisterFormSchema = z.object({
+    name: z.string().min(1, 'Name is required'),
+    code: z.string().min(1, 'Code is required'),
+    email: z.string().email('Invalid email'),
+    phone: z.string().min(1, 'Phone is required'),
+});
+
+export type CompanyRegisterFormDto = z.infer<typeof CompanyRegisterFormSchema>;
 
 interface Props {
     switchToLogin: () => void;
@@ -22,31 +26,38 @@ interface Props {
 
 export const CompanyRegisterForm = ({ switchToLogin }: Props) => {
     const [createAlert] = useAlert((state) => [state.createAlert]);
-    const [isSuccess, setSuccess] = useState(false);
 
-    const { mutate, isLoading } = useMutation(api.Companies.create, {
-        onSuccess: () => {
-            setSuccess(true);
-        },
+    const { mutate, isPending, isSuccess } = useMutation({
+        mutationFn: api.Companies.create,
         onError: (error: ApiError) => {
             const alert = error.toAlert();
+
             createAlert(alert);
         },
     });
 
-    const form: UseFormReturnType<CompanyCreateDto> = useForm({
-        initialValues: new CompanyCreateDto(),
-        validate: {
-            email: (val: string) =>
-                /^\S+@\S+$/.test(val) ? null : 'Invalid email',
-            phone: (val: string) =>
-                /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/.test(
-                    val,
-                )
-                    ? null
-                    : 'Invalid phone number',
-        },
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+    } = useForm<CompanyRegisterFormDto>({
+        resolver: zodResolver(CompanyRegisterFormSchema),
     });
+
+    const onSubmit: SubmitHandler<CompanyRegisterFormDto> = async (data) => {
+        mutate(data);
+    };
+
+    if (isSuccess) {
+        return (
+            <Stack align="center">
+                <Text fw={700}>
+                    Your application has been received! You will receive an
+                    email once your application is reviewed.
+                </Text>
+            </Stack>
+        );
+    }
 
     return (
         <motion.div
@@ -54,62 +65,51 @@ export const CompanyRegisterForm = ({ switchToLogin }: Props) => {
             animate={{ x: 0 }}
             transition={{ duration: 0.25 }}
         >
-            <form onSubmit={form.onSubmit(() => mutate(form.values))}>
-                <LoadingOverlay visible={isLoading} overlayBlur={0.5} />
-                {isSuccess ? (
-                    <Stack align="center">
-                        {/* <AnimatedCheckIcon /> */}
-                        <Text color="green" fw={700} align={'center'}>
-                            Your application has been received! You will receive
-                            an email once your application is reviewed.
-                        </Text>
-                    </Stack>
-                ) : (
-                    <Stack>
-                        <TextInput
-                            required
-                            label="Company name"
-                            placeholder="Name"
-                            radius="md"
-                            {...form.getInputProps('name')}
-                        />
-                        <TextInput
-                            required
-                            label="Company code"
-                            placeholder="Code"
-                            radius="md"
-                            {...form.getInputProps('code')}
-                        />
-                        <TextInput
-                            required
-                            label="Email"
-                            placeholder="Email"
-                            radius="md"
-                            {...form.getInputProps('email')}
-                        />
-                        <TextInput
-                            required
-                            label="Phone"
-                            placeholder="Phone"
-                            radius="md"
-                            {...form.getInputProps('phone')}
-                        />
-                        <Group position={'apart'}>
-                            <Anchor
-                                component="button"
-                                type="button"
-                                color="dimmed"
-                                size="xs"
-                                onClick={() => switchToLogin()}
-                            >
-                                {'Already have an account? Log in'}
-                            </Anchor>
-                            <Button w={140} type="submit" radius="xl">
-                                Apply
-                            </Button>
-                        </Group>
-                    </Stack>
-                )}
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Input
+                    required
+                    id="name"
+                    label="Company name"
+                    placeholder="Name"
+                    error={errors.name?.message}
+                    {...register('name')}
+                />
+                <Input
+                    required
+                    id="code"
+                    label="Company code"
+                    placeholder="Code"
+                    error={errors.code?.message}
+                    {...register('code')}
+                />
+                <Input
+                    required
+                    id="email"
+                    label="Email"
+                    placeholder="Email"
+                    error={errors.email?.message}
+                    {...register('email')}
+                />
+                <Input
+                    required
+                    id="phone"
+                    label="Phone"
+                    placeholder="Phone"
+                    error={errors.phone?.message}
+                    {...register('phone')}
+                />
+                <div className="flex justify-between">
+                    <Button
+                        className="pl-0 text-sm"
+                        variant="link"
+                        onClick={() => switchToLogin()}
+                    >
+                        {`Already have an account? Log in`}
+                    </Button>
+                    <Button className="w-24" type="submit">
+                        {isPending ? <SpinnerIcon /> : 'Apply'}
+                    </Button>
+                </div>
             </form>
         </motion.div>
     );

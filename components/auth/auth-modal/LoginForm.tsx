@@ -61,7 +61,7 @@ export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
 
     return (
         <motion.div
-            initial={{ x: -50 }}
+            initial={{ x: 50 }}
             animate={{ x: 0 }}
             transition={{ duration: 0.25 }}
         >
@@ -84,13 +84,16 @@ export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
                     required
                 />
                 <div className="flex justify-between">
-                    <div
-                        className="self-center underline cursor-pointer"
+                    <Button
+                        className="pl-0 text-sm"
+                        variant="link"
                         onClick={() => switchToRegistration()}
                     >
                         {`Don't have an account? Apply here`}
-                    </div>
-                    <Button type="submit">Login</Button>
+                    </Button>
+                    <Button className="w-24" type="submit">
+                        Login
+                    </Button>
                 </div>
             </form>
         </motion.div>
