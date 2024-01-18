@@ -3,7 +3,6 @@
 import { LoginForm } from './LoginForm';
 import { useState } from 'react';
 import { CompanyRegisterForm } from './CompanyRegisterForm';
-import { AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
 
@@ -13,33 +12,33 @@ const AuthModal = () => {
 
     const handleClose = () => {
         setDialogOpen(false);
-        setTimeout(() => setIsLoginView(true), 200);
+        // setIsLoginView(true);
     };
 
     return (
         <>
             <Dialog open={dialogOpen} onOpenChange={handleClose}>
                 <Button onClick={() => setDialogOpen(true)}>Log in</Button>
-                <DialogContent>
+                <DialogContent
+                    className={`transition-all duration-500 ${
+                        isLoginView ? 'max-h-[268px]' : 'max-h-[421px]'
+                    }`}
+                >
                     <DialogHeader>
                         {isLoginView
                             ? 'Welcome to Aquawise, log in with'
                             : 'Apply for a company account'}
                     </DialogHeader>
-                    <AnimatePresence initial={false}>
-                        {isLoginView ? (
-                            <LoginForm
-                                closeModal={handleClose}
-                                switchToRegistration={() =>
-                                    setIsLoginView(false)
-                                }
-                            />
-                        ) : (
-                            <CompanyRegisterForm
-                                switchToLogin={() => setIsLoginView(true)}
-                            />
-                        )}
-                    </AnimatePresence>
+                    {isLoginView ? (
+                        <LoginForm
+                            closeModal={handleClose}
+                            switchToRegistration={() => setIsLoginView(false)}
+                        />
+                    ) : (
+                        <CompanyRegisterForm
+                            switchToLogin={() => setIsLoginView(true)}
+                        />
+                    )}
                 </DialogContent>
             </Dialog>
         </>

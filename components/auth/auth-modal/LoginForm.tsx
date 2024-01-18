@@ -1,7 +1,6 @@
 'use client';
 
 import useAlert from '../../../stores/useAlert';
-import { motion } from 'framer-motion';
 import { signIn } from 'next-auth/react';
 import { Alert, AlertType } from '../../../models/Alert';
 import { z } from 'zod';
@@ -60,42 +59,36 @@ export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
     };
 
     return (
-        <motion.div
-            initial={{ x: 50 }}
-            animate={{ x: 0 }}
-            transition={{ duration: 0.25 }}
-        >
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <Input
-                    id="email"
-                    label="Email"
-                    placeholder="Email"
-                    {...register('email')}
-                    error={errors.email?.message}
-                    required
-                />
-                <Input
-                    id="password"
-                    label="Password"
-                    placeholder="Password"
-                    type="password"
-                    {...register('password')}
-                    error={errors.password?.message}
-                    required
-                />
-                <div className="flex justify-between">
-                    <Button
-                        className="pl-0 text-sm"
-                        variant="link"
-                        onClick={() => switchToRegistration()}
-                    >
-                        {`Don't have an account? Apply here`}
-                    </Button>
-                    <Button className="w-24" type="submit">
-                        Login
-                    </Button>
-                </div>
-            </form>
-        </motion.div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <Input
+                id="email"
+                label="Email"
+                placeholder="Email"
+                {...register('email')}
+                error={errors.email?.message}
+                required
+            />
+            <Input
+                id="password"
+                label="Password"
+                placeholder="Password"
+                type="password"
+                {...register('password')}
+                error={errors.password?.message}
+                required
+            />
+            <div className="flex justify-between">
+                <Button
+                    className="pl-0 text-sm"
+                    variant="link"
+                    onClick={() => switchToRegistration()}
+                >
+                    {`Don't have an account? Apply here`}
+                </Button>
+                <Button className="w-24" type="submit">
+                    Login
+                </Button>
+            </div>
+        </form>
     );
 };

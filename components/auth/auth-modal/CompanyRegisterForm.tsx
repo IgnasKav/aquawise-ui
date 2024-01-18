@@ -2,7 +2,6 @@ import { Stack, Text } from '@mantine/core';
 import { useMutation } from '@tanstack/react-query';
 import useAlert from '../../../stores/useAlert';
 import { api } from '../../../api/api';
-import { motion } from 'framer-motion';
 import { ApiError } from '../../../models/ApiError';
 import { z } from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -60,57 +59,51 @@ export const CompanyRegisterForm = ({ switchToLogin }: Props) => {
     }
 
     return (
-        <motion.div
-            initial={{ x: 50 }}
-            animate={{ x: 0 }}
-            transition={{ duration: 0.25 }}
-        >
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <Input
-                    required
-                    id="name"
-                    label="Company name"
-                    placeholder="Name"
-                    error={errors.name?.message}
-                    {...register('name')}
-                />
-                <Input
-                    required
-                    id="code"
-                    label="Company code"
-                    placeholder="Code"
-                    error={errors.code?.message}
-                    {...register('code')}
-                />
-                <Input
-                    required
-                    id="email"
-                    label="Email"
-                    placeholder="Email"
-                    error={errors.email?.message}
-                    {...register('email')}
-                />
-                <Input
-                    required
-                    id="phone"
-                    label="Phone"
-                    placeholder="Phone"
-                    error={errors.phone?.message}
-                    {...register('phone')}
-                />
-                <div className="flex justify-between">
-                    <Button
-                        className="pl-0 text-sm"
-                        variant="link"
-                        onClick={() => switchToLogin()}
-                    >
-                        {`Already have an account? Log in`}
-                    </Button>
-                    <Button className="w-24" type="submit">
-                        {isPending ? <SpinnerIcon /> : 'Apply'}
-                    </Button>
-                </div>
-            </form>
-        </motion.div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <Input
+                required
+                id="name"
+                label="Company name"
+                placeholder="Name"
+                error={errors.name?.message}
+                {...register('name')}
+            />
+            <Input
+                required
+                id="code"
+                label="Company code"
+                placeholder="Code"
+                error={errors.code?.message}
+                {...register('code')}
+            />
+            <Input
+                required
+                id="email"
+                label="Email"
+                placeholder="Email"
+                error={errors.email?.message}
+                {...register('email')}
+            />
+            <Input
+                required
+                id="phone"
+                label="Phone"
+                placeholder="Phone"
+                error={errors.phone?.message}
+                {...register('phone')}
+            />
+            <div className="flex justify-between">
+                <Button
+                    className="pl-0 text-sm"
+                    variant="link"
+                    onClick={() => switchToLogin()}
+                >
+                    {`Already have an account? Log in`}
+                </Button>
+                <Button className="w-24" type="submit">
+                    {isPending ? <SpinnerIcon /> : 'Apply'}
+                </Button>
+            </div>
+        </form>
     );
 };

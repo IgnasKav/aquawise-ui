@@ -3,7 +3,6 @@
 import useAlert from '../../stores/useAlert';
 import { AlertComponent } from './Alert';
 import css from './alert-list.module.scss';
-// import { AnimatePresence } from 'framer-motion';
 
 export function AlertList() {
     const [alerts] = useAlert((state) => [state.alerts, state.createAlert]);
@@ -17,9 +16,6 @@ export function AlertList() {
                     alert={alert}
                 />
             ))}
-            {/* <AnimatePresence initial={false}>
-                
-            </AnimatePresence> */}
         </div>
     );
 }

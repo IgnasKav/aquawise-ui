@@ -11,7 +11,7 @@ completedColumns:
 
 ## Todo
 
-- [change-toasts-from-mantine-to-shadcn](tasks/change-toasts-from-mantine-to-shadcn.md)
+- [fixt-toast](tasks/fixt-toast.md)
 
 ## In Progress
 
