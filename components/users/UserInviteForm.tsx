@@ -11,9 +11,9 @@ import { UserRole } from '../../models/User';
 import { UserInviteRequest } from './models/UserInviteRequest';
 import useAlert from '../../stores/useAlert';
 import { api } from '../../api/api';
-import { Alert, AlertType } from '../../models/Alert';
+import { AlertDto } from '../alert/models/AlertDto';
 import useAuth from '../../stores/useAuth';
-import { ApiError } from '../../models/ApiError';
+import { ApiError } from '../../api/models/ApiError';
 
 export const UserInviteForm = () => {
     const [user] = useAuth((state) => [state.user]);
@@ -21,9 +21,9 @@ export const UserInviteForm = () => {
 
     const { mutate, isLoading } = useMutation(api.Auth.inviteUser, {
         onSuccess: () => {
-            const alert = new Alert({
+            const alert = new AlertDto({
                 message: 'Invitation has been sent',
-                type: AlertType.success,
+                type: 'success',
                 title: 'Success!',
             });
             createAlert(alert);

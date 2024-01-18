@@ -1,4 +1,4 @@
-import { Alert, AlertType } from './Alert';
+import { AlertDto } from '../../components/alert/models/AlertDto';
 
 export class ApiError {
     error: string;
@@ -13,9 +13,9 @@ export class ApiError {
         this.timeStamp = error?.timeStamp ?? '';
     }
 
-    toAlert(): Alert {
-        return new Alert({
-            type: AlertType.error,
+    toAlert(): AlertDto {
+        return new AlertDto({
+            type: 'error',
             title: 'Error',
             message: this.message,
         });

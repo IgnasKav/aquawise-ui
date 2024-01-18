@@ -16,7 +16,7 @@ import { RegisterRequest } from '../../models/auth/RegisterRequest';
 import useAuth from '../../stores/useAuth';
 import { useRouter } from 'next/router';
 import useAlert from '../../stores/useAlert';
-import { ApiError } from '../../models/ApiError';
+import { ApiError } from '../../api/models/ApiError';
 
 interface RegisterFormArgs {
     companyRegistrationId?: string;

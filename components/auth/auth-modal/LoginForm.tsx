@@ -2,7 +2,7 @@
 
 import useAlert from '../../../stores/useAlert';
 import { signIn } from 'next-auth/react';
-import { Alert, AlertType } from '../../../models/Alert';
+import { AlertDto } from '../../alert/models/AlertDto';
 import { z } from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -44,8 +44,8 @@ export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
         if (!res) return;
 
         if (!res?.ok) {
-            const alert = new Alert({
-                type: AlertType.error,
+            const alert = new AlertDto({
+                type: 'error',
                 title: 'Failed to login',
                 message: res.error ?? '',
             });

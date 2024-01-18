@@ -14,7 +14,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../api/api';
 import useAlert from '../../stores/useAlert';
 import { OrderUpdateRequest } from './models/OrderUpdateRequest';
-import { ApiError } from '../../models/ApiError';
+import { ApiError } from '../../api/models/ApiError';
 
 interface Props {
     title: string;

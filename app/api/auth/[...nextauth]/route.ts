@@ -2,7 +2,7 @@ import NextAuth, { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { api } from '../../../../api/api';
 import { LoginResponse } from '../../../../models/auth/LoginResponse';
-import { ApiError } from '../../../../models/ApiError';
+import { ApiError } from '../../../../api/models/ApiError';
 
 const nextAuthOptions: AuthOptions = {
     secret: 'paslaptis',

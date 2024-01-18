@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { LoginRequest } from '../models/auth/LoginRequest';
 import { RegisterRequest } from '../models/auth/RegisterRequest';
 import { LoginResponse } from '../models/auth/LoginResponse';
-import { ApiError } from '../models/ApiError';
+import { ApiError } from './models/ApiError';
 import { User } from '../models/User';
 import { Company } from '../app/companies/models/Company';
 import { RegisterResponse } from '../models/auth/RegisterResponse';

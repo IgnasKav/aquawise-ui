@@ -3,10 +3,10 @@
 import { Product } from '../../models/Product';
 import { api } from '../../../../api/api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Alert, AlertType } from '../../../../models/Alert';
+import { AlertDto } from '../../../../components/alert/models/AlertDto';
 import useAlert from '../../../../stores/useAlert';
 import { ProductForm, ProductFormDto } from './ProductForm';
-import { ApiError } from '../../../../models/ApiError';
+import { ApiError } from '../../../../api/models/ApiError';
 import { forwardRef } from 'react';
 import { Subject } from 'rxjs';
 
@@ -23,9 +23,9 @@ const useProductEdit = (onSave?: () => void) => {
         mutationFn: ({ productId, product }: ProductUpdateMutation) =>
             api.Products.update(productId, product),
         onSuccess: async () => {
-            const alert = new Alert({
+            const alert = new AlertDto({
                 message: 'Product edited',
-                type: AlertType.success,
+                type: 'success',
                 title: 'Success!',
             });
 

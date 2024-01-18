@@ -1,10 +1,10 @@
 'use client';
 
 import { useQueryClient, useMutation } from '@tanstack/react-query';
-import { Alert, AlertType } from '../../../../models/Alert';
+import { AlertDto } from '../../../../components/alert/models/AlertDto';
 import useAlert from '../../../../stores/useAlert';
 import { ProductForm, ProductFormDto } from './ProductForm';
-import { ApiError } from '../../../../models/ApiError';
+import { ApiError } from '../../../../api/models/ApiError';
 import { api } from 'api/api';
 import { forwardRef } from 'react';
 import { Subject } from 'rxjs';
@@ -17,9 +17,9 @@ const useCreateProduct = () => {
     const mutation = useMutation({
         mutationFn: api.Products.create,
         onSuccess: async () => {
-            const alert = new Alert({
+            const alert = new AlertDto({
                 message: 'Product created',
-                type: AlertType.success,
+                type: 'success',
                 title: 'Success!',
             });
 

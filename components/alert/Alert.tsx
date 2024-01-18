@@ -1,9 +1,9 @@
 import { Alert as MantineAlert } from '@mantine/core';
-import { Alert, AlertType } from '../../models/Alert';
+import { AlertDto } from './models/AlertDto';
 import useAlert from '../../stores/useAlert';
 import { IconAlertCircle } from '@tabler/icons-react';
 interface Props {
-    alert: Alert;
+    alert: AlertDto;
     className: string;
 }
 
@@ -13,13 +13,13 @@ export function AlertComponent({ alert, className }: Props) {
     const getAlertColour = (): string => {
         let colour = '';
         switch (alert.type) {
-            case AlertType.success:
+            case 'success':
                 colour = 'green';
                 break;
-            case AlertType.error:
+            case 'error':
                 colour = 'red';
                 break;
-            case AlertType.info:
+            case 'info':
                 colour = 'blue';
                 break;
         }
