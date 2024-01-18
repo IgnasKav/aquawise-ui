@@ -12,18 +12,13 @@ const AuthModal = () => {
 
     const handleClose = () => {
         setDialogOpen(false);
-        // setIsLoginView(true);
     };
 
     return (
         <>
             <Dialog open={dialogOpen} onOpenChange={handleClose}>
                 <Button onClick={() => setDialogOpen(true)}>Log in</Button>
-                <DialogContent
-                    className={`transition-all duration-500 ${
-                        isLoginView ? 'max-h-[268px]' : 'max-h-[421px]'
-                    }`}
-                >
+                <DialogContent>
                     <DialogHeader>
                         {isLoginView
                             ? 'Welcome to Aquawise, log in with'
