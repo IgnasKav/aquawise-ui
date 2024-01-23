@@ -34,7 +34,7 @@ export default async function RootLayout({
                                     enableSystem
                                     disableTransitionOnChange
                                 >
-                                    <div className="max-w-screen-2xl mx-auto px-8">
+                                    <div className="relative h-screen max-w-screen-2xl mx-auto px-8">
                                         <NavBar session={session} />
                                         {children}
                                         <AlertList />

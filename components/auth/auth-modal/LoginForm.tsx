@@ -81,6 +81,7 @@ export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
                 <Button
                     className="pl-0 text-sm"
                     variant="link"
+                    type="button"
                     onClick={() => switchToRegistration()}
                 >
                     {`Don't have an account? Apply here`}

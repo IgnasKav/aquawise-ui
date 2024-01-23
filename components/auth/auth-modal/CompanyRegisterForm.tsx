@@ -1,4 +1,3 @@
-import { Stack, Text } from '@mantine/core';
 import { useMutation } from '@tanstack/react-query';
 import useAlert from '../../../stores/useAlert';
 import { api } from '../../../api/api';
@@ -9,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import SpinnerIcon from 'app/shared/components/loaders/SpinnerIcon';
+import { AlertDto } from 'components/alert/models/AlertDto';
 
 const CompanyRegisterFormSchema = z.object({
     name: z.string().min(1, 'Name is required'),
@@ -26,13 +26,19 @@ interface Props {
 export const CompanyRegisterForm = ({ switchToLogin }: Props) => {
     const [createAlert] = useAlert((state) => [state.createAlert]);
 
-    const { mutate, isPending, isSuccess } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: api.Companies.create,
         onError: (error: ApiError) => {
             const alert = error.toAlert();
 
-            console.log('error', error);
-            console.log('alert', alert);
+            createAlert(alert);
+        },
+        onSuccess: () => {
+            const alert = new AlertDto({
+                type: 'success',
+                title: 'Success',
+                message: 'Your application has been received!',
+            });
 
             createAlert(alert);
         },
@@ -49,17 +55,6 @@ export const CompanyRegisterForm = ({ switchToLogin }: Props) => {
     const onSubmit: SubmitHandler<CompanyRegisterFormDto> = async (data) => {
         mutate(data);
     };
-
-    if (isSuccess) {
-        return (
-            <Stack align="center">
-                <Text fw={700}>
-                    Your application has been received! You will receive an
-                    email once your application is reviewed.
-                </Text>
-            </Stack>
-        );
-    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
