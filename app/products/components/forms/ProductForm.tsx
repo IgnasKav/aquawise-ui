@@ -66,6 +66,10 @@ export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
             },
         });
 
+        // useEffect(() => {
+
+        // }, [ini])
+
         useEffect(() => {
             const productImages = getValues('images');
 

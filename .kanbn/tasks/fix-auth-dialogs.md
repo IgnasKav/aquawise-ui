@@ -1,6 +1,6 @@
 ---
 created: 2024-01-14T21:48:17.123Z
-updated: 2024-01-17T22:59:15.015Z
+updated: 2024-01-23T20:45:23.934Z
 assigned: ""
 progress: 0
 tags: []
@@ -15,6 +15,8 @@ For some reason login dialog does not open
 
 - [x] fix login dialog
 - [x] fix company register dialog
-- [ ] fix admin register page
-- [ ] try to animate dialog size change
+- [x] fix admin register page
 - [ ] in company register form on success- display toast
+- [ ] move company register to a new page and remove dialog view switching
+- [x] move authmodal to app directory
+- [ ] refactor user register form, don't register user using useAuth, create mutationFn instead which would save user. Also this endpoint should be used for saving admins and simple users.

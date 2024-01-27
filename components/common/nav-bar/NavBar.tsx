@@ -5,8 +5,8 @@ import NavButton from './NavButton';
 import ProfileButton from './ProfileButton';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
-import { User, UserRole } from 'models/User';
-import AuthModal from 'components/auth/auth-modal/AuthModal';
+import { User } from 'app/auth/models/User';
+import AuthModal from 'app/auth/register/components/auth-modal/AuthModal';
 import {
     Building2,
     Home,
@@ -33,7 +33,8 @@ const NavBar = ({ session: initialSession }: NavbarProps) => {
                     <NavButton to="/" title="Home" icon={<Home />} />
                     {user && (
                         <>
-                            {user.role == UserRole.Admin && (
+                            {(user.role === 'Admin' ||
+                                user.role === 'Support') && (
                                 <>
                                     <NavButton
                                         to="/companies"
@@ -62,7 +63,7 @@ const NavBar = ({ session: initialSession }: NavbarProps) => {
                                     />
                                 </>
                             )}
-                            {user.role == UserRole.User && (
+                            {user.role === 'User' && (
                                 <>
                                     <NavButton
                                         to="/clients"

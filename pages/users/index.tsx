@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '../../api/api';
 import useAuth from '../../stores/useAuth';
 import { RequireAuth } from '../../components/auth/RequireAuth';
-import { User } from '../../models/User';
+import { User } from '../../app/auth/models/User';
 import { UserInviteButton } from '../../components/users/UserInviteButton';
 
 const Users = () => {

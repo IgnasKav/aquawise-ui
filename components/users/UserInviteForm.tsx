@@ -7,7 +7,7 @@ import {
 } from '@mantine/core';
 import { useForm, UseFormReturnType } from '@mantine/form';
 import { useMutation } from '@tanstack/react-query';
-import { UserRole } from '../../models/User';
+import { UserRole } from '../../app/auth/models/User';
 import { UserInviteRequest } from './models/UserInviteRequest';
 import useAlert from '../../stores/useAlert';
 import { api } from '../../api/api';

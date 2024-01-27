@@ -1,7 +1,7 @@
 import NextAuth, { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { api } from '../../../../api/api';
-import { LoginResponse } from '../../../../models/auth/LoginResponse';
+import { LoginResponse } from '../../../auth/register/models/LoginResponse';
 import { ApiError } from '../../../../api/models/ApiError';
 
 const nextAuthOptions: AuthOptions = {

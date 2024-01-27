@@ -1,6 +1,6 @@
-import { User } from '../models/User';
-import { LoginRequest } from '../models/auth/LoginRequest';
-import { RegisterRequest } from '../models/auth/RegisterRequest';
+import { User } from '../app/auth/models/User';
+import { LoginRequest } from '../app/auth/register/models/LoginRequest';
+import { RegisterRequest } from '../app/auth/register/models/RegisterRequest';
 import { create } from 'zustand';
 import { api } from '../api/api';
 import { deleteCookie, setCookie } from 'cookies-next';

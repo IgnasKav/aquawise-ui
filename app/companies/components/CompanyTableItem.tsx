@@ -14,7 +14,8 @@ const CompanyTableItem = ({ company }: CompanyTableItemProps) => {
     const queryCLient = useQueryClient();
 
     const { mutate } = useMutation({
-        mutationFn: () => api.Companies.confirmApplication(company.id),
+        mutationFn: () =>
+            api.Companies.confirmApplication(company.companyRegistrationId!),
         onSuccess: () =>
             queryCLient.invalidateQueries({ queryKey: ['clients'] }),
     });

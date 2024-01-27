@@ -1,8 +1,8 @@
 'use client';
 
-import useAlert from '../../../stores/useAlert';
+import useAlert from '../../../../../stores/useAlert';
 import { signIn } from 'next-auth/react';
-import { AlertDto } from '../../alert/models/AlertDto';
+import { AlertDto } from '../../../../../components/alert/models/AlertDto';
 import { z } from 'zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

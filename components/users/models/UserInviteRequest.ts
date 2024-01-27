@@ -1,4 +1,4 @@
-import { UserRole } from '../../../models/User';
+import { UserRole } from '../../../app/auth/models/User';
 
 export class UserInviteRequest {
     email: string;

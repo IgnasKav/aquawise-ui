@@ -11,10 +11,9 @@ completedColumns:
 
 ## Todo
 
-- [fixt-toast](tasks/fixt-toast.md)
-
 ## In Progress
 
+- [fixt-toast](tasks/fixt-toast.md)
 - [fix-auth-dialogs](tasks/fix-auth-dialogs.md)
 
 ## Done

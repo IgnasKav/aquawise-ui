@@ -4,7 +4,7 @@ import {
     dehydrate,
 } from '@tanstack/react-query';
 import { api } from 'api/api';
-import { User } from 'models/User';
+import { User } from 'app/auth/models/User';
 import { getServerSession } from 'next-auth';
 import ClientsTable from './components/ClientsTable';
 import AuthGuard from 'app/auth/AuthGuard';

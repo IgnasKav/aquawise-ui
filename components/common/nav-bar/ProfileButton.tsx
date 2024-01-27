@@ -1,4 +1,4 @@
-import { User } from '../../../models/User';
+import { User } from '../../../app/auth/models/User';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';

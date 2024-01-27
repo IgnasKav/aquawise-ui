@@ -1,11 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
-import { LoginRequest } from '../models/auth/LoginRequest';
-import { RegisterRequest } from '../models/auth/RegisterRequest';
-import { LoginResponse } from '../models/auth/LoginResponse';
+import { LoginRequest } from '../app/auth/register/models/LoginRequest';
+import { RegisterRequest } from '../app/auth/register/models/RegisterRequest';
+import { LoginResponse } from '../app/auth/register/models/LoginResponse';
 import { ApiError } from './models/ApiError';
-import { User } from '../models/User';
+import { User } from '../app/auth/models/User';
 import { Company } from '../app/companies/models/Company';
-import { RegisterResponse } from '../models/auth/RegisterResponse';
+import { RegisterResponse } from '../app/auth/register/models/RegisterResponse';
 import { UserInviteRequest } from '../components/users/models/UserInviteRequest';
 import { Product } from '../app/products/models/Product';
 import { CompanyClient } from '../app/companies/models/CompanyClient';
@@ -16,7 +16,7 @@ import { nextAuthOptions } from '../app/api/auth/[...nextauth]/route';
 import { getSession } from 'next-auth/react';
 import { ImagesApi as Images } from './images/imagesApi';
 import { ProductFormDto } from 'app/products/components/forms/ProductForm';
-import { CompanyRegisterFormDto } from 'components/auth/auth-modal/CompanyRegisterForm';
+import { CompanyRegisterFormDto } from 'app/auth/register/components/auth-modal/CompanyRegisterForm';
 
 export const ApiUrl = process.env.NEXT_PUBLIC_API_URL;
 

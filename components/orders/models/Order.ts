@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid';
 import { Client } from '../../../app/clients/models/Client';
 import { OrderItem } from './OrderItem';
-import { User } from '../../../models/User';
+import { User } from '../../../app/auth/models/User';
 
 export class Order {
     id: string;

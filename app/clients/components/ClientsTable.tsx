@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/table';
 import { useQuery } from '@tanstack/react-query';
 import { api } from 'api/api';
-import { User } from 'models/User';
+import { User } from 'app/auth/models/User';
 import ClientsTableItem from './ClientsTableItem';
 
 type ClientsTableProps = {

@@ -1,32 +1,16 @@
-import { User } from '../../../models/User';
+import { User } from '../../auth/models/User';
 
-export class Company {
+export type Company = {
     id: string;
     name: string;
-    code: string;
     email: string;
+    code: string;
     phone: string;
     status: CompanyStatus;
     brandColor: string;
     logoUrl?: string;
     companyRegistrationId?: string;
     users: User[];
+};
 
-    constructor(dto: Partial<Company>) {
-        this.id = dto.id ?? '';
-        this.name = dto.name ?? '';
-        this.code = dto.code ?? '';
-        this.email = dto.email ?? '';
-        this.phone = dto.phone ?? '';
-        this.status = dto.status ?? CompanyStatus.Confirmed;
-        this.brandColor = dto.brandColor ?? '';
-        this.logoUrl = dto.logoUrl;
-        this.companyRegistrationId = dto.companyRegistrationId;
-        this.users = dto.users ?? [];
-    }
-}
-
-export enum CompanyStatus {
-    ApplicationPending = 'ApplicationPending',
-    Confirmed = 'Confirmed',
-}
+export type CompanyStatus = 'ApplicationPending' | 'Confirmed';
