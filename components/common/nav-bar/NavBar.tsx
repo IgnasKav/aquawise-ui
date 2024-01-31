@@ -6,7 +6,7 @@ import ProfileButton from './ProfileButton';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { User } from 'app/auth/models/User';
-import AuthModal from 'app/auth/register/components/auth-modal/AuthModal';
+import AuthModal from 'app/auth/components/auth-modal/AuthModal';
 import {
     Building2,
     Home,

@@ -9,7 +9,6 @@ export type Company = {
     status: CompanyStatus;
     brandColor: string;
     logoUrl?: string;
-    companyRegistrationId?: string;
     users: User[];
 };
 

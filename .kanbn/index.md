@@ -11,6 +11,8 @@ completedColumns:
 
 ## Todo
 
+- [remove-use-auth](tasks/remove-use-auth.md)
+
 ## In Progress
 
 - [fixt-toast](tasks/fixt-toast.md)

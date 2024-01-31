@@ -14,10 +14,6 @@ interface AuthState {
         userRegistrationId: string,
         req: RegisterRequest,
     ) => Promise<void>;
-    registerAdmin: (
-        companyRegistrationId: string,
-        req: RegisterRequest,
-    ) => Promise<void>;
     logout: () => void;
 }
 

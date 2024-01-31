@@ -2,7 +2,7 @@
 
 import { useMutation } from '@tanstack/react-query';
 import useAlert from 'stores/useAlert';
-import { RegisterRequest } from '../../models/RegisterRequest';
+import { RegisterRequest } from '../models/RegisterRequest';
 import { ApiError } from 'api/models/ApiError';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
@@ -19,11 +19,6 @@ interface UserRegisterFormParams {
 interface RegisterUserPayload {
     req: RegisterRequest;
     userRegistrationId: string;
-}
-
-interface RegisterAdminPayload {
-    req: RegisterRequest;
-    companyRegistrationId: string;
 }
 
 const UserRegisterFormSchema = z.object({
@@ -52,15 +47,6 @@ export const UserRegisterForm = ({ initialData }: UserRegisterFormParams) => {
     const { mutate: createUser } = useMutation({
         mutationFn: ({ userRegistrationId, req }: RegisterUserPayload) =>
             api.Auth.register(userRegistrationId, req),
-        onSuccess: () => router.push('/'),
-        onError: (error: ApiError) => {
-            createAlert(error.toAlert());
-        },
-    });
-
-    const { mutate: createAdmin } = useMutation({
-        mutationFn: ({ companyRegistrationId, req }: RegisterAdminPayload) =>
-            api.Auth.registerAdmin(companyRegistrationId, req),
         onSuccess: () => router.push('/'),
         onError: (error: ApiError) => {
             createAlert(error.toAlert());
