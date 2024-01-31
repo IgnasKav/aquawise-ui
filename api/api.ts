@@ -16,7 +16,7 @@ import { nextAuthOptions } from '../app/api/auth/[...nextauth]/route';
 import { getSession } from 'next-auth/react';
 import { ImagesApi as Images } from './images/imagesApi';
 import { ProductFormDto } from 'app/products/components/forms/ProductForm';
-import { CompanyRegisterFormDto } from 'app/auth/register/components/auth-modal/CompanyRegisterForm';
+import { CompanyApplicationFormDto } from 'app/auth/register/components/auth-modal/CompanyApplicationForm';
 
 export const ApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -109,8 +109,10 @@ const Companies = {
     getAll: (): Promise<Company[] | undefined> => requests.get(`/companies`),
     getByApplicationId: (applicationId: string): Promise<Company> =>
         requests.get(`/companies/application/${applicationId}`),
-    create: (createRequest: CompanyRegisterFormDto): Promise<Company> =>
-        requests.post('/companies', createRequest),
+    applyForAccount: (
+        createRequest: CompanyApplicationFormDto,
+    ): Promise<Company> =>
+        requests.post('/companies/application', createRequest),
     confirmApplication: (applicationId: string): Promise<Company> =>
         requests.post(`/companies/confirm/${applicationId}`, {}),
     getById: (id: string): Promise<Company> => requests.get(`/companies/${id}`),

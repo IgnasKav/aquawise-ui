@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { TableRow, TableCell } from '@/components/ui/table';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from 'api/api';
-import { Company, CompanyStatus } from 'app/companies/models/Company';
+import { Company } from 'app/companies/models/Company';
 
 type CompanyTableItemProps = {
     company: Company;
@@ -27,7 +27,7 @@ const CompanyTableItem = ({ company }: CompanyTableItemProps) => {
             <TableCell>{company.email}</TableCell>
             <TableCell>{company.phone}</TableCell>
             <TableCell>{company.status}</TableCell>
-            {company.status === CompanyStatus.ApplicationPending && (
+            {company.status === 'ApplicationPending' && (
                 <TableCell>
                     <Button onClick={() => mutate()}>Confirm</Button>
                 </TableCell>

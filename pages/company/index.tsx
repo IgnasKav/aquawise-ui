@@ -9,7 +9,6 @@ import {
     Stack,
     Text,
 } from '@mantine/core';
-import { DropZoneComponent } from '../../app/shared/components/dropzone/DropZone';
 import useAuth from '../../stores/useAuth';
 import { api } from '../../api/api';
 import {
@@ -46,26 +45,10 @@ const CompanyEditForm = () => {
     };
 
     const handleSave = async () => {
-        const formData = new FormData();
-        if (image) {
-            formData.append('image', new Blob([image]), image.name);
-        }
-
-        if (themeColor) {
-            formData.append('color', themeColor.hex);
-        }
-
         if (user != null) {
             await api.Companies.saveColor(user.company.id, themeColor?.hex);
             getCurrent();
         }
-
-        // if (isCreateForm) {
-        //     createProduct(formData);
-        // } else {
-        //     console.log('id', product.id);
-        //     editProduct({ productId: product.id, product: formData });
-        // }
     };
 
     const handleColorSelect = (hex: string) => {

@@ -10,7 +10,6 @@ import { forwardRef, useEffect } from 'react';
 import { NumberInput } from 'app/shared/components/inputs/NumberInput';
 import useImages from 'stores/useImages';
 import { Subject } from 'rxjs';
-import { useMutation } from '@tanstack/react-query';
 import { api } from 'api/api';
 
 const ProductFormSchema = z.object({
@@ -46,15 +45,10 @@ export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
             state.setImages,
         ]);
 
-        const { mutate: deleteImages } = useMutation({
-            mutationFn: api.Images.delete,
-        });
-
         const {
             register,
             formState: { errors },
             control,
-            getValues,
             handleSubmit,
         } = useForm<ProductFormDto>({
             resolver: zodResolver(ProductFormSchema),
@@ -66,17 +60,11 @@ export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
             },
         });
 
-        // useEffect(() => {
-
-        // }, [ini])
-
         useEffect(() => {
-            const productImages = getValues('images');
+            if (!product.images) return;
 
-            if (!productImages) return;
-
-            setImages(productImages);
-        }, [getValues, setImages]);
+            setImages(product.images);
+        }, [product, setImages]);
 
         useEffect(() => {
             const subscription = onCloseSubject.subscribe(() => {
@@ -85,7 +73,7 @@ export const ProductForm = forwardRef<HTMLFormElement, ProductFormProps>(
                 );
 
                 if (imagesWithoutRelation.length > 0) {
-                    deleteImages({ images: imagesWithoutRelation });
+                    api.Images.delete({ images: imagesWithoutRelation });
                 }
 
                 setImages([]);

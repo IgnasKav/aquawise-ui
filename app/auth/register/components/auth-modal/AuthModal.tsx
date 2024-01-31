@@ -2,7 +2,7 @@
 
 import { LoginForm } from './LoginForm';
 import { useState } from 'react';
-import { CompanyRegisterForm } from './CompanyRegisterForm';
+import { CompanyApplicationForm } from './CompanyApplicationForm';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
 
@@ -30,7 +30,7 @@ const AuthModal = () => {
                             switchToRegistration={() => setIsLoginView(false)}
                         />
                     ) : (
-                        <CompanyRegisterForm
+                        <CompanyApplicationForm
                             switchToLogin={() => setIsLoginView(true)}
                         />
                     )}

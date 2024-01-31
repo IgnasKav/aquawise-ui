@@ -22,7 +22,6 @@ const CompanyCreateFormSchema = z.object({
 export type CompanyCreateFormDto = z.infer<typeof CompanyCreateFormSchema>;
 
 export const CompanyCreateForm = ({ initialData }: CompanyCreateFormParams) => {
-    console.log('initialData', initialData);
     const {
         register,
         formState: { errors },

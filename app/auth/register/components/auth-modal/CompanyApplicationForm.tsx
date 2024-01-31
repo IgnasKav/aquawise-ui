@@ -10,24 +10,26 @@ import { Button } from '@/components/ui/button';
 import SpinnerIcon from 'app/shared/components/loaders/SpinnerIcon';
 import { AlertDto } from 'components/alert/models/AlertDto';
 
-const CompanyRegisterFormSchema = z.object({
+const CompanyApplicationFormSchema = z.object({
     name: z.string().min(1, 'Name is required'),
     code: z.string().min(1, 'Code is required'),
     email: z.string().email('Invalid email'),
     phone: z.string().min(1, 'Phone is required'),
 });
 
-export type CompanyRegisterFormDto = z.infer<typeof CompanyRegisterFormSchema>;
+export type CompanyApplicationFormDto = z.infer<
+    typeof CompanyApplicationFormSchema
+>;
 
 interface Props {
     switchToLogin: () => void;
 }
 
-export const CompanyRegisterForm = ({ switchToLogin }: Props) => {
+export const CompanyApplicationForm = ({ switchToLogin }: Props) => {
     const [createAlert] = useAlert((state) => [state.createAlert]);
 
     const { mutate, isPending } = useMutation({
-        mutationFn: api.Companies.create,
+        mutationFn: api.Companies.applyForAccount,
         onError: (error: ApiError) => {
             const alert = error.toAlert();
 
@@ -48,11 +50,11 @@ export const CompanyRegisterForm = ({ switchToLogin }: Props) => {
         register,
         formState: { errors },
         handleSubmit,
-    } = useForm<CompanyRegisterFormDto>({
-        resolver: zodResolver(CompanyRegisterFormSchema),
+    } = useForm<CompanyApplicationFormDto>({
+        resolver: zodResolver(CompanyApplicationFormSchema),
     });
 
-    const onSubmit: SubmitHandler<CompanyRegisterFormDto> = async (data) => {
+    const onSubmit: SubmitHandler<CompanyApplicationFormDto> = async (data) => {
         mutate(data);
     };
 

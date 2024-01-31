@@ -2,7 +2,6 @@ import { Card, Loader, Table } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../api/api';
 import useAuth from '../../stores/useAuth';
-import { RequireAuth } from '../../components/auth/RequireAuth';
 import { User } from '../../app/auth/models/User';
 import { UserInviteButton } from '../../components/users/UserInviteButton';
 
@@ -15,39 +14,37 @@ const Users = () => {
     );
 
     return (
-        <RequireAuth>
-            <Card shadow="md" radius="md" mx={20} p="xl" withBorder>
-                {isCompanyLoading || isLoading ? (
-                    <Loader />
-                ) : (
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>First name</th>
-                                <th>Last name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Role</th>
-                                <th>
-                                    <UserInviteButton />
-                                </th>
+        <Card shadow="md" radius="md" mx={20} p="xl" withBorder>
+            {isCompanyLoading || isLoading ? (
+                <Loader />
+            ) : (
+                <Table>
+                    <thead>
+                        <tr>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Role</th>
+                            <th>
+                                <UserInviteButton />
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {company?.users?.map((user: User) => (
+                            <tr key={user.id}>
+                                <td>{user.firstName}</td>
+                                <td>{user.lastName}</td>
+                                <td>{user.email}</td>
+                                <td>{user.phone}</td>
+                                <td>{user.role}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {company?.users?.map((user: User) => (
-                                <tr key={user.id}>
-                                    <td>{user.firstName}</td>
-                                    <td>{user.lastName}</td>
-                                    <td>{user.email}</td>
-                                    <td>{user.phone}</td>
-                                    <td>{user.role}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
-                )}
-            </Card>
-        </RequireAuth>
+                        ))}
+                    </tbody>
+                </Table>
+            )}
+        </Card>
     );
 };
 
