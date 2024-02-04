@@ -4,20 +4,20 @@ import {
     UserRegisterFormDto,
 } from './components/UserRegisterForm';
 
-type InvitationRegisterPageParams = {
-    companyId: string;
+type RegisterPageParams = {
+    registrationId: string;
 };
 
-const InvitationRegisterPage = async ({
+const RegisterPage = async ({
     searchParams,
 }: {
-    searchParams: InvitationRegisterPageParams;
+    searchParams: RegisterPageParams;
 }) => {
-    const { companyId } = searchParams;
-    const company = await api.Companies.getById(companyId);
+    const { registrationId } = searchParams;
+    const user = await api.Auth.getByRegistrationId(registrationId);
 
     const initialUserFormData: UserRegisterFormDto = {
-        email: company.email,
+        email: user.email,
         firstName: '',
         lastName: '',
         phone: '',
@@ -28,12 +28,15 @@ const InvitationRegisterPage = async ({
         <>
             <div className="flex flex-col items-center">
                 <h1 className="text-xl mb-6 max-w-xl text-center">
-                    {`Congratulations, your company '${company.name}' has been approved for account!  Please create admin account below.`}
+                    {`Congratulations, your company '${user.company.name}' has been approved for account!  Please create admin account below.`}
                 </h1>
-                <UserRegisterForm initialData={initialUserFormData} />
+                <UserRegisterForm
+                    initialData={initialUserFormData}
+                    registrationId={registrationId}
+                />
             </div>
         </>
     );
 };
 
-export default InvitationRegisterPage;
+export default RegisterPage;

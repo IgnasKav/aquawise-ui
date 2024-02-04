@@ -17,6 +17,7 @@ import { getSession } from 'next-auth/react';
 import { ImagesApi as Images } from './images/imagesApi';
 import { ProductFormDto } from 'app/products/components/forms/ProductForm';
 import { CompanyApplicationFormDto } from 'app/auth/components/auth-modal/CompanyApplicationForm';
+import { request } from 'http';
 
 export const ApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -80,29 +81,14 @@ const Auth = {
     login: (req: LoginRequest): Promise<LoginResponse> => {
         return requests.post('/auth/login', req);
     },
-    register: async (
-        userRegistrationId: string,
-        req: RegisterRequest,
-    ): Promise<RegisterResponse> => {
-        return await requests.post(
-            `/auth/register?userRegistrationId=${userRegistrationId}`,
-            req,
-        );
-    },
-    registerAdmin: async (
-        companyRegistrationId: string,
-        req: RegisterRequest,
-    ): Promise<RegisterResponse> => {
-        return await requests.post(
-            `/auth/register?companyRegistrationId=${companyRegistrationId}`,
-            req,
-        );
+    register: async (req: RegisterRequest): Promise<RegisterResponse> => {
+        return await requests.post(`/auth/register`, req);
     },
     current: (): Promise<User> => requests.get('auth/current'),
-    getByRegistrationId: (registrationId: string): Promise<User> =>
-        requests.get(`auth?userRegistrationId=${registrationId}`),
     inviteUser: (request: UserInviteRequest) =>
         requests.post(`/auth/invite`, request),
+    getByRegistrationId: (registrationId: string): Promise<User> =>
+        requests.get(`/auth/register?registrationId=${registrationId}`),
 };
 
 const Companies = {

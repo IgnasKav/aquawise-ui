@@ -14,11 +14,7 @@ import { api } from 'api/api';
 
 interface UserRegisterFormParams {
     initialData: UserRegisterFormDto;
-}
-
-interface RegisterUserPayload {
-    req: RegisterRequest;
-    userRegistrationId: string;
+    registrationId: string;
 }
 
 const UserRegisterFormSchema = z.object({
@@ -31,7 +27,10 @@ const UserRegisterFormSchema = z.object({
 
 export type UserRegisterFormDto = z.infer<typeof UserRegisterFormSchema>;
 
-export const UserRegisterForm = ({ initialData }: UserRegisterFormParams) => {
+export const UserRegisterForm = ({
+    initialData,
+    registrationId,
+}: UserRegisterFormParams) => {
     const {
         register,
         formState: { errors },
@@ -45,8 +44,7 @@ export const UserRegisterForm = ({ initialData }: UserRegisterFormParams) => {
     const [createAlert] = useAlert((state) => [state.createAlert]);
 
     const { mutate: createUser } = useMutation({
-        mutationFn: ({ userRegistrationId, req }: RegisterUserPayload) =>
-            api.Auth.register(userRegistrationId, req),
+        mutationFn: (req: RegisterRequest) => api.Auth.register(req),
         onSuccess: () => router.push('/'),
         onError: (error: ApiError) => {
             createAlert(error.toAlert());
@@ -55,6 +53,7 @@ export const UserRegisterForm = ({ initialData }: UserRegisterFormParams) => {
 
     const onSubmit: SubmitHandler<UserRegisterFormDto> = async (data) => {
         console.log(data);
+        createUser({ ...data, registrationId });
     };
 
     return (
