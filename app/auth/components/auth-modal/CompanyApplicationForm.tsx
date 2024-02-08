@@ -22,10 +22,14 @@ export type CompanyApplicationFormDto = z.infer<
 >;
 
 interface Props {
+    closeModal: () => void;
     switchToLogin: () => void;
 }
 
-export const CompanyApplicationForm = ({ switchToLogin }: Props) => {
+export const CompanyApplicationForm = ({
+    switchToLogin,
+    closeModal,
+}: Props) => {
     const [createAlert] = useAlert((state) => [state.createAlert]);
 
     const { mutate, isPending } = useMutation({
@@ -43,6 +47,7 @@ export const CompanyApplicationForm = ({ switchToLogin }: Props) => {
             });
 
             createAlert(alert);
+            closeModal();
         },
     });
 

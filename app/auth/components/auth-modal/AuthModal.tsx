@@ -10,6 +10,11 @@ const AuthModal = () => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [isLoginView, setIsLoginView] = useState(true);
 
+    const openDialog = () => {
+        setIsLoginView(true);
+        setDialogOpen(true);
+    };
+
     const handleClose = () => {
         setDialogOpen(false);
     };
@@ -17,7 +22,7 @@ const AuthModal = () => {
     return (
         <>
             <Dialog open={dialogOpen} onOpenChange={handleClose}>
-                <Button onClick={() => setDialogOpen(true)}>Log in</Button>
+                <Button onClick={openDialog}>Log in</Button>
                 <DialogContent>
                     <DialogHeader>
                         {isLoginView
@@ -31,6 +36,7 @@ const AuthModal = () => {
                         />
                     ) : (
                         <CompanyApplicationForm
+                            closeModal={handleClose}
                             switchToLogin={() => setIsLoginView(true)}
                         />
                     )}

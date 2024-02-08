@@ -8,7 +8,6 @@ import { Company } from '../app/companies/models/Company';
 import { RegisterResponse } from '../app/auth/register/models/RegisterResponse';
 import { UserInviteRequest } from '../components/users/models/UserInviteRequest';
 import { Product } from '../app/products/models/Product';
-import { CompanyClient } from '../app/companies/models/CompanyClient';
 import { Order } from '../components/orders/models/Order';
 import { OrderUpdateRequest } from '../components/orders/models/OrderUpdateRequest';
 import { getServerSession } from 'next-auth';
@@ -17,7 +16,6 @@ import { getSession } from 'next-auth/react';
 import { ImagesApi as Images } from './images/imagesApi';
 import { ProductFormDto } from 'app/products/components/forms/ProductForm';
 import { CompanyApplicationFormDto } from 'app/auth/components/auth-modal/CompanyApplicationForm';
-import { request } from 'http';
 
 export const ApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -97,13 +95,9 @@ const Companies = {
         createRequest: CompanyApplicationFormDto,
     ): Promise<Company> =>
         requests.post('/companies/application', createRequest),
-    confirmApplication: (applicationId: string): Promise<Company> =>
-        requests.post(`/companies/confirm/${applicationId}`, {}),
+    confirmApplication: (registrationId: string): Promise<Company> =>
+        requests.post(`/companies/confirm/${registrationId}`, {}),
     getById: (id: string): Promise<Company> => requests.get(`/companies/${id}`),
-    getClients: (id: string): Promise<CompanyClient[]> =>
-        requests.get(`/companies/${id}/clients`),
-    getOrders: (id: string): Promise<Order[]> =>
-        requests.get(`/companies/${id}/orders`),
     saveColor: (id: string, color: string | undefined): Promise<void> =>
         requests.put(`/companies/${id}`, { brandColor: color }),
 };

@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from 'api/api';
 import { ApiError } from 'api/models/ApiError';
 import { Company } from 'app/companies/models/Company';
+import SpinnerIcon from 'app/shared/components/loaders/SpinnerIcon';
 import { AlertDto } from 'components/alert/models/AlertDto';
 import useAlert from 'stores/useAlert';
 
@@ -17,10 +18,10 @@ const CompanyTableItem = ({ company }: CompanyTableItemProps) => {
     const [createAlert] = useAlert((state) => [state.createAlert]);
     const queryCLient = useQueryClient();
 
-    const { mutate } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationFn: () => api.Companies.confirmApplication(company.id),
         onSuccess: () => {
-            queryCLient.invalidateQueries({ queryKey: ['clients'] });
+            queryCLient.invalidateQueries({ queryKey: ['companies'] });
             const alert = new AlertDto({
                 type: 'success',
                 title: 'Sucecss!',
@@ -43,7 +44,9 @@ const CompanyTableItem = ({ company }: CompanyTableItemProps) => {
             <TableCell>{company.status}</TableCell>
             {company.status === 'ApplicationPending' && (
                 <TableCell>
-                    <Button onClick={() => mutate()}>Confirm</Button>
+                    <Button className="w-24" onClick={() => mutate()}>
+                        {isPending ? <SpinnerIcon /> : 'Confirm'}
+                    </Button>
                 </TableCell>
             )}
         </TableRow>

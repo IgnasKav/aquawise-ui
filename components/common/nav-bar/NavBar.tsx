@@ -33,8 +33,8 @@ const NavBar = ({ session: initialSession }: NavbarProps) => {
                     <NavButton to="/" title="Home" icon={<Home />} />
                     {user && (
                         <>
-                            {(user.role === 'Admin' ||
-                                user.role === 'Support') && (
+                            {(user.role === 'admin' ||
+                                user.role === 'support') && (
                                 <>
                                     <NavButton
                                         to="/companies"
@@ -63,7 +63,7 @@ const NavBar = ({ session: initialSession }: NavbarProps) => {
                                     />
                                 </>
                             )}
-                            {user.role === 'User' && (
+                            {user.role === 'user' && (
                                 <>
                                     <NavButton
                                         to="/clients"

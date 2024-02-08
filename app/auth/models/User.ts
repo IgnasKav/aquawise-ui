@@ -12,4 +12,4 @@ export type User = {
     company: Company;
 };
 
-export type UserRole = 'User' | 'Admin' | 'Support';
+export type UserRole = 'user' | 'admin' | 'support';
