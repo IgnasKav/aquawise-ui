@@ -28,9 +28,9 @@ columnSorting:
 
 ## In Progress
 
-- [fix-company-confirmation-button](tasks/fix-company-confirmation-button.md)
 - [fixt-toast](tasks/fixt-toast.md)
 
 ## Done
 
+- [fix-company-confirmation-button](tasks/fix-company-confirmation-button.md)
 - [fix-auth-dialogs](tasks/fix-auth-dialogs.md)

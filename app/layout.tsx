@@ -9,6 +9,7 @@ import { nextAuthOptions } from './api/auth/[...nextauth]/route';
 import ClientProviders from '../utils/ClientProviders';
 import 'styles/global.css';
 import { ThemeProvider } from 'utils/ThemeProvider';
+import AppWriteServer from './appwrite/server-session';
 
 export default async function RootLayout({
     children,
@@ -16,6 +17,10 @@ export default async function RootLayout({
     children: React.ReactNode;
 }) {
     const session = await getServerSession(nextAuthOptions);
+    const appwriteSession = await AppWriteServer().getAccount();
+
+    console.log('appwriteSession', appwriteSession);
+
     const theme = createTheme({});
 
     return (

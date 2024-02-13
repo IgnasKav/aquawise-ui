@@ -8,18 +8,28 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import axios from 'axios';
+import { account } from 'app/appwrite/appwrite';
 
 const LoginFormSchema = z.object({
     email: z.string().email(),
     password: z.string().min(6),
 });
 
-type LoginFormDto = z.infer<typeof LoginFormSchema>;
+export type LoginFormDto = z.infer<typeof LoginFormSchema>;
 
 interface Props {
     switchToRegistration: () => void;
     closeModal: () => void;
 }
+
+const callApiRoute = async (data: LoginFormDto) => {
+    const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_FE_URL}/api/account`,
+        data,
+    );
+    console.log('route', res);
+};
 
 export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
     const [createAlert] = useAlert((state) => [state.createAlert]);
@@ -34,27 +44,32 @@ export const LoginForm = ({ switchToRegistration, closeModal }: Props) => {
 
     const onSubmit: SubmitHandler<LoginFormDto> = async (data) => {
         const { email, password } = data;
+        const res = await account.createEmailSession(email, password);
 
-        const res = await signIn('credentials', {
-            redirect: false,
-            email,
-            password,
-        });
+        console.log(res);
 
-        if (!res) return;
+        // callApiRoute(data);
 
-        if (!res?.ok) {
-            const alert = new AlertDto({
-                type: 'error',
-                title: 'Failed to login',
-                message: res.error ?? '',
-            });
+        // const res = await signIn('credentials', {
+        //     redirect: false,
+        //     email,
+        //     password,
+        // });
 
-            createAlert(alert);
-            return;
-        }
+        // if (!res) return;
 
-        closeModal();
+        // if (!res?.ok) {
+        //     const alert = new AlertDto({
+        //         type: 'error',
+        //         title: 'Failed to login',
+        //         message: res.error ?? '',
+        //     });
+
+        //     createAlert(alert);
+        //     return;
+        // }
+
+        // closeModal();
     };
 
     return (
