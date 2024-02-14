@@ -4,7 +4,8 @@ import { LoginForm } from './LoginForm';
 import { useState } from 'react';
 import { CompanyApplicationForm } from './CompanyApplicationForm';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogContent } from '@/components/ui/alert-dialog';
+import CloseButton from 'app/shared/components/icons/CloseIcon';
 
 const AuthModal = () => {
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -21,14 +22,17 @@ const AuthModal = () => {
 
     return (
         <>
-            <Dialog open={dialogOpen} onOpenChange={handleClose}>
+            <AlertDialog open={dialogOpen} onOpenChange={handleClose}>
                 <Button onClick={openDialog}>Log in</Button>
-                <DialogContent>
-                    <DialogHeader>
-                        {isLoginView
-                            ? 'Welcome to Aquawise, log in with'
-                            : 'Apply for a company account'}
-                    </DialogHeader>
+                <AlertDialogContent>
+                    <div className="flex justify-between">
+                        <div>
+                            {isLoginView
+                                ? 'Welcome to Aquawise, log in with'
+                                : 'Apply for a company account'}
+                        </div>
+                        <CloseButton onClick={handleClose} />
+                    </div>
                     {isLoginView ? (
                         <LoginForm
                             closeModal={handleClose}
@@ -40,8 +44,8 @@ const AuthModal = () => {
                             switchToLogin={() => setIsLoginView(true)}
                         />
                     )}
-                </DialogContent>
-            </Dialog>
+                </AlertDialogContent>
+            </AlertDialog>
         </>
     );
 };

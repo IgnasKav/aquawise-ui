@@ -37,8 +37,8 @@ export default async function RootLayout({
                                     <div className="relative h-screen max-w-screen-2xl mx-auto px-8">
                                         <NavBar session={session} />
                                         {children}
-                                        <AlertList />
                                     </div>
+                                    <AlertList />
                                 </ThemeProvider>
                             </ClientProviders>
                         </ModalsProvider>

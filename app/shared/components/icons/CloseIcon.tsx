@@ -2,7 +2,7 @@ import { XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 type CloseButtonProps = {
-    color: 'red' | 'green';
+    color?: 'red' | 'green' | 'default';
     className?: string;
     onClick?: () => void;
 };
@@ -12,6 +12,8 @@ export default function CloseButton({
     color,
     onClick,
 }: CloseButtonProps) {
+    color ??= 'default';
+
     return (
         <div
             onClick={onClick}
@@ -22,11 +24,16 @@ export default function CloseButton({
                 className={cn(
                     'absolute',
                     {
-                        'stroke-red-600 hover:stroke-red-700': color === 'red',
+                        'stroke-red-600 hover:stroke-red-600/80':
+                            color === 'red',
                     },
                     {
-                        'stroke-green-600 hover:stroke-green-700':
+                        'stroke-green-600 hover:stroke-green-600/80':
                             color === 'green',
+                    },
+                    {
+                        'stroke-primary hover:stroke-primary/80':
+                            color === 'default',
                     },
                 )}
                 size={24}

@@ -28,14 +28,14 @@ export function AlertComponent({ alert, className }: Props) {
         }, 3000);
 
         return () => clearTimeout(timer); // This will clear the timeout if the component is unmounted before the timeout finishes
-    }, []);
+    }, [alert.id, removeAlert]);
 
     const Icon = iconMapping[alert.type];
 
     return (
         <Alert
             className={cn(
-                'flex items-center gap-[11px]',
+                'pointer-events-auto flex items-center gap-[11px]',
                 {
                     'border-green-600 text-green-600': alert.type === 'success',
                 },
