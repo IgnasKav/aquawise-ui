@@ -1,10 +1,10 @@
 'use client';
-import { XCircle } from 'lucide-react';
 import useImages from 'stores/useImages';
 import { ImageDto } from 'api/images/models/ImageEntity';
 import Image from 'next/image';
 import { ApiUrl, api } from 'api/api';
 import { useMutation } from '@tanstack/react-query';
+import CloseButton from '../icons/CloseIcon';
 
 type ImagePreviewProps = {
     image: ImageDto;
@@ -34,17 +34,11 @@ const ImagePreview = ({ image }: ImagePreviewProps) => {
                 alt="Product image"
                 onLoad={() => URL.revokeObjectURL(image.imageUrl)}
             />
-            <div
+            <CloseButton
                 onClick={() => deleteImages({ images: [image] })}
-                className="absolute top-[-3px] right-[-3px] h-[24px] w-[24px] cursor-pointer"
-            >
-                <div className="absolute left-[2px] top-[2px] rounded-full h-[20px] w-[20px] bg-background"></div>
-                <XCircle
-                    className="absolute stroke-red-600 hover:stroke-red-700"
-                    size={24}
-                    strokeWidth={2}
-                />
-            </div>
+                className="absolute top-[-3px] right-[-3px]"
+                color="red"
+            />
         </div>
     );
 };

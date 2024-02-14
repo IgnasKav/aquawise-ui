@@ -24,13 +24,14 @@ columnSorting:
 
 ## Todo
 
+- [refresh-product-list-after-image-delete](tasks/refresh-product-list-after-image-delete.md)
 - [remove-use-auth](tasks/remove-use-auth.md)
 
 ## In Progress
 
-- [fix-company-confirmation-button](tasks/fix-company-confirmation-button.md)
 - [fixt-toast](tasks/fixt-toast.md)
 
 ## Done
 
+- [fix-company-confirmation-button](tasks/fix-company-confirmation-button.md)
 - [fix-auth-dialogs](tasks/fix-auth-dialogs.md)
