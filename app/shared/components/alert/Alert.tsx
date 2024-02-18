@@ -1,7 +1,7 @@
 'use client';
 
 import { AlertDto } from './models/AlertDto';
-import useAlert from '../../stores/useAlert';
+import useAlert from '../../../../stores/useAlert';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertTriangle, Bell, CheckCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';

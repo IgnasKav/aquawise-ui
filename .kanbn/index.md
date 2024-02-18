@@ -28,10 +28,9 @@ columnSorting:
 
 ## In Progress
 
-- [refresh-product-list-after-image-delete](tasks/refresh-product-list-after-image-delete.md)
-
 ## Done
 
+- [refresh-product-list-after-image-delete](tasks/refresh-product-list-after-image-delete.md)
 - [fixt-toast](tasks/fixt-toast.md)
 - [fix-company-confirmation-button](tasks/fix-company-confirmation-button.md)
 - [fix-auth-dialogs](tasks/fix-auth-dialogs.md)

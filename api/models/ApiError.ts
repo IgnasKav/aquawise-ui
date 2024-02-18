@@ -1,4 +1,4 @@
-import { AlertDto } from '../../components/alert/models/AlertDto';
+import { AlertDto } from '../../app/shared/components/alert/models/AlertDto';
 
 export class ApiError {
     error: string;

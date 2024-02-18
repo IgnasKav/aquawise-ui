@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import useAlert from '../../stores/useAlert';
+import useAlert from '../../../../stores/useAlert';
 import { AlertComponent } from './Alert';
 import { ReactNode } from 'react';
 

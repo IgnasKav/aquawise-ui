@@ -1,7 +1,7 @@
 import { ColorSchemeScript, MantineProvider, createTheme } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
-import { AlertList } from '../components/alert/AlertList';
-import NavBar from '../components/common/nav-bar/NavBar';
+import { AlertList } from './shared/components/alert/AlertList';
+import NavBar from './shared/components/nav-bar/NavBar';
 import '@mantine/core/styles.css';
 import { SessionProvider } from '../wrapped/SessionProvider';
 import { getServerSession } from 'next-auth';

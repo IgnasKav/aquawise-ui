@@ -1,7 +1,7 @@
 'use client';
 
 import { useQueryClient, useMutation } from '@tanstack/react-query';
-import { AlertDto } from '../../../../components/alert/models/AlertDto';
+import { AlertDto } from '../../../shared/components/alert/models/AlertDto';
 import useAlert from '../../../../stores/useAlert';
 import { ProductForm, ProductFormDto } from './ProductForm';
 import { ApiError } from '../../../../api/models/ApiError';

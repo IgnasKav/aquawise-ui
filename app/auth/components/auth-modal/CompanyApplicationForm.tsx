@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import SpinnerIcon from 'app/shared/components/loaders/SpinnerIcon';
-import { AlertDto } from 'components/alert/models/AlertDto';
+import { AlertDto } from 'app/shared/components/alert/models/AlertDto';
 
 const CompanyApplicationFormSchema = z.object({
     name: z.string().min(1, 'Name is required'),

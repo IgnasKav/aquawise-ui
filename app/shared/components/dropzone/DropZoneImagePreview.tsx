@@ -3,7 +3,7 @@ import useImages from 'stores/useImages';
 import { ImageDto } from 'api/images/models/ImageEntity';
 import Image from 'next/image';
 import { ApiUrl, api } from 'api/api';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import CloseButton from '../icons/CloseIcon';
 
 type ImagePreviewProps = {
@@ -11,6 +11,8 @@ type ImagePreviewProps = {
 };
 
 const ImagePreview = ({ image }: ImagePreviewProps) => {
+    const queryClient = useQueryClient();
+
     const [images, setImages] = useImages((state) => [
         state.images,
         state.setImages,
@@ -19,6 +21,7 @@ const ImagePreview = ({ image }: ImagePreviewProps) => {
     const { mutate: deleteImages } = useMutation({
         mutationFn: api.Images.delete,
         onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['products'] });
             const filteredImages = images.filter((x) => x.id !== image.id);
             setImages(filteredImages);
         },

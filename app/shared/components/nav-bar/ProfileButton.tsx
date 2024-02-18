@@ -1,4 +1,4 @@
-import { User } from '../../../app/auth/models/User';
+import { User } from '../../../auth/models/User';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
@@ -40,10 +40,14 @@ const ProfileButton = ({ user }: ProfileButtonProps) => {
                         </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => router.push('/')}>
+                    <DropdownMenuItem
+                        onClick={() => router.push('/settings/profile')}
+                    >
                         Profile
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => router.push('/company')}>
+                    <DropdownMenuItem
+                        onClick={() => router.push('/settings/company')}
+                    >
                         Company
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />

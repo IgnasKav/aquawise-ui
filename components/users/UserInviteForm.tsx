@@ -11,7 +11,7 @@ import { UserRole } from '../../app/auth/models/User';
 import { UserInviteRequest } from './models/UserInviteRequest';
 import useAlert from '../../stores/useAlert';
 import { api } from '../../api/api';
-import { AlertDto } from '../alert/models/AlertDto';
+import { AlertDto } from '../../app/shared/components/alert/models/AlertDto';
 import useAuth from '../../stores/useAuth';
 import { ApiError } from '../../api/models/ApiError';
 
