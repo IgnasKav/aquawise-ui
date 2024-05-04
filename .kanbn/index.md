@@ -25,12 +25,14 @@ columnSorting:
 ## Todo
 
 - [add-kanban-board](tasks/add-kanban-board.md)
-- [remove-use-auth](tasks/remove-use-auth.md)
 
 ## In Progress
 
+- [remove-mantine](tasks/remove-mantine.md)
+
 ## Done
 
+- [remove-use-auth](tasks/remove-use-auth.md)
 - [refresh-product-list-after-image-delete](tasks/refresh-product-list-after-image-delete.md)
 - [fixt-toast](tasks/fixt-toast.md)
 - [fix-company-confirmation-button](tasks/fix-company-confirmation-button.md)

@@ -6,8 +6,6 @@ type ClientsTableItemProps = {
     client: CompanyClient;
 };
 
-// add ClientModalButton
-
 const ClientsTableItem = ({ client }: ClientsTableItemProps) => {
     return (
         <TableRow>

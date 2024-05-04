@@ -6,10 +6,7 @@ import { ApiError } from './models/ApiError';
 import { User } from '../app/auth/models/User';
 import { Company } from '../app/companies/models/Company';
 import { RegisterResponse } from '../app/auth/register/models/RegisterResponse';
-import { UserInviteRequest } from '../components/users/models/UserInviteRequest';
 import { Product } from '../app/products/models/Product';
-import { Order } from '../components/orders/models/Order';
-import { OrderUpdateRequest } from '../components/orders/models/OrderUpdateRequest';
 import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from '../app/api/auth/[...nextauth]/route';
 import { getSession } from 'next-auth/react';
@@ -83,8 +80,6 @@ const Auth = {
         return await requests.post(`/auth/register`, req);
     },
     current: (): Promise<User> => requests.get('auth/current'),
-    inviteUser: (request: UserInviteRequest) =>
-        requests.post(`/auth/invite`, request),
     getByRegistrationId: (registrationId: string): Promise<User> =>
         requests.get(`/auth/register?registrationId=${registrationId}`),
 };
@@ -100,19 +95,6 @@ const Companies = {
     getById: (id: string): Promise<Company> => requests.get(`/companies/${id}`),
     saveColor: (id: string, color: string | undefined): Promise<void> =>
         requests.put(`/companies/${id}`, { brandColor: color }),
-};
-
-const Orders = {
-    update: (
-        companyId: string,
-        clientId: string,
-        orderId: string,
-        request: OrderUpdateRequest,
-    ): Promise<Order> =>
-        requests.put(
-            `/companies/${companyId}/clients/${clientId}/orders/${orderId}`,
-            request,
-        ),
 };
 
 const Products = {
@@ -131,7 +113,6 @@ const api = {
     Auth,
     Companies,
     Products,
-    Orders,
     Images,
 };
 

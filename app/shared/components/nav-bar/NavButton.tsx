@@ -10,7 +10,7 @@ interface NavButtonProps {
     icon?: React.ReactNode;
 }
 
-export default function NavButton({ to, title, icon = null }: NavButtonProps) {
+ const NavButton = ({ to, title, icon = null }: NavButtonProps) => {
     const pathName = usePathname();
     const router = useRouter();
 
@@ -31,3 +31,5 @@ export default function NavButton({ to, title, icon = null }: NavButtonProps) {
         </Button>
     );
 }
+
+export default NavButton;
