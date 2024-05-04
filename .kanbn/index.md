@@ -24,6 +24,7 @@ columnSorting:
 
 ## Todo
 
+- [add-kanban-board](tasks/add-kanban-board.md)
 - [remove-use-auth](tasks/remove-use-auth.md)
 
 ## In Progress

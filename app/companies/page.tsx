@@ -7,7 +7,7 @@ import {
     dehydrate,
 } from '@tanstack/react-query';
 
-export default async function Companies() {
+const CompaniesPage = async () => {
     const queryClient = new QueryClient();
 
     await queryClient.prefetchQuery({
@@ -22,4 +22,6 @@ export default async function Companies() {
             </HydrationBoundary>
         </AuthGuard>
     );
-}
+};
+
+export default CompaniesPage;

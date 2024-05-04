@@ -8,7 +8,7 @@ import {
 import { api } from 'api/api';
 import AuthGuard from 'app/auth/AuthGuard';
 
-const Products = async () => {
+const ProductsPage = async () => {
     const queryClient = new QueryClient();
 
     await queryClient.prefetchQuery({
@@ -26,4 +26,4 @@ const Products = async () => {
     );
 };
 
-export default Products;
+export default ProductsPage;

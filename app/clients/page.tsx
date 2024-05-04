@@ -9,7 +9,7 @@ import { getServerSession } from 'next-auth';
 import ClientsTable from './components/ClientsTable';
 import AuthGuard from 'app/auth/AuthGuard';
 
-export default async function Clients() {
+const ClientsPage = async () => {
     const session = await getServerSession();
     const user = session?.user as User;
 
@@ -29,4 +29,6 @@ export default async function Clients() {
             </HydrationBoundary>
         </AuthGuard>
     );
-}
+};
+
+export default ClientsPage;
