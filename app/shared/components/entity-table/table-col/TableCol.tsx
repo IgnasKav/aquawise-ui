@@ -2,10 +2,6 @@ import { Badge } from '@/components/ui/badge';
 import { TableCell } from '@/components/ui/table';
 import Image from 'next/image';
 
-// type TableColProps = {
-//     type: 'string' | 'number' | 'status' | 'date' | 'image';
-// };
-
 type StringColProps = {
     value: string | number;
     className?: string;

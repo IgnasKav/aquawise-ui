@@ -1,10 +1,9 @@
-import { EntityTable } from 'app/shared/components/entity-table/EntityTable';
+import { OrdersTable } from './components/orders-table';
 
 const OrdersPage = () => {
     return (
         <>
-            <div>Orders Page</div>
-            <EntityTable />
+            <OrdersTable />
         </>
     );
 };

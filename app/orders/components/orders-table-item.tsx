@@ -7,18 +7,15 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { TableRow, TableCell } from '@/components/ui/table';
+import {
+    ImageCol,
+    StringCol,
+    StatusCol,
+} from 'app/shared/components/entity-table/table-col/TableCol';
 import { MoreHorizontal } from 'lucide-react';
-import { ImageCol, StatusCol, StringCol } from './table-col/TableCol';
+import { OrdersTableItemProps } from '../models/OrdersTable';
 
-export type TableItemProps = {
-    name: string;
-    status: string;
-    price: number;
-    totalSales: number;
-    createdAt: Date;
-};
-
-const TableItem = (props: TableItemProps) => {
+const OrdersTableItem = (props: OrdersTableItemProps) => {
     const { name, status, price, totalSales, createdAt } = props;
 
     return (
@@ -40,13 +37,13 @@ const TableItem = (props: TableItemProps) => {
                 value={createdAt.toDateString()}
             ></StringCol>
             <TableCell>
-                <TableItemActions />
+                <OrdersTableItemActions />
             </TableCell>
         </TableRow>
     );
 };
 
-const TableItemActions = () => {
+const OrdersTableItemActions = () => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -64,4 +61,4 @@ const TableItemActions = () => {
     );
 };
 
-export { TableItem };
+export { OrdersTableItem };
