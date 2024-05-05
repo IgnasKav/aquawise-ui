@@ -28,10 +28,9 @@ columnSorting:
 
 ## In Progress
 
-- [remove-mantine](tasks/remove-mantine.md)
-
 ## Done
 
+- [remove-mantine](tasks/remove-mantine.md)
 - [remove-use-auth](tasks/remove-use-auth.md)
 - [refresh-product-list-after-image-delete](tasks/refresh-product-list-after-image-delete.md)
 - [fixt-toast](tasks/fixt-toast.md)
