@@ -18,10 +18,19 @@ type ClientsTableProps = {
 };
 
 export default function ClientsTable({ user }: ClientsTableProps) {
-    const { data: clients } = useQuery({
+    console.log('user', user);
+
+    const { data } = useQuery({
         queryKey: ['clients'],
-        queryFn: () => api.Companies.getClients(user.company.id),
+        queryFn: () =>
+            api.Clients.searchClientsByCompany({
+                companyId: user.company.id,
+                page: 1,
+                pageSize: 10,
+            }),
     });
+
+    console.log('data', data);
 
     return (
         <Card>
@@ -29,16 +38,14 @@ export default function ClientsTable({ user }: ClientsTableProps) {
                 <TableHeader>
                     <TableRow>
                         <TableHead>Email</TableHead>
-                        <TableHead>First name</TableHead>
-                        <TableHead>Last name</TableHead>
+                        <TableHead>Name</TableHead>
                         <TableHead>Phone</TableHead>
-                        <TableHead>Devices</TableHead>
-                        <TableHead>Warnings</TableHead>
-                        <TableHead>Actions</TableHead>
+                        <TableHead>Address</TableHead>
+                        <TableHead>Type</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {clients?.map((c) => (
+                    {data?.data?.map((c) => (
                         // return id from be
                         <ClientsTableItem key={c.email} client={c} />
                     ))}

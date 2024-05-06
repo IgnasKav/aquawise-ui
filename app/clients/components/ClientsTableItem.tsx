@@ -1,24 +1,18 @@
 import { TableCell, TableRow } from '@/components/ui/table';
-import { CompanyClient } from 'app/companies/models/CompanyClient';
-import { AlertTriangle } from 'lucide-react';
+import { Client } from '../models/Client';
 
 type ClientsTableItemProps = {
-    client: CompanyClient;
+    client: Client;
 };
 
 const ClientsTableItem = ({ client }: ClientsTableItemProps) => {
     return (
         <TableRow>
             <TableCell>{client.email}</TableCell>
-            <TableCell>{client.firstName}</TableCell>
-            <TableCell>{client.lastName}</TableCell>
+            <TableCell>{client.name}</TableCell>
             <TableCell>{client.phone}</TableCell>
-            <TableCell>{client.devices.length}</TableCell>
-            <TableCell>
-                {client.devices.some(
-                    (device) => device.leak || device.saltPercentage == 0,
-                ) && <AlertTriangle />}
-            </TableCell>
+            <TableCell>{client.address}</TableCell>
+            <TableCell>{client.type}</TableCell>
         </TableRow>
     );
 };

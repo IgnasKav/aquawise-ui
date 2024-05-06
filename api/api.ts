@@ -10,7 +10,8 @@ import { Product } from '../app/products/models/Product';
 import { getServerSession } from 'next-auth';
 import { nextAuthOptions } from '../app/api/auth/[...nextauth]/route';
 import { getSession } from 'next-auth/react';
-import { ImagesApi as Images } from './images/imagesApi';
+import { ImagesApi as Images } from './images/ImagesApi';
+import { ClientsApi as Clients } from './clients/ClientsApi';
 import { ProductFormDto } from 'app/products/components/forms/ProductForm';
 import { CompanyApplicationFormDto } from 'app/auth/components/auth-modal/CompanyApplicationForm';
 
@@ -114,6 +115,7 @@ const api = {
     Companies,
     Products,
     Images,
+    Clients,
 };
 
 export { api, requests };

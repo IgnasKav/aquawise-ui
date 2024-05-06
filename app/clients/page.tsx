@@ -8,9 +8,10 @@ import { User } from 'app/auth/models/User';
 import { getServerSession } from 'next-auth';
 import ClientsTable from './components/ClientsTable';
 import AuthGuard from 'app/auth/AuthGuard';
+import { nextAuthOptions } from 'app/api/auth/[...nextauth]/route';
 
 const ClientsPage = async () => {
-    const session = await getServerSession();
+    const session = await getServerSession(nextAuthOptions);
     const user = session?.user as User;
 
     if (!user) return <div>No data</div>;
@@ -19,7 +20,12 @@ const ClientsPage = async () => {
 
     await queryClient.prefetchQuery({
         queryKey: ['clients'],
-        queryFn: () => api.Companies.getClients(user.company.id),
+        queryFn: () =>
+            api.Clients.searchClientsByCompany({
+                companyId: user.company.id,
+                page: 1,
+                pageSize: 10,
+            }),
     });
 
     return (

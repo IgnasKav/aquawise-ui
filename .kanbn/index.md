@@ -24,7 +24,7 @@ columnSorting:
 
 ## Todo
 
-- [add-kanban-board](tasks/add-kanban-board.md)
+- [expand-user-session-object-to-store-company-id](tasks/expand-user-session-object-to-store-company-id.md)
 
 ## In Progress
 
