@@ -18,7 +18,7 @@ type ClientsTableProps = {
 };
 
 export default function ClientsTable({ user }: ClientsTableProps) {
-    console.log('user', user);
+    console.log('user company id', user.company.id);
 
     const { data } = useQuery({
         queryKey: ['clients'],

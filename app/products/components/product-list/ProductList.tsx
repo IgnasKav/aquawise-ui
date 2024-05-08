@@ -4,7 +4,7 @@ import { ProductCard } from './ProductCard';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../../../api/api';
 
-export const ProductList = () => {
+const ProductList = () => {
     const { data: products } = useQuery({
         queryKey: ['products'],
         queryFn: () => api.Products.getAll(),
@@ -18,3 +18,5 @@ export const ProductList = () => {
         </div>
     );
 };
+
+export { ProductList };

@@ -18,10 +18,12 @@ const ProductsPage = async () => {
 
     return (
         <AuthGuard>
-            <HydrationBoundary state={dehydrate(queryClient)}>
-                <CreateProductButton />
-                <ProductList />
-            </HydrationBoundary>
+            <>
+                <HydrationBoundary state={dehydrate(queryClient)}>
+                    <CreateProductButton />
+                    <ProductList />
+                </HydrationBoundary>
+            </>
         </AuthGuard>
     );
 };
