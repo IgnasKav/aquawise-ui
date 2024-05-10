@@ -5,6 +5,7 @@ import ClientsTable from './components/ClientsTable';
 import AuthGuard from 'app/auth/AuthGuard';
 import { nextAuthOptions } from 'app/api/auth/[...nextauth]/route';
 import { Client } from './models/Client';
+import { FailedDataFetchComponent } from 'app/shared/components/not-found/failed-data-fetch';
 
 const ClientsPage = async () => {
     const session = await getServerSession(nextAuthOptions);
@@ -19,6 +20,13 @@ const ClientsPage = async () => {
 
     if (!response.isError) {
         clients.push(...response.data);
+    } else {
+        return (
+            <FailedDataFetchComponent
+                title="Failed to load clients"
+                reason={response.message}
+            />
+        );
     }
 
     return (
