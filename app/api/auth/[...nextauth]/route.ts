@@ -1,6 +1,6 @@
 import NextAuth, { AuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { api } from '../../../../api/api';
+import { FetchResponse, api } from '../../../../api/api';
 import { LoginResponse } from '../../../auth/register/models/LoginResponse';
 import { ApiError } from '../../../../api/models/ApiError';
 
@@ -22,7 +22,7 @@ const nextAuthOptions: AuthOptions = {
             authorize: async (credentials) => {
                 if (!credentials) return null;
 
-                let res: LoginResponse | null = null;
+                let res: FetchResponse<LoginResponse> | null = null;
 
                 try {
                     res = await api.Auth.login({
@@ -34,7 +34,7 @@ const nextAuthOptions: AuthOptions = {
                     throw new Error(e.message);
                 }
 
-                if (!res) return null;
+                if (res.isError) return null;
 
                 const session = { ...res.user, jwt: res.jwt };
 

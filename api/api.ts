@@ -87,7 +87,7 @@ const post = async <T>(
         };
     }
 
-    const data = res.json() as T;
+    const data = (await res.json()) as T;
 
     return { isError: false, ...data };
 };
