@@ -17,7 +17,10 @@ interface ProductUpdateMutation {
 
 const useProductEdit = (onSave?: () => void) => {
     const queryClient = useQueryClient();
-    const [createAlert] = useAlert((state) => [state.createAlert]);
+    const [createAlert, createAlertFromApiError] = useAlert((state) => [
+        state.createAlert,
+        state.createAlertFromApiError,
+    ]);
 
     const mutation = useMutation({
         mutationFn: ({ productId, product }: ProductUpdateMutation) =>
@@ -37,7 +40,7 @@ const useProductEdit = (onSave?: () => void) => {
             await queryClient.invalidateQueries({ queryKey: ['products'] });
         },
         onError: (error: ApiError) => {
-            createAlert(error.toAlert());
+            createAlertFromApiError(error);
         },
     });
 

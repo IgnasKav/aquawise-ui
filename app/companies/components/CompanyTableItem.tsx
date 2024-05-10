@@ -15,7 +15,10 @@ type CompanyTableItemProps = {
 };
 
 const CompanyTableItem = ({ company }: CompanyTableItemProps) => {
-    const [createAlert] = useAlert((state) => [state.createAlert]);
+    const [createAlert, createAlertFromApiError] = useAlert((state) => [
+        state.createAlert,
+        state.createAlertFromApiError,
+    ]);
     const queryCLient = useQueryClient();
 
     const { mutate, isPending } = useMutation({
@@ -31,7 +34,7 @@ const CompanyTableItem = ({ company }: CompanyTableItemProps) => {
             createAlert(alert);
         },
         onError: (error: ApiError) => {
-            createAlert(error.toAlert());
+            createAlertFromApiError(error);
         },
     });
 

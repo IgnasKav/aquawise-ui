@@ -46,24 +46,57 @@ axios.interceptors.request.use(async (config) => {
 
 axios.interceptors.response.use(
     (response) => response, // Simply return the response for successful requests
-    (error) => {
-        // This function is called for all failed requests
-        const data = error.response?.data as Partial<ApiError>;
-        const parsedError = new ApiError(data);
-        return Promise.reject(parsedError);
-    },
 );
+
+export type FetchResponse<T> = SuccessfulFetch<T> | FailedFetch;
+
+type SuccessfulFetch<T> = {
+    isError: false;
+} & T;
+
+type FailedFetch = {
+    isError: true;
+} & ApiError;
+
+const post = async <T>(
+    url: string,
+    body: object,
+    isFormData?: boolean,
+): Promise<FetchResponse<T>> => {
+    const token = await api.getJwt();
+
+    const res = await fetch(`${ApiUrl}${url}`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': isFormData
+                ? 'multipart/form-data'
+                : 'application/json',
+        },
+        body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+        const error = (await res.json()) as Partial<ApiError>;
+
+        return {
+            isError: true,
+            message: error.message ?? '',
+            statusCode: error.statusCode ?? 0,
+            timeStamp: error.timeStamp ?? '',
+        };
+    }
+
+    const data = res.json() as T;
+
+    return { isError: false, ...data };
+};
 
 const responseBody = (response: AxiosResponse) => response.data;
 
 const requests = {
     get: (url: string) => axios.get(url).then(responseBody),
-    post: (url: string, body: object, isFormData?: boolean) => {
-        const headers = isFormData
-            ? { 'Content-Type': 'multipart/form-data' }
-            : {};
-        return axios.post(url, body, { headers }).then(responseBody);
-    },
+    post,
     put: (url: string, body: object, isFormData = false) => {
         const headers = isFormData
             ? { 'Content-Type': 'multipart/form-data' }
@@ -74,12 +107,10 @@ const requests = {
 };
 
 const Auth = {
-    login: (req: LoginRequest): Promise<LoginResponse> => {
-        return requests.post('/auth/login', req);
-    },
-    register: async (req: RegisterRequest): Promise<RegisterResponse> => {
-        return await requests.post(`/auth/register`, req);
-    },
+    login: (req: LoginRequest) =>
+        requests.post<LoginResponse>('/auth/login', req),
+    register: async (req: RegisterRequest) =>
+        await requests.post<RegisterResponse>(`/auth/register`, req),
     current: (): Promise<User> => requests.get('auth/current'),
     getByRegistrationId: (registrationId: string): Promise<User> =>
         requests.get(`/auth/register?registrationId=${registrationId}`),
@@ -87,12 +118,10 @@ const Auth = {
 
 const Companies = {
     getAll: (): Promise<Company[] | undefined> => requests.get(`/companies`),
-    applyForAccount: (
-        createRequest: CompanyApplicationFormDto,
-    ): Promise<Company> =>
-        requests.post('/companies/application', createRequest),
-    confirmApplication: (registrationId: string): Promise<Company> =>
-        requests.post(`/companies/confirm/${registrationId}`, {}),
+    applyForAccount: (createRequest: CompanyApplicationFormDto) =>
+        requests.post<Company>('/companies/application', createRequest),
+    confirmApplication: (registrationId: string) =>
+        requests.post<Company>(`/companies/confirm/${registrationId}`, {}),
     getById: (id: string): Promise<Company> => requests.get(`/companies/${id}`),
     saveColor: (id: string, color: string | undefined): Promise<void> =>
         requests.put(`/companies/${id}`, { brandColor: color }),
@@ -102,8 +131,7 @@ const Products = {
     getAll: (): Promise<Product[] | undefined> => requests.get('/products'),
     getById: (productId: string): Promise<Company> =>
         requests.get(`/products/${productId}`),
-    create: (req: ProductFormDto): Promise<Product> =>
-        requests.post('/products', req),
+    create: (req: ProductFormDto) => requests.post<Product>('/products', req),
     update: (productId: string, req: ProductFormDto): Promise<Product> =>
         requests.put(`/products/${productId}`, req),
     delete: (productId: string): Promise<void> =>
@@ -116,6 +144,7 @@ const api = {
     Products,
     Images,
     Clients,
+    getJwt,
 };
 
 export { api, requests };

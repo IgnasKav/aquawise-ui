@@ -12,7 +12,10 @@ import { Product } from 'app/products/models/Product';
 
 const useCreateProduct = () => {
     const queryClient = useQueryClient();
-    const [createAlert] = useAlert((state) => [state.createAlert]);
+    const [createAlert, createAlertFromApiError] = useAlert((state) => [
+        state.createAlert,
+        state.createAlertFromApiError,
+    ]);
 
     const mutation = useMutation({
         mutationFn: api.Products.create,
@@ -27,7 +30,7 @@ const useCreateProduct = () => {
             await queryClient.invalidateQueries({ queryKey: ['products'] });
         },
         onError: (error: ApiError) => {
-            createAlert(error.toAlert());
+            createAlertFromApiError(error);
         },
     });
 

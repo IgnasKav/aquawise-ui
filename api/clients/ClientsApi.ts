@@ -6,9 +6,8 @@ import { requests } from 'api/api';
 const prefix = '/clients';
 
 const ClientsApi = {
-    searchClientsByCompany: (
-        req: SearchClientsByCompanyRequest,
-    ): Promise<SearchResponse<Client>> => requests.post(`${prefix}`, req),
+    searchClientsByCompany: (req: SearchClientsByCompanyRequest) =>
+        requests.post<SearchResponse<Client>>(prefix, req),
 };
 
 export { ClientsApi };

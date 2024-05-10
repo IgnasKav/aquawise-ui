@@ -41,13 +41,15 @@ export const UserRegisterForm = ({
     });
 
     const router = useRouter();
-    const [createAlert] = useAlert((state) => [state.createAlert]);
+    const [createAlertFromApiError] = useAlert((state) => [
+        state.createAlertFromApiError,
+    ]);
 
     const { mutate: createUser } = useMutation({
         mutationFn: (req: RegisterRequest) => api.Auth.register(req),
         onSuccess: () => router.push('/'),
         onError: (error: ApiError) => {
-            createAlert(error.toAlert());
+            createAlertFromApiError(error);
         },
     });
 

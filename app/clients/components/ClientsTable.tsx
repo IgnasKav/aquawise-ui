@@ -8,30 +8,14 @@ import {
     TableBody,
     Table,
 } from '@/components/ui/table';
-import { useQuery } from '@tanstack/react-query';
-import { api } from 'api/api';
-import { User } from 'app/auth/models/User';
 import ClientsTableItem from './ClientsTableItem';
+import { Client } from '../models/Client';
 
 type ClientsTableProps = {
-    user: User;
+    clients: Client[];
 };
 
-export default function ClientsTable({ user }: ClientsTableProps) {
-    console.log('user company id', user.company.id);
-
-    const { data } = useQuery({
-        queryKey: ['clients'],
-        queryFn: () =>
-            api.Clients.searchClientsByCompany({
-                companyId: user.company.id,
-                page: 1,
-                pageSize: 10,
-            }),
-    });
-
-    console.log('data', data);
-
+export default function ClientsTable({ clients }: ClientsTableProps) {
     return (
         <Card>
             <Table>
@@ -45,7 +29,7 @@ export default function ClientsTable({ user }: ClientsTableProps) {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {data?.data?.map((c) => (
+                    {clients.map((c) => (
                         // return id from be
                         <ClientsTableItem key={c.email} client={c} />
                     ))}

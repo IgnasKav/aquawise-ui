@@ -30,15 +30,14 @@ export const CompanyApplicationForm = ({
     switchToLogin,
     closeModal,
 }: Props) => {
-    const [createAlert] = useAlert((state) => [state.createAlert]);
+    const [createAlert, createAlertFromApiError] = useAlert((state) => [
+        state.createAlert,
+        state.createAlertFromApiError,
+    ]);
 
     const { mutate, isPending } = useMutation({
         mutationFn: api.Companies.applyForAccount,
-        onError: (error: ApiError) => {
-            const alert = error.toAlert();
-
-            createAlert(alert);
-        },
+        onError: (error: ApiError) => createAlertFromApiError(error),
         onSuccess: () => {
             const alert = new AlertDto({
                 type: 'success',
