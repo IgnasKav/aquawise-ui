@@ -1,7 +1,7 @@
 import { api } from 'api/api';
 import { User } from 'app/auth/models/User';
 import { getServerSession } from 'next-auth';
-import ClientsTable from './components/ClientsTable';
+import ClientsTable from './components/clients-table';
 import AuthGuard from 'app/auth/AuthGuard';
 import { nextAuthOptions } from 'app/api/auth/[...nextauth]/route';
 import { Client } from './models/Client';

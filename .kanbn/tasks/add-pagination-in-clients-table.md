@@ -1,6 +1,6 @@
 ---
 created: 2024-05-08T19:53:01.317Z
-updated: 2024-05-08T20:11:38.603Z
+updated: 2024-05-11T15:19:36.775Z
 assigned: ""
 progress: 0
 tags: []
@@ -11,6 +11,6 @@ tags: []
 ## Sub-tasks
 
 - [x] Remove react query from clients page
-- [ ] implement fetch for clients instead of using axios
-- [ ] convert clients table to server component
+- [x] implement fetch for clients instead of using axios
+- [x] use entity table to display clients
 - [ ] add pagination package from shadcn

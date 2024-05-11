@@ -1,8 +1,8 @@
 import {
     EntityTable,
     EntityTableProps,
-} from 'app/shared/components/entity-table/EntityTable';
-import { OrdersTableItem } from './orders-table-item';
+} from 'app/shared/components/entity-table/entity-table';
+import { OrdersTableItem } from './orders-table-item/orders-table-item';
 import { OrdersTableItemProps } from '../models/OrdersTable';
 import { OrdersTableHeader } from './orders-table-header';
 
