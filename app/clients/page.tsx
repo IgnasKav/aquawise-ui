@@ -12,10 +12,13 @@ const ClientsPage = async () => {
     const user = session?.user as User;
     const clients: Client[] = [];
 
+    const page = 1;
+    const pageSize = 10;
+
     const response = await api.Clients.searchClientsByCompany({
         companyId: user.company.id,
-        page: 1,
-        pageSize: 10,
+        page,
+        pageSize,
     });
 
     if (!response.isError) {
@@ -31,7 +34,12 @@ const ClientsPage = async () => {
 
     return (
         <AuthGuard>
-            <ClientsTable clients={clients} />
+            <ClientsTable
+                clients={clients}
+                page={page}
+                pageSize={pageSize}
+                total={response.total}
+            />
         </AuthGuard>
     );
 };

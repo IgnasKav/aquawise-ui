@@ -12,6 +12,7 @@ export type EntityTableProps = {
     title: string;
     description: string;
     header: React.ReactNode;
+    footer: React.ReactNode;
 };
 
 type Props = {
@@ -22,6 +23,7 @@ const EntityTable = ({
     title,
     description,
     header,
+    footer,
     children,
 }: EntityTableProps & Props) => {
     return (
@@ -36,12 +38,7 @@ const EntityTable = ({
                     <TableBody>{children}</TableBody>
                 </Table>
             </CardContent>
-            <CardFooter>
-                <div className="text-xs text-muted-foreground">
-                    Showing <strong>1-10</strong> of <strong>32</strong>{' '}
-                    products
-                </div>
-            </CardFooter>
+            <CardFooter>{footer}</CardFooter>
         </Card>
     );
 };
