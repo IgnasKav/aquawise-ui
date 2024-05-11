@@ -18,10 +18,12 @@ export default function ClientsTable({ clients }: ClientsTableProps) {
     };
 
     return (
-        <EntityTable {...clientsTableData}>
-            {clients.map((c) => (
-                <ClientsTableItem key={c.id} client={c} />
-            ))}
-        </EntityTable>
+        <>
+            <EntityTable {...clientsTableData}>
+                {clients.map((c) => (
+                    <ClientsTableItem key={c.id} client={c} />
+                ))}
+            </EntityTable>
+        </>
     );
 }
