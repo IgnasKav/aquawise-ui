@@ -23,7 +23,11 @@ const ClientTableFooter = ({
                 </strong>{' '}
                 of <strong>{total}</strong> products
             </div>
-            <PaginationComponent />
+            <PaginationComponent
+                page={page}
+                pageSize={pageSize}
+                total={total}
+            />
         </div>
     );
 };
