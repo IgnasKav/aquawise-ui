@@ -23,7 +23,7 @@ export function PaginationComponent({
     const displayPrevEllipsis = nOfPages > 2 && page > 2;
     const displayNextEllipsis = nOfPages > 2 && nOfPages - page > 2;
     const hasPrev = page - 1 > 0;
-    const hasNext = page + 1 <= total;
+    const hasNext = page + 1 <= nOfPages;
 
     const getPageRange = () => {
         let pageRange: number[] = [];
@@ -56,7 +56,7 @@ export function PaginationComponent({
             <PaginationContent>
                 {hasPrev && (
                     <PaginationItem>
-                        <PaginationPrevious href="#" />
+                        <PaginationPrevious href={`/clients?p=${page - 1}`} />
                     </PaginationItem>
                 )}
                 {displayPrevEllipsis && (
@@ -66,7 +66,10 @@ export function PaginationComponent({
                 )}
                 {pageRange.map((p, index) => (
                     <PaginationItem key={p}>
-                        <PaginationLink href="#" isActive={index + 1 === page}>
+                        <PaginationLink
+                            href={`/clients?p=${page}`}
+                            isActive={index + 1 === page}
+                        >
                             {p}
                         </PaginationLink>
                     </PaginationItem>
@@ -78,7 +81,7 @@ export function PaginationComponent({
                 )}
                 {hasNext && (
                     <PaginationItem>
-                        <PaginationNext href="#" />
+                        <PaginationNext href={`/clients?p=${page + 1}`} />
                     </PaginationItem>
                 )}
             </PaginationContent>

@@ -42,46 +42,27 @@ const NavBar = ({ session: initialSession }: NavbarProps) => {
                                         icon={<Building2 />}
                                     />
                                     <NavButton
-                                        to="/clients"
-                                        title="Clients"
-                                        icon={<Smartphone />}
-                                    />
-                                    <NavButton
-                                        to="/products"
-                                        title="Products"
-                                        icon={<Package />}
-                                    />
-                                    <NavButton
-                                        to="/orders"
-                                        title="Orders"
-                                        icon={<ScrollText />}
-                                    />
-                                    <NavButton
                                         to="/users"
                                         title="Team"
                                         icon={<Users />}
                                     />
                                 </>
                             )}
-                            {user.role === 'user' && (
-                                <>
-                                    <NavButton
-                                        to="/clients"
-                                        title="Clients"
-                                        icon={<Smartphone />}
-                                    />
-                                    <NavButton
-                                        to="/products"
-                                        title="Products"
-                                        icon={<Package />}
-                                    />
-                                    <NavButton
-                                        to="/orders"
-                                        title="Orders"
-                                        icon={<ScrollText />}
-                                    />
-                                </>
-                            )}
+                            <NavButton
+                                to="/clients?p=1"
+                                title="Clients"
+                                icon={<Smartphone />}
+                            />
+                            <NavButton
+                                to="/products"
+                                title="Products"
+                                icon={<Package />}
+                            />
+                            <NavButton
+                                to="/orders"
+                                title="Orders"
+                                icon={<ScrollText />}
+                            />
                         </>
                     )}
                 </div>

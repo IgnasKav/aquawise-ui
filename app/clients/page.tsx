@@ -7,12 +7,20 @@ import { nextAuthOptions } from 'app/api/auth/[...nextauth]/route';
 import { Client } from './models/Client';
 import { FailedDataFetchComponent } from 'app/shared/components/not-found/failed-data-fetch';
 
-const ClientsPage = async () => {
+type ClientsPageSearchParams = {
+    p?: string;
+};
+
+const ClientsPage = async ({
+    searchParams,
+}: {
+    searchParams: ClientsPageSearchParams;
+}) => {
     const session = await getServerSession(nextAuthOptions);
     const user = session?.user as User;
     const clients: Client[] = [];
 
-    const page = 1;
+    const page = searchParams?.p ? +searchParams.p : 1;
     const pageSize = 10;
 
     const response = await api.Clients.searchClientsByCompany({
