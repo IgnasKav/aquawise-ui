@@ -28,11 +28,17 @@ export default function ClientsTable({
         total,
     };
 
+    const itemsFrom = page * pageSize - pageSize + 1;
+
     return (
         <>
             <EntityTable {...clientsTableData}>
-                {clients.map((c) => (
-                    <ClientsTableItem key={c.id} client={c} />
+                {clients.map((c, i) => (
+                    <ClientsTableItem
+                        index={itemsFrom + i}
+                        key={c.id}
+                        client={c}
+                    />
                 ))}
             </EntityTable>
         </>

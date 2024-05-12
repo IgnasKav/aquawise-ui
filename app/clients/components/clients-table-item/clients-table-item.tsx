@@ -8,11 +8,13 @@ import { ClientsTableItemActions } from './clients-table-item-actions';
 
 type ClientsTableItemProps = {
     client: Client;
+    index: number;
 };
 
-const ClientsTableItem = ({ client }: ClientsTableItemProps) => {
+const ClientsTableItem = ({ client, index }: ClientsTableItemProps) => {
     return (
         <TableRow>
+            <StringCol value={index} />
             <StringCol value={client.email} />
             <StringCol value={client.name} />
             <StatusCol className="hidden md:table-cell" value={client.type} />
