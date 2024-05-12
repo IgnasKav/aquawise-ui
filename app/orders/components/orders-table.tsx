@@ -46,7 +46,7 @@ const orders: OrdersTableItemProps[] = [
 
 const OrdersTable = () => {
     const ordersTableData: EntityTableProps = {
-        title: 'Orders',
+        entityName: 'Orders',
         description: 'Manage your orders',
         header: <OrdersTableHeader />,
     };

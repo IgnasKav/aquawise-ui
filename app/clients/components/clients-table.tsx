@@ -5,7 +5,6 @@ import {
     EntityTable,
     EntityTableProps,
 } from 'app/shared/components/entity-table/entity-table';
-import { ClientTableFooter } from './client-table-footer';
 
 type ClientsTableProps = {
     clients: Client[];
@@ -21,12 +20,12 @@ export default function ClientsTable({
     total,
 }: ClientsTableProps) {
     const clientsTableData: EntityTableProps = {
-        title: 'Clients',
+        entityName: 'Clients',
         description: 'Manage clients',
         header: <ClientsTableHeader />,
-        footer: (
-            <ClientTableFooter page={page} pageSize={pageSize} total={total} />
-        ),
+        page,
+        pageSize,
+        total,
     };
 
     return (

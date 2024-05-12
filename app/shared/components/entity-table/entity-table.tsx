@@ -7,12 +7,15 @@ import {
     CardFooter,
 } from '@/components/ui/card';
 import { Table, TableBody, TableHeader } from '@/components/ui/table';
+import { TablePagination } from './table-pagination';
 
 export type EntityTableProps = {
-    title: string;
+    entityName: string;
     description: string;
     header: React.ReactNode;
-    footer: React.ReactNode;
+    page: number;
+    pageSize: number;
+    total: number;
 };
 
 type Props = {
@@ -20,16 +23,18 @@ type Props = {
 };
 
 const EntityTable = ({
-    title,
+    entityName,
     description,
     header,
-    footer,
     children,
+    page,
+    pageSize,
+    total,
 }: EntityTableProps & Props) => {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>{title}</CardTitle>
+                <CardTitle>{entityName}</CardTitle>
                 <CardDescription>{description}</CardDescription>
             </CardHeader>
             <CardContent>
@@ -38,7 +43,14 @@ const EntityTable = ({
                     <TableBody>{children}</TableBody>
                 </Table>
             </CardContent>
-            <CardFooter>{footer}</CardFooter>
+            <CardFooter>
+                <TablePagination
+                    entityName={entityName}
+                    page={page}
+                    pageSize={pageSize}
+                    total={total}
+                />
+            </CardFooter>
         </Card>
     );
 };
