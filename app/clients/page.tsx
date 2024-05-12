@@ -23,7 +23,7 @@ const ClientsPage = async ({
     const clients: Client[] = [];
 
     const page = searchParams?.p ? +searchParams.p : 1;
-    const pageSize = 3;
+    const pageSize = 15;
 
     const response = await api.Clients.searchClientsByCompany({
         companyId: user.company.id,

@@ -12,7 +12,7 @@ const ClientTableFooter = ({
     total,
 }: ClientTableFooterProps) => {
     const itemsFrom = page * pageSize - pageSize + 1;
-    const itemsTo = page * pageSize;
+    const itemsTo = page * pageSize < total ? page * pageSize : total;
 
     return (
         <div className="relative flex justify-items-center w-full">

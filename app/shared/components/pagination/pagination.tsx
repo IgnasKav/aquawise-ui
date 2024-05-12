@@ -19,7 +19,7 @@ export function PaginationComponent({
     pageSize,
     total,
 }: PaginationComponentProps) {
-    const nOfPages = total / pageSize;
+    const nOfPages = Math.ceil(total / pageSize);
     const displayPrevEllipsis = nOfPages > 2 && page > 2;
     const displayNextEllipsis = nOfPages > 2 && nOfPages - page > 1;
     const hasPrev = page - 1 > 0;
