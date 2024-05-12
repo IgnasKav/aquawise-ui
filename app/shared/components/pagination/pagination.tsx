@@ -21,7 +21,7 @@ export function PaginationComponent({
 }: PaginationComponentProps) {
     const nOfPages = total / pageSize;
     const displayPrevEllipsis = nOfPages > 2 && page > 2;
-    const displayNextEllipsis = nOfPages > 2 && nOfPages - page > 2;
+    const displayNextEllipsis = nOfPages > 2 && nOfPages - page > 1;
     const hasPrev = page - 1 > 0;
     const hasNext = page + 1 <= nOfPages;
 
@@ -64,11 +64,11 @@ export function PaginationComponent({
                         <PaginationEllipsis />
                     </PaginationItem>
                 )}
-                {pageRange.map((p, index) => (
+                {pageRange.map((p) => (
                     <PaginationItem key={p}>
                         <PaginationLink
-                            href={`/clients?p=${page}`}
-                            isActive={index + 1 === page}
+                            href={`/clients?p=${p}`}
+                            isActive={p === page}
                         >
                             {p}
                         </PaginationLink>

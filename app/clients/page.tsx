@@ -6,6 +6,8 @@ import AuthGuard from 'app/auth/AuthGuard';
 import { nextAuthOptions } from 'app/api/auth/[...nextauth]/route';
 import { Client } from './models/Client';
 import { FailedDataFetchComponent } from 'app/shared/components/not-found/failed-data-fetch';
+import { Suspense } from 'react';
+import TableLoader from 'app/shared/components/loaders/TableLoader';
 
 type ClientsPageSearchParams = {
     p?: string;
@@ -21,7 +23,7 @@ const ClientsPage = async ({
     const clients: Client[] = [];
 
     const page = searchParams?.p ? +searchParams.p : 1;
-    const pageSize = 10;
+    const pageSize = 3;
 
     const response = await api.Clients.searchClientsByCompany({
         companyId: user.company.id,
@@ -42,12 +44,14 @@ const ClientsPage = async ({
 
     return (
         <AuthGuard>
-            <ClientsTable
-                clients={clients}
-                page={page}
-                pageSize={pageSize}
-                total={response.total}
-            />
+            <Suspense fallback={<TableLoader />}>
+                <ClientsTable
+                    clients={clients}
+                    page={page}
+                    pageSize={pageSize}
+                    total={response.total}
+                />
+            </Suspense>
         </AuthGuard>
     );
 };
