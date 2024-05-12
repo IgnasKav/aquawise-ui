@@ -24,12 +24,13 @@ columnSorting:
 
 ## Todo
 
-- [add-pagination-in-clients-table](tasks/add-pagination-in-clients-table.md)
-
 ## In Progress
+
+- [entity-table-improvements](tasks/entity-table-improvements.md)
 
 ## Done
 
+- [add-pagination-in-clients-table](tasks/add-pagination-in-clients-table.md)
 - [expand-user-session-object-to-store-company-id](tasks/expand-user-session-object-to-store-company-id.md)
 - [remove-mantine](tasks/remove-mantine.md)
 - [remove-use-auth](tasks/remove-use-auth.md)

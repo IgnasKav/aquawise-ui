@@ -1,9 +1,10 @@
 ---
 created: 2024-05-08T19:53:01.317Z
-updated: 2024-05-11T15:19:36.775Z
+updated: 2024-05-12T19:39:22.482Z
 assigned: ""
 progress: 0
 tags: []
+completed: 2024-05-12T19:39:22.482Z
 ---
 
 # Add pagination in clients table
@@ -13,4 +14,4 @@ tags: []
 - [x] Remove react query from clients page
 - [x] implement fetch for clients instead of using axios
 - [x] use entity table to display clients
-- [ ] add pagination package from shadcn
+- [x] add pagination package from shadcn
