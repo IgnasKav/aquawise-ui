@@ -26,10 +26,11 @@ columnSorting:
 
 ## In Progress
 
-- [entity-table-improvements](tasks/entity-table-improvements.md)
+- [add-filtering-to-the-table](tasks/add-filtering-to-the-table.md)
 
 ## Done
 
+- [entity-table-improvements](tasks/entity-table-improvements.md)
 - [add-pagination-in-clients-table](tasks/add-pagination-in-clients-table.md)
 - [expand-user-session-object-to-store-company-id](tasks/expand-user-session-object-to-store-company-id.md)
 - [remove-mantine](tasks/remove-mantine.md)

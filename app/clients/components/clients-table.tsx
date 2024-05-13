@@ -5,6 +5,10 @@ import {
     EntityTable,
     EntityTableProps,
 } from 'app/shared/components/entity-table/entity-table';
+import {
+    StatusFilter,
+    StatusFilterOption,
+} from 'app/shared/components/entity-table/filter/status-filter';
 
 type ClientsTableProps = {
     clients: Client[];
@@ -12,6 +16,11 @@ type ClientsTableProps = {
     pageSize: number;
     total: number;
 };
+
+const options: StatusFilterOption[] = [
+    { label: 'Client', value: 'client', isSelected: false },
+    { label: 'Company', value: 'company', isSelected: false },
+];
 
 export default function ClientsTable({
     clients,
@@ -32,6 +41,7 @@ export default function ClientsTable({
 
     return (
         <>
+            <StatusFilter title="Status" options={options} />
             <EntityTable {...clientsTableData}>
                 {clients.map((c, i) => (
                     <ClientsTableItem
