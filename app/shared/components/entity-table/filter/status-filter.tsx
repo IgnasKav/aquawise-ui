@@ -20,6 +20,7 @@ import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { PlusCircledIcon, CheckIcon } from '@radix-ui/react-icons';
 import { useState } from 'react';
+import { useFilters } from 'stores/useFilters';
 
 export type StatusFilterOption = {
     label: string;
@@ -36,8 +37,10 @@ const StatusFilter = ({
     title,
     options: initialOptions,
 }: StatusFilterProps) => {
-    const [options, setOptions] =
-        useState<StatusFilterOption[]>(initialOptions);
+    const [options, setOptions] = useFilters((state) => [
+        state.filters,
+        state.setFilters,
+    ]);
 
     const [selectedOptions, setSelectedOptions] = useState<
         StatusFilterOption[]
