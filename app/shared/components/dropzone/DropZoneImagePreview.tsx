@@ -1,5 +1,5 @@
 'use client';
-import useImages from 'stores/useImages';
+import useImages from 'app/shared/stores/useImages';
 import { ImageDto } from 'api/images/models/ImageEntity';
 import Image from 'next/image';
 import { ApiUrl, api } from 'api/api';

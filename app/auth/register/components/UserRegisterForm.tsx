@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import useAlert from 'stores/useAlert';
+import useAlert from 'app/shared/stores/useAlert';
 import { RegisterRequest } from '../models/RegisterRequest';
 import { ApiError } from 'api/models/ApiError';
 import { useRouter } from 'next/navigation';

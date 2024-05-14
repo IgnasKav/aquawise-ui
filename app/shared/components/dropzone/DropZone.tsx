@@ -5,7 +5,7 @@ import { useDropzone } from 'react-dropzone';
 import { ImageFile } from './models/ImageFile';
 import { DropZoneImagePreview } from './DropZoneImagePreview';
 import { api } from 'api/api';
-import useImages from 'stores/useImages';
+import useImages from 'app/shared/stores/useImages';
 import { Control, useController } from 'react-hook-form';
 
 type DropZoneProps = {

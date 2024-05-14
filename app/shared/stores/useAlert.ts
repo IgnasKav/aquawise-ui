@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
-import { AlertDto } from '../app/shared/components/alert/models/AlertDto';
+import { AlertDto } from '../components/alert/models/AlertDto';
 import { ApiError } from 'api/models/ApiError';
 
 interface AlertState {

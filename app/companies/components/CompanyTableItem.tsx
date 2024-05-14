@@ -8,7 +8,7 @@ import { ApiError } from 'api/models/ApiError';
 import { Company } from 'app/companies/models/Company';
 import SpinnerIcon from 'app/shared/components/loaders/SpinnerIcon';
 import { AlertDto } from 'app/shared/components/alert/models/AlertDto';
-import useAlert from 'stores/useAlert';
+import useAlert from 'app/shared/stores/useAlert';
 
 type CompanyTableItemProps = {
     company: Company;

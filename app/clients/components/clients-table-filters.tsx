@@ -6,7 +6,7 @@ import {
     StatusFilter,
 } from 'app/shared/components/entity-table/filter/status-filter';
 import { useEffect } from 'react';
-import { useFilters } from 'stores/useFilters';
+import { useClientFilters } from '../stores/useClientFilters';
 
 const options: StatusFilterOption[] = [
     { label: 'Client', value: 'client', isSelected: false },
@@ -14,22 +14,27 @@ const options: StatusFilterOption[] = [
 ];
 
 const ClientsTableFitlers = () => {
-    const [filters, setFilters] = useFilters((state) => [
-        state.filters,
-        state.setFilters,
+    const [statusFilters, setStatusFilters] = useClientFilters((state) => [
+        state.statusFilters,
+        state.setStatusFilters,
     ]);
 
     useEffect(() => {
-        setFilters(options);
-    }, [setFilters]);
+        setStatusFilters(options);
+    }, [setStatusFilters]);
 
     const handleSearch = () => {
-        console.log('searching', filters);
+        const selectedStatusFilters = statusFilters.filter((f) => f.isSelected);
+        console.log('searching', selectedStatusFilters);
     };
 
     return (
         <div className="flex gap-x-2">
-            <StatusFilter title="Status" options={options} />
+            <StatusFilter
+                title="Status"
+                filters={statusFilters}
+                setFilters={setStatusFilters}
+            />
             <Button className="h-8" onClick={handleSearch}>
                 Search
             </Button>

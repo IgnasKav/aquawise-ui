@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { DropZone } from 'app/shared/components/dropzone/DropZone';
 import { forwardRef, useEffect } from 'react';
 import { NumberInput } from 'app/shared/components/inputs/NumberInput';
-import useImages from 'stores/useImages';
+import useImages from 'app/shared/stores/useImages';
 import { Subject } from 'rxjs';
 import { api } from 'api/api';
 

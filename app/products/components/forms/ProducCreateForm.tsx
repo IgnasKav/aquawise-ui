@@ -2,7 +2,7 @@
 
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { AlertDto } from '../../../shared/components/alert/models/AlertDto';
-import useAlert from '../../../../stores/useAlert';
+import useAlert from '../../../shared/stores/useAlert';
 import { ProductForm, ProductFormDto } from './ProductForm';
 import { ApiError } from '../../../../api/models/ApiError';
 import { api } from 'api/api';

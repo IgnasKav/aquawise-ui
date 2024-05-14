@@ -19,7 +19,6 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { PlusCircledIcon, CheckIcon } from '@radix-ui/react-icons';
-import { useFilters } from 'stores/useFilters';
 
 export type StatusFilterOption = {
     label: string;
@@ -29,32 +28,28 @@ export type StatusFilterOption = {
 
 type StatusFilterProps = {
     title?: string;
-    options: StatusFilterOption[];
+    filters: StatusFilterOption[];
+    setFilters: (filters: StatusFilterOption[]) => void;
 };
 
-const StatusFilter = ({ title }: StatusFilterProps) => {
-    const [options, setOptions] = useFilters((state) => [
-        state.filters,
-        state.setFilters,
-    ]);
-
-    const selectedOptions = options.filter((o) => o.isSelected);
+const StatusFilter = ({ title, filters, setFilters }: StatusFilterProps) => {
+    const selectedOptions = filters.filter((o) => o.isSelected);
 
     const onSelect = (option: StatusFilterOption) => {
-        const updatedOptions = options.map((o) =>
+        const updatedOptions = filters.map((o) =>
             o.value === option.value ? { ...o, isSelected: !o.isSelected } : o,
         );
 
-        setOptions(updatedOptions);
+        setFilters(updatedOptions);
     };
 
     const clearFilters = () => {
-        const updatedOptions = options.map((o) => ({
+        const updatedOptions = filters.map((o) => ({
             ...o,
             isSelected: false,
         }));
 
-        setOptions(updatedOptions);
+        setFilters(updatedOptions);
     };
 
     return (
@@ -109,7 +104,7 @@ const StatusFilter = ({ title }: StatusFilterProps) => {
                     <CommandList>
                         <CommandEmpty>No results found.</CommandEmpty>
                         <CommandGroup>
-                            {options.map((option) => {
+                            {filters.map((option) => {
                                 const { isSelected, value, label } = option;
                                 return (
                                     <CommandItem

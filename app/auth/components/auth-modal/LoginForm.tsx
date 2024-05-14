@@ -1,6 +1,6 @@
 'use client';
 
-import useAlert from '../../../../stores/useAlert';
+import useAlert from '../../../shared/stores/useAlert';
 import { signIn } from 'next-auth/react';
 import { AlertDto } from '../../../shared/components/alert/models/AlertDto';
 import { z } from 'zod';

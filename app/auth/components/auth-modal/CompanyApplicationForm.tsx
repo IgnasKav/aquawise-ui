@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import useAlert from '../../../../stores/useAlert';
+import useAlert from '../../../shared/stores/useAlert';
 import { api } from '../../../../api/api';
 import { ApiError } from '../../../../api/models/ApiError';
 import { z } from 'zod';
