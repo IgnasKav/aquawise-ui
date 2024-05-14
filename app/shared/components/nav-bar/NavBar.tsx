@@ -1,6 +1,4 @@
 'use client';
-
-import css from './nav-bar.module.scss';
 import NavButton from './NavButton';
 import ProfileButton from './ProfileButton';
 import { Session } from 'next-auth';
@@ -27,7 +25,7 @@ const NavBar = ({ session: initialSession }: NavbarProps) => {
     const user = session?.user as User | undefined;
 
     return (
-        <div className={css.navContainer}>
+        <div className="mt-8 mb-4">
             <Card className="p-2 flex justify-between">
                 <div className="flex gap-2">
                     <NavButton to="/" title="Home" icon={<Home />} />

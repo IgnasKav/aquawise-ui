@@ -10,6 +10,7 @@ import { Table, TableBody, TableHeader } from '@/components/ui/table';
 import { TablePagination } from './table-pagination';
 
 export type EntityTableProps = {
+    className?: string;
     entityName: string;
     description: string;
     header: React.ReactNode;
@@ -23,6 +24,7 @@ type Props = {
 };
 
 const EntityTable = ({
+    className,
     entityName,
     description,
     header,
@@ -32,7 +34,7 @@ const EntityTable = ({
     total,
 }: EntityTableProps & Props) => {
     return (
-        <Card>
+        <Card className={className}>
             <CardHeader>
                 <CardTitle>{entityName}</CardTitle>
                 <CardDescription>{description}</CardDescription>
