@@ -4,14 +4,14 @@ import { getServerSession } from 'next-auth';
 import ClientsTable from './components/clients-table';
 import AuthGuard from 'app/auth/AuthGuard';
 import { nextAuthOptions } from 'app/api/auth/[...nextauth]/route';
-import { Client } from './models/Client';
+import { Client, ClientType } from './models/Client';
 import { FailedDataFetchComponent } from 'app/shared/components/not-found/failed-data-fetch';
 import { Suspense } from 'react';
 import TableLoader from 'app/shared/components/loaders/TableLoader';
 
 export type ClientsPageSearchParams = {
     p: number;
-    statuses: Set<string>;
+    statuses: Set<ClientType>;
 };
 
 const getClientSearchParams = (searchParams: {
@@ -19,8 +19,8 @@ const getClientSearchParams = (searchParams: {
 }): ClientsPageSearchParams => {
     const page = +(searchParams.p ?? 1);
     const statuses = searchParams.statuses
-        ? new Set<string>(searchParams.statuses.split(','))
-        : new Set<string>();
+        ? new Set<ClientType>(searchParams.statuses.split(',') as ClientType[])
+        : new Set<ClientType>();
 
     return { p: page, statuses };
 };
@@ -35,7 +35,7 @@ const ClientsPage = async ({
     const clients: Client[] = [];
 
     const params = getClientSearchParams(searchParams);
-    const { p: page } = params;
+    const { p: page, statuses } = params;
 
     const pageSize = 15;
 
@@ -43,6 +43,9 @@ const ClientsPage = async ({
         companyId: user.company.id,
         page,
         pageSize,
+        filters: {
+            statuses: Array.from(statuses),
+        },
     });
 
     if (!response.isError) {

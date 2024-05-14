@@ -20,22 +20,26 @@ import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { PlusCircledIcon, CheckIcon } from '@radix-ui/react-icons';
 
-export type StatusFilterOption = {
+export type StatusFilterOption<T> = {
     label: string;
-    value: string;
+    value: T;
     isSelected: boolean;
 };
 
-type StatusFilterProps = {
+type StatusFilterProps<T> = {
     title?: string;
-    filters: StatusFilterOption[];
-    setFilters: (filters: StatusFilterOption[]) => void;
+    filters: StatusFilterOption<T>[];
+    setFilters: (filters: StatusFilterOption<T>[]) => void;
 };
 
-const StatusFilter = ({ title, filters, setFilters }: StatusFilterProps) => {
+const StatusFilter = <T,>({
+    title,
+    filters,
+    setFilters,
+}: StatusFilterProps<T>) => {
     const selectedOptions = filters.filter((o) => o.isSelected);
 
-    const onSelect = (option: StatusFilterOption) => {
+    const onSelect = (option: StatusFilterOption<T>) => {
         const updatedOptions = filters.map((o) =>
             o.value === option.value ? { ...o, isSelected: !o.isSelected } : o,
         );
@@ -83,10 +87,10 @@ const StatusFilter = ({ title, filters, setFilters }: StatusFilterProps) => {
                                         {selectedOptions.length} selected
                                     </Badge>
                                 ) : (
-                                    selectedOptions.map((option) => (
+                                    selectedOptions.map((option, i) => (
                                         <Badge
                                             variant="secondary"
-                                            key={option.value}
+                                            key={i}
                                             className="rounded-sm px-1 font-normal"
                                         >
                                             {option.label}
@@ -104,11 +108,11 @@ const StatusFilter = ({ title, filters, setFilters }: StatusFilterProps) => {
                     <CommandList>
                         <CommandEmpty>No results found.</CommandEmpty>
                         <CommandGroup>
-                            {filters.map((option) => {
-                                const { isSelected, value, label } = option;
+                            {filters.map((option, i) => {
+                                const { isSelected, label } = option;
                                 return (
                                     <CommandItem
-                                        key={value}
+                                        key={i}
                                         onSelect={() => onSelect(option)}
                                     >
                                         <div

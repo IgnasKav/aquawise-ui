@@ -7,4 +7,4 @@ export type Client = {
     type: ClientType;
 };
 
-type ClientType = 'person' | 'company';
+export type ClientType = 'person' | 'company';
