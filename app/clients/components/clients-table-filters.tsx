@@ -1,31 +1,44 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import {
-    StatusFilterOption,
-    StatusFilter,
-} from 'app/shared/components/entity-table/filter/status-filter';
+import { StatusFilter } from 'app/shared/components/entity-table/filter/status-filter';
 import { useEffect } from 'react';
 import { useClientFilters } from '../stores/useClientFilters';
+import { useRouter } from 'next/navigation';
+import { ClientsPageSearchParams } from '../page';
 
-const options: StatusFilterOption[] = [
-    { label: 'Client', value: 'client', isSelected: false },
-    { label: 'Company', value: 'company', isSelected: false },
-];
+type ClientsTableFiltersProps = {
+    searchParams: ClientsPageSearchParams;
+};
 
-const ClientsTableFitlers = () => {
+const ClientsTableFilters = ({ searchParams }: ClientsTableFiltersProps) => {
+    const { p: page } = searchParams;
+
+    const router = useRouter();
     const [statusFilters, setStatusFilters] = useClientFilters((state) => [
         state.statusFilters,
         state.setStatusFilters,
     ]);
 
     useEffect(() => {
-        setStatusFilters(options);
-    }, [setStatusFilters]);
+        const updatedStatuses = statusFilters.map((filter) => ({
+            ...filter,
+            isSelected: searchParams.statuses.has(filter.value),
+        }));
+
+        setStatusFilters(updatedStatuses);
+    }, []);
 
     const handleSearch = () => {
-        const selectedStatusFilters = statusFilters.filter((f) => f.isSelected);
-        console.log('searching', selectedStatusFilters);
+        const selectedStatusFilters = statusFilters
+            .filter((f) => f.isSelected)
+            .map((f) => f.value);
+
+        const urlStatusFilter = encodeURIComponent(
+            selectedStatusFilters.toString(),
+        );
+
+        router.push(`/clients?p=${page}&statuses=${urlStatusFilter}`);
     };
 
     return (
@@ -42,4 +55,4 @@ const ClientsTableFitlers = () => {
     );
 };
 
-export { ClientsTableFitlers };
+export { ClientsTableFilters };

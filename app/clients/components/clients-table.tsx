@@ -5,13 +5,15 @@ import {
     EntityTable,
     EntityTableProps,
 } from 'app/shared/components/entity-table/entity-table';
-import { ClientsTableFitlers } from './clients-table-filters';
+import { ClientsTableFilters } from './clients-table-filters';
+import { ClientsPageSearchParams } from '../page';
 
 type ClientsTableProps = {
     clients: Client[];
     page: number;
     pageSize: number;
     total: number;
+    searchParams: ClientsPageSearchParams;
 };
 
 export default function ClientsTable({
@@ -19,6 +21,7 @@ export default function ClientsTable({
     page,
     pageSize,
     total,
+    searchParams,
 }: ClientsTableProps) {
     const clientsTableData: EntityTableProps = {
         entityName: 'Clients',
@@ -33,7 +36,7 @@ export default function ClientsTable({
 
     return (
         <>
-            <ClientsTableFitlers />
+            <ClientsTableFilters searchParams={searchParams} />
             <EntityTable className="mt-4" {...clientsTableData}>
                 {clients.map((c, i) => (
                     <ClientsTableItem

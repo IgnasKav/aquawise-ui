@@ -8,7 +8,10 @@ type UseClientFiltersState = {
 };
 
 const useClientFilters = create<UseClientFiltersState>((set) => ({
-    statusFilters: [],
+    statusFilters: [
+        { label: 'Client', value: 'client', isSelected: false },
+        { label: 'Company', value: 'company', isSelected: false },
+    ],
     setStatusFilters: (filters: StatusFilterOption[]) =>
         set(
             produce((state: UseClientFiltersState) => {
