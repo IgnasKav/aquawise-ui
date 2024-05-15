@@ -12,8 +12,6 @@ type ClientsTableFiltersProps = {
 };
 
 const ClientsTableFilters = ({ searchParams }: ClientsTableFiltersProps) => {
-    const { p: page } = searchParams;
-
     const router = useRouter();
     const [typeFilters, setTypeFilters] = useClientFilters((state) => [
         state.typeFilters,
@@ -23,24 +21,29 @@ const ClientsTableFilters = ({ searchParams }: ClientsTableFiltersProps) => {
     useEffect(() => {
         const updatedStatuses = typeFilters.map((filter) => ({
             ...filter,
-            isSelected: searchParams.statuses.has(filter.value),
+            isSelected: searchParams.types.has(filter.value),
         }));
 
         setTypeFilters(updatedStatuses);
     }, []);
 
-    const handleSearch = () => {
-        const selectedStatusFilters = typeFilters
+    const getUrl = () => {
+        let url = `/clients?p=1`;
+
+        const selectedTypeFilters = typeFilters
             .filter((f) => f.isSelected)
             .map((f) => f.value);
 
-        const urlStatusFilter = encodeURIComponent(
-            selectedStatusFilters.toString(),
+        const urlTypesFilter = encodeURIComponent(
+            selectedTypeFilters.toString(),
         );
 
-        router.push(`/clients?p=${page}&statuses=${urlStatusFilter}`);
-    };
+        if (urlTypesFilter.trim() !== '') {
+            url += `&types=${urlTypesFilter}`;
+        }
 
+        return url;
+    };
     return (
         <div className="flex gap-x-2">
             <CategoryFilter
@@ -48,7 +51,7 @@ const ClientsTableFilters = ({ searchParams }: ClientsTableFiltersProps) => {
                 filters={typeFilters}
                 setFilters={setTypeFilters}
             />
-            <Button className="h-8" onClick={handleSearch}>
+            <Button className="h-8" onClick={() => router.push(getUrl())}>
                 Search
             </Button>
         </div>

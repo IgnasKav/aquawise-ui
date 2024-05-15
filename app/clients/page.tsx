@@ -11,18 +11,18 @@ import TableLoader from 'app/shared/components/loaders/TableLoader';
 
 export type ClientsPageSearchParams = {
     p: number;
-    statuses: Set<ClientType>;
+    types: Set<ClientType>;
 };
 
 const getClientSearchParams = (searchParams: {
     [key: string]: string | undefined;
 }): ClientsPageSearchParams => {
     const page = +(searchParams.p ?? 1);
-    const statuses = searchParams.statuses
-        ? new Set<ClientType>(searchParams.statuses.split(',') as ClientType[])
+    const types = searchParams.types
+        ? new Set<ClientType>(searchParams.types.split(',') as ClientType[])
         : new Set<ClientType>();
 
-    return { p: page, statuses };
+    return { p: page, types };
 };
 
 const ClientsPage = async ({
@@ -35,7 +35,7 @@ const ClientsPage = async ({
     const clients: Client[] = [];
 
     const params = getClientSearchParams(searchParams);
-    const { p: page, statuses } = params;
+    const { p: page, types } = params;
 
     const pageSize = 15;
 
@@ -44,7 +44,7 @@ const ClientsPage = async ({
         page,
         pageSize,
         filters: {
-            statuses: Array.from(statuses),
+            statuses: Array.from(types),
         },
     });
 
