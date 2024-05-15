@@ -151,4 +151,4 @@ const CategoryFilter = <T,>({
     );
 };
 
-export { CategoryFilter as StatusFilter };
+export { CategoryFilter };

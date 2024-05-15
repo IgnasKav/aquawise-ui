@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { StatusFilter } from 'app/shared/components/entity-table/filter/status-filter';
+import { CategoryFilter } from 'app/shared/components/entity-table/filter/category-filter';
 import { useEffect } from 'react';
 import { useClientFilters } from '../stores/useClientFilters';
 import { useRouter } from 'next/navigation';
@@ -15,22 +15,22 @@ const ClientsTableFilters = ({ searchParams }: ClientsTableFiltersProps) => {
     const { p: page } = searchParams;
 
     const router = useRouter();
-    const [statusFilters, setStatusFilters] = useClientFilters((state) => [
-        state.typeFilter,
-        state.setTypeFilter,
+    const [typeFilters, setTypeFilters] = useClientFilters((state) => [
+        state.typeFilters,
+        state.setTypeFilters,
     ]);
 
     useEffect(() => {
-        const updatedStatuses = statusFilters.map((filter) => ({
+        const updatedStatuses = typeFilters.map((filter) => ({
             ...filter,
             isSelected: searchParams.statuses.has(filter.value),
         }));
 
-        setStatusFilters(updatedStatuses);
+        setTypeFilters(updatedStatuses);
     }, []);
 
     const handleSearch = () => {
-        const selectedStatusFilters = statusFilters
+        const selectedStatusFilters = typeFilters
             .filter((f) => f.isSelected)
             .map((f) => f.value);
 
@@ -43,10 +43,10 @@ const ClientsTableFilters = ({ searchParams }: ClientsTableFiltersProps) => {
 
     return (
         <div className="flex gap-x-2">
-            <StatusFilter
+            <CategoryFilter
                 title="Type"
-                filters={statusFilters}
-                setFilters={setStatusFilters}
+                filters={typeFilters}
+                setFilters={setTypeFilters}
             />
             <Button className="h-8" onClick={handleSearch}>
                 Search
