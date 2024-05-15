@@ -1,3 +1,5 @@
+'use client';
+
 import {
     Pagination,
     PaginationContent,
@@ -7,6 +9,8 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from '@/components/ui/pagination';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useCallback } from 'react';
 
 type PaginationComponentProps = {
     entityName: string;
@@ -21,16 +25,31 @@ export function TablePagination({
     pageSize,
     total,
 }: PaginationComponentProps) {
-    const nOfPages = Math.ceil(total / pageSize);
-    const displayPrevEllipsis = nOfPages > 2 && page > 2;
-    const displayNextEllipsis = nOfPages > 2 && nOfPages - page > 1;
-    const hasPrev = page - 1 > 0;
-    const hasNext = page + 1 <= nOfPages;
+    const searchParams = useSearchParams();
+    const path = usePathname();
+    const router = useRouter();
 
-    const itemsFrom = page * pageSize - pageSize + 1;
-    const itemsTo = page * pageSize < total ? page * pageSize : total;
+    const navigate = useCallback(
+        (page: number) => {
+            const params = new URLSearchParams(searchParams.toString());
+            params.set('p', page.toString());
 
-    const getPageRange = () => {
+            const queryString = params.toString();
+            const res = `${path}?${queryString}`;
+
+            router.push(res);
+        },
+        [searchParams, path, router],
+    );
+
+    const getPaginationInfo = useCallback(() => {
+        const nOfPages = Math.ceil(total / pageSize);
+        const displayPrevEllipsis = nOfPages > 2 && page > 2;
+        const displayNextEllipsis = nOfPages > 2 && nOfPages - page > 1;
+        const hasPrev = page - 1 > 0;
+        const hasNext = page + 1 <= nOfPages;
+        const itemsFrom = page * pageSize - pageSize + 1;
+        const itemsTo = page * pageSize < total ? page * pageSize : total;
         let pageRange: number[] = [];
 
         if (hasPrev && hasNext) {
@@ -51,10 +70,26 @@ export function TablePagination({
             pageRange = [page];
         }
 
-        return pageRange;
-    };
+        return {
+            displayPrevEllipsis,
+            displayNextEllipsis,
+            hasPrev,
+            hasNext,
+            itemsFrom,
+            itemsTo,
+            pageRange,
+        };
+    }, [page, pageSize, total]);
 
-    const pageRange = getPageRange();
+    const {
+        itemsFrom,
+        itemsTo,
+        hasPrev,
+        hasNext,
+        displayPrevEllipsis,
+        displayNextEllipsis,
+        pageRange,
+    } = getPaginationInfo();
 
     return (
         <div className="relative flex justify-items-center w-full">
@@ -70,7 +105,7 @@ export function TablePagination({
                     {hasPrev && (
                         <PaginationItem>
                             <PaginationPrevious
-                                href={`/clients?p=${page - 1}`}
+                                onClick={() => navigate(page - 1)}
                             />
                         </PaginationItem>
                     )}
@@ -82,7 +117,7 @@ export function TablePagination({
                     {pageRange.map((p) => (
                         <PaginationItem key={p}>
                             <PaginationLink
-                                href={`/clients?p=${p}`}
+                                onClick={() => navigate(p)}
                                 isActive={p === page}
                             >
                                 {p}
@@ -96,7 +131,9 @@ export function TablePagination({
                     )}
                     {hasNext && (
                         <PaginationItem>
-                            <PaginationNext href={`/clients?p=${page + 1}`} />
+                            <PaginationNext
+                                onClick={() => navigate(page + 1)}
+                            />
                         </PaginationItem>
                     )}
                 </PaginationContent>
