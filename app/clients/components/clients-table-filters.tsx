@@ -16,8 +16,8 @@ const ClientsTableFilters = ({ searchParams }: ClientsTableFiltersProps) => {
 
     const router = useRouter();
     const [statusFilters, setStatusFilters] = useClientFilters((state) => [
-        state.statusFilters,
-        state.setStatusFilters,
+        state.typeFilter,
+        state.setTypeFilter,
     ]);
 
     useEffect(() => {
@@ -44,7 +44,7 @@ const ClientsTableFilters = ({ searchParams }: ClientsTableFiltersProps) => {
     return (
         <div className="flex gap-x-2">
             <StatusFilter
-                title="Status"
+                title="Type"
                 filters={statusFilters}
                 setFilters={setStatusFilters}
             />

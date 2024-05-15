@@ -20,40 +20,40 @@ import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { PlusCircledIcon, CheckIcon } from '@radix-ui/react-icons';
 
-export type StatusFilterOption<T> = {
+export type CategoryFilter<T> = {
     label: string;
     value: T;
     isSelected: boolean;
 };
 
-type StatusFilterProps<T> = {
+type CategoryFilterProps<T> = {
     title?: string;
-    filters: StatusFilterOption<T>[];
-    setFilters: (filters: StatusFilterOption<T>[]) => void;
+    filters: CategoryFilter<T>[];
+    setFilters: (filters: CategoryFilter<T>[]) => void;
 };
 
-const StatusFilter = <T,>({
+const CategoryFilter = <T,>({
     title,
     filters,
     setFilters,
-}: StatusFilterProps<T>) => {
-    const selectedOptions = filters.filter((o) => o.isSelected);
+}: CategoryFilterProps<T>) => {
+    const selectedFilters = filters.filter((f) => f.isSelected);
 
-    const onSelect = (option: StatusFilterOption<T>) => {
-        const updatedOptions = filters.map((o) =>
-            o.value === option.value ? { ...o, isSelected: !o.isSelected } : o,
+    const onSelect = (filter: CategoryFilter<T>) => {
+        const updatedFilters = filters.map((f) =>
+            f.value === filter.value ? { ...f, isSelected: !f.isSelected } : f,
         );
 
-        setFilters(updatedOptions);
+        setFilters(updatedFilters);
     };
 
     const clearFilters = () => {
-        const updatedOptions = filters.map((o) => ({
-            ...o,
+        const updatedFilters = filters.map((f) => ({
+            ...f,
             isSelected: false,
         }));
 
-        setFilters(updatedOptions);
+        setFilters(updatedFilters);
     };
 
     return (
@@ -66,7 +66,7 @@ const StatusFilter = <T,>({
                 >
                     <PlusCircledIcon className="mr-2 h-4 w-4" />
                     {title}
-                    {selectedOptions?.length > 0 && (
+                    {selectedFilters?.length > 0 && (
                         <>
                             <Separator
                                 orientation="vertical"
@@ -76,24 +76,24 @@ const StatusFilter = <T,>({
                                 variant="secondary"
                                 className="rounded-sm px-1 font-normal lg:hidden"
                             >
-                                {selectedOptions.length}
+                                {selectedFilters.length}
                             </Badge>
                             <div className="hidden space-x-1 lg:flex">
-                                {selectedOptions.length > 2 ? (
+                                {selectedFilters.length > 2 ? (
                                     <Badge
                                         variant="secondary"
                                         className="rounded-sm px-1 font-normal"
                                     >
-                                        {selectedOptions.length} selected
+                                        {selectedFilters.length} selected
                                     </Badge>
                                 ) : (
-                                    selectedOptions.map((option, i) => (
+                                    selectedFilters.map((filter, i) => (
                                         <Badge
                                             variant="secondary"
                                             key={i}
                                             className="rounded-sm px-1 font-normal"
                                         >
-                                            {option.label}
+                                            {filter.label}
                                         </Badge>
                                     ))
                                 )}
@@ -108,12 +108,12 @@ const StatusFilter = <T,>({
                     <CommandList>
                         <CommandEmpty>No results found.</CommandEmpty>
                         <CommandGroup>
-                            {filters.map((option, i) => {
-                                const { isSelected, label } = option;
+                            {filters.map((filter, i) => {
+                                const { isSelected, label } = filter;
                                 return (
                                     <CommandItem
                                         key={i}
-                                        onSelect={() => onSelect(option)}
+                                        onSelect={() => onSelect(filter)}
                                     >
                                         <div
                                             className={cn(
@@ -131,7 +131,7 @@ const StatusFilter = <T,>({
                                 );
                             })}
                         </CommandGroup>
-                        {selectedOptions.length > 0 && (
+                        {selectedFilters.length > 0 && (
                             <>
                                 <CommandSeparator />
                                 <CommandGroup>
@@ -151,4 +151,4 @@ const StatusFilter = <T,>({
     );
 };
 
-export { StatusFilter };
+export { CategoryFilter as StatusFilter };

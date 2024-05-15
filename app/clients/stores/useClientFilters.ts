@@ -1,22 +1,22 @@
-import { StatusFilterOption } from 'app/shared/components/entity-table/filter/status-filter';
+import { CategoryFilter } from 'app/shared/components/entity-table/filter/status-filter';
 import { produce } from 'immer';
 import { create } from 'zustand';
 import { ClientType } from '../models/Client';
 
 type UseClientFiltersState = {
-    statusFilters: StatusFilterOption<ClientType>[];
-    setStatusFilters: (filters: StatusFilterOption<ClientType>[]) => void;
+    typeFilter: CategoryFilter<ClientType>[];
+    setTypeFilter: (filters: CategoryFilter<ClientType>[]) => void;
 };
 
 const useClientFilters = create<UseClientFiltersState>((set) => ({
-    statusFilters: [
+    typeFilter: [
         { label: 'Person', value: 'person', isSelected: false },
         { label: 'Company', value: 'company', isSelected: false },
     ],
-    setStatusFilters: (filters: StatusFilterOption<ClientType>[]) =>
+    setTypeFilter: (filters: CategoryFilter<ClientType>[]) =>
         set(
             produce((state: UseClientFiltersState) => {
-                state.statusFilters = filters;
+                state.typeFilter = filters;
             }),
         ),
 }));
