@@ -24,14 +24,13 @@ columnSorting:
 
 ## Todo
 
-- [fix-clients-table-filters](tasks/fix-clients-table-filters.md)
-
 ## In Progress
 
-- [when-applying-filters-change-url-in-real-time](tasks/when-applying-filters-change-url-in-real-time.md)
+- [create-search-field](tasks/create-search-field.md)
 
 ## Done
 
+- [fix-clients-table-filters](tasks/fix-clients-table-filters.md)
 - [add-filtering-to-the-table](tasks/add-filtering-to-the-table.md)
 - [entity-table-improvements](tasks/entity-table-improvements.md)
 - [add-pagination-in-clients-table](tasks/add-pagination-in-clients-table.md)

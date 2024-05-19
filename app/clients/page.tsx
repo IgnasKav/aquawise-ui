@@ -11,6 +11,7 @@ import TableLoader from 'app/shared/components/loaders/TableLoader';
 
 export type ClientsPageSearchParams = {
     p: number;
+    searchText: string;
     types: Set<ClientType>;
 };
 
@@ -22,7 +23,9 @@ const getClientSearchParams = (searchParams: {
         ? new Set<ClientType>(searchParams.types.split(',') as ClientType[])
         : new Set<ClientType>();
 
-    return { p: page, types };
+    const searchText = searchParams.searchText ?? '';
+
+    return { p: page, types, searchText };
 };
 
 const ClientsPage = async ({
@@ -35,7 +38,7 @@ const ClientsPage = async ({
     const clients: Client[] = [];
 
     const params = getClientSearchParams(searchParams);
-    const { p: page, types } = params;
+    const { p: page, types, searchText } = params;
 
     const pageSize = 15;
 
@@ -43,8 +46,9 @@ const ClientsPage = async ({
         companyId: user.company.id,
         page,
         pageSize,
+        searchText,
         filters: {
-            statuses: Array.from(types),
+            types: Array.from(types),
         },
     });
 
