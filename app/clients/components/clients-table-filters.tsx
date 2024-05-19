@@ -14,21 +14,37 @@ type ClientsTableFiltersProps = {
 
 const ClientsTableFilters = ({ searchParams }: ClientsTableFiltersProps) => {
     const router = useRouter();
-    const [searchText, setSearchText, typeFilters, setTypeFilters] =
-        useClientFilters((state) => [
-            state.searchText,
-            state.setSearchText,
-            state.typeFilters,
-            state.setTypeFilters,
-        ]);
+    const [
+        searchText,
+        setSearchText,
+        typeFilters,
+        setTypeFilters,
+        searchFields,
+        setSearchFields,
+    ] = useClientFilters((state) => [
+        state.searchText,
+        state.setSearchText,
+        state.typeFilters,
+        state.setTypeFilters,
+        state.searchFields,
+        state.setSearchFields,
+    ]);
 
     useEffect(() => {
         const initialStatuses = typeFilters.map((filter) => ({
             ...filter,
-            isSelected: searchParams.types.has(filter.value),
+            isSelected: searchParams.types.includes(filter.value),
         }));
 
         setTypeFilters(initialStatuses);
+
+        const initialSearchFields = searchFields.map((field) => ({
+            ...field,
+            isSelected: searchParams.searchFields.includes(field.value),
+        }));
+
+        setSearchFields(initialSearchFields);
+
         setSearchText(searchParams.searchText);
     }, []);
 
@@ -39,16 +55,24 @@ const ClientsTableFilters = ({ searchParams }: ClientsTableFiltersProps) => {
             .filter((f) => f.isSelected)
             .map((f) => f.value);
 
-        const urlTypesFilter = encodeURIComponent(
-            selectedTypeFilters.toString(),
-        );
-
-        if (urlTypesFilter.trim() !== '') {
-            url += `&types=${urlTypesFilter}`;
+        if (selectedTypeFilters.length > 0) {
+            url += `&types=${encodeURIComponent(
+                selectedTypeFilters.toString(),
+            )}`;
         }
 
         if (searchText.trim() !== '') {
             url += `&searchText=${encodeURIComponent(searchText)}`;
+        }
+
+        const selectedSearchFields = searchFields
+            .filter((f) => f.isSelected)
+            .map((f) => f.value);
+
+        if (selectedSearchFields.length > 0) {
+            url += `&searchFields=${encodeURIComponent(
+                selectedSearchFields.toString(),
+            )}`;
         }
 
         return url;
@@ -61,6 +85,11 @@ const ClientsTableFilters = ({ searchParams }: ClientsTableFiltersProps) => {
                 isPlain={true}
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
+            />
+            <CategoryFilter
+                title="Fields"
+                filters={searchFields}
+                setFilters={setSearchFields}
             />
             <CategoryFilter
                 title="Type"

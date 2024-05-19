@@ -8,11 +8,13 @@ import { Client, ClientType } from './models/Client';
 import { FailedDataFetchComponent } from 'app/shared/components/not-found/failed-data-fetch';
 import { Suspense } from 'react';
 import TableLoader from 'app/shared/components/loaders/TableLoader';
+import { ClientSearchField } from './stores/useClientFilters';
 
 export type ClientsPageSearchParams = {
     p: number;
     searchText: string;
-    types: Set<ClientType>;
+    types: ClientType[];
+    searchFields: ClientSearchField[];
 };
 
 const getClientSearchParams = (searchParams: {
@@ -20,12 +22,16 @@ const getClientSearchParams = (searchParams: {
 }): ClientsPageSearchParams => {
     const page = +(searchParams.p ?? 1);
     const types = searchParams.types
-        ? new Set<ClientType>(searchParams.types.split(',') as ClientType[])
-        : new Set<ClientType>();
+        ? (searchParams.types.split(',') as ClientType[])
+        : [];
 
     const searchText = searchParams.searchText ?? '';
 
-    return { p: page, types, searchText };
+    const searchFields = searchParams.searchFields
+        ? (searchParams.searchFields.split(',') as ClientSearchField[])
+        : [];
+
+    return { p: page, types, searchText, searchFields };
 };
 
 const ClientsPage = async ({
@@ -38,7 +44,7 @@ const ClientsPage = async ({
     const clients: Client[] = [];
 
     const params = getClientSearchParams(searchParams);
-    const { p: page, types, searchText } = params;
+    const { p: page, types, searchText, searchFields } = params;
 
     const pageSize = 15;
 
@@ -48,7 +54,8 @@ const ClientsPage = async ({
         pageSize,
         searchText,
         filters: {
-            types: Array.from(types),
+            searchFields,
+            types,
         },
     });
 
