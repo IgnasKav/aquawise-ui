@@ -3,7 +3,6 @@ import {
     UserFilterSaveRequest,
     UserFilterScope,
 } from './models/user-filter-save-request';
-import { ClientsSearchFilter } from 'api/clients/models/SearchClientsByCompanyRequest';
 import { ClientsPageSearchParams } from 'app/clients/page';
 
 const prefix = '/users';
@@ -14,7 +13,7 @@ const UsersApi = {
             `${prefix}/${userId}/${scope}/filters`,
         ),
     saveUserFilter: (userId: string, req: UserFilterSaveRequest) =>
-        requests.post<ClientsSearchFilter>(`${prefix}/${userId}/filters`, req),
+        requests.post<null>(`${prefix}/${userId}/filters`, req),
 };
 
 export { UsersApi };

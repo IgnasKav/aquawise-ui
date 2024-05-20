@@ -59,6 +59,33 @@ type FailedFetch = {
     isError: true;
 } & ApiError;
 
+const processFetchResponse = async <T>(
+    resp: Response,
+): Promise<FetchResponse<T>> => {
+    if (!resp.ok) {
+        const error = (await resp.json()) as Partial<ApiError>;
+
+        return {
+            isError: true,
+            message: error.message ?? '',
+            statusCode: error.statusCode ?? 0,
+            timeStamp: error.timeStamp ?? '',
+        };
+    }
+
+    let data: T | null = null;
+
+    try {
+        data = (await resp.json()) as T;
+    } catch (e) {}
+
+    if (data === null) {
+        return { isError: false } as SuccessfulFetch<null>;
+    }
+
+    return { isError: false, ...data };
+};
+
 const post = async <T>(
     url: string,
     body: object,
@@ -77,20 +104,7 @@ const post = async <T>(
         body: JSON.stringify(body),
     });
 
-    if (!res.ok) {
-        const error = (await res.json()) as Partial<ApiError>;
-
-        return {
-            isError: true,
-            message: error.message ?? '',
-            statusCode: error.statusCode ?? 0,
-            timeStamp: error.timeStamp ?? '',
-        };
-    }
-
-    const data = (await res.json()) as T;
-
-    return { isError: false, ...data };
+    return processFetchResponse(res);
 };
 
 const get = async <T>(url: string): Promise<FetchResponse<T>> => {
@@ -103,20 +117,7 @@ const get = async <T>(url: string): Promise<FetchResponse<T>> => {
         },
     });
 
-    if (!res.ok) {
-        const error = (await res.json()) as Partial<ApiError>;
-
-        return {
-            isError: true,
-            message: error.message ?? '',
-            statusCode: error.statusCode ?? 0,
-            timeStamp: error.timeStamp ?? '',
-        };
-    }
-
-    const data = (await res.json()) as T;
-
-    return { isError: false, ...data };
+    return processFetchResponse(res);
 };
 
 const responseBody = (response: AxiosResponse) => response.data;
