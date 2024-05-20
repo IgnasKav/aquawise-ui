@@ -9,6 +9,7 @@ import { FailedDataFetchComponent } from 'app/shared/components/not-found/failed
 import { Suspense } from 'react';
 import TableLoader from 'app/shared/components/loaders/TableLoader';
 import { ClientSearchField } from './stores/useClientFilters';
+import { UserFilterSaveRequest } from 'api/users/models/user-filter-save-request';
 
 export type ClientsPageSearchParams = {
     page: number;
@@ -34,6 +35,23 @@ const getClientSearchParams = (searchParams: {
     return { page, types, searchText, searchFields };
 };
 
+const saveClientSearchParams = async (
+    userId: string,
+    { page, searchText, types, searchFields }: ClientsPageSearchParams,
+) => {
+    const req: UserFilterSaveRequest = {
+        scope: 'clients',
+        filter: {
+            searchText,
+            page: page,
+            searchFields,
+            types,
+        },
+    };
+
+    api.Users.saveUserFilter(userId, req);
+};
+
 const ClientsPage = async ({
     searchParams,
 }: {
@@ -44,6 +62,9 @@ const ClientsPage = async ({
     const clients: Client[] = [];
 
     const params = getClientSearchParams(searchParams);
+
+    saveClientSearchParams(user.id, params);
+
     const { page, types, searchText, searchFields } = params;
 
     const pageSize = 15;

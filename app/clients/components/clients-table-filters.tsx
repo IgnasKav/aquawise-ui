@@ -7,10 +7,6 @@ import { useClientFilters } from '../stores/useClientFilters';
 import { useRouter } from 'next/navigation';
 import { ClientsPageSearchParams } from '../page';
 import { Input } from '@/components/ui/input';
-import { UserFilterSaveRequest } from 'api/users/models/user-filter-save-request';
-import { api } from 'api/api';
-import { useSession } from 'next-auth/react';
-import { User } from 'app/auth/models/User';
 import { buildClientsUrl } from '../utils/client-url-builder';
 
 type ClientsTableFiltersProps = {
@@ -18,7 +14,6 @@ type ClientsTableFiltersProps = {
 };
 
 const ClientsTableFilters = ({ searchParams }: ClientsTableFiltersProps) => {
-    const session = useSession();
     const router = useRouter();
     const [
         searchText,
@@ -67,33 +62,6 @@ const ClientsTableFilters = ({ searchParams }: ClientsTableFiltersProps) => {
         return url;
     };
 
-    const onSearch = async () => {
-        await saveFilters();
-        router.push(getUrl());
-    };
-
-    const saveFilters = async () => {
-        const req: UserFilterSaveRequest = {
-            scope: 'clients',
-            filter: {
-                searchText,
-                page: searchParams.page,
-                searchFields: searchFields
-                    .filter((f) => f.isSelected)
-                    .map((f) => f.value),
-                types: typeFilters
-                    .filter((t) => t.isSelected)
-                    .map((t) => t.value),
-            },
-        };
-
-        const user = session.data?.user as User;
-
-        if (!user) return;
-
-        api.Users.saveUserFilter(user.id, req);
-    };
-
     return (
         <div className="flex gap-x-2">
             <Input
@@ -113,7 +81,7 @@ const ClientsTableFilters = ({ searchParams }: ClientsTableFiltersProps) => {
                 filters={typeFilters}
                 setFilters={setTypeFilters}
             />
-            <Button className="h-8" onClick={() => onSearch()}>
+            <Button className="h-8" onClick={() => router.push(getUrl())}>
                 Search
             </Button>
         </div>

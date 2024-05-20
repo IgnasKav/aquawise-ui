@@ -26,9 +26,10 @@ columnSorting:
 
 - [remove-react-query-do-after-removing-axios](tasks/remove-react-query-do-after-removing-axios.md)
 - [remove-axios](tasks/remove-axios.md)
-- [fix-fitler-bugs](tasks/fix-fitler-bugs.md)
 
 ## In Progress
+
+- [fix-fitler-bugs](tasks/fix-fitler-bugs.md)
 
 ## Done
 
