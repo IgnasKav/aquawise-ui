@@ -24,12 +24,15 @@ columnSorting:
 
 ## Todo
 
-- [save-user-filters](tasks/save-user-filters.md)
+- [remove-react-query-do-after-removing-axios](tasks/remove-react-query-do-after-removing-axios.md)
+- [remove-axios](tasks/remove-axios.md)
+- [fix-fitler-bugs](tasks/fix-fitler-bugs.md)
 
 ## In Progress
 
 ## Done
 
+- [save-user-filters](tasks/save-user-filters.md)
 - [create-search-field](tasks/create-search-field.md)
 - [fix-clients-table-filters](tasks/fix-clients-table-filters.md)
 - [add-filtering-to-the-table](tasks/add-filtering-to-the-table.md)
