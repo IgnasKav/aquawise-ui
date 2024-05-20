@@ -14,15 +14,37 @@ import {
     ScrollText,
 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { api } from 'api/api';
+import { buildClientsUrl } from 'app/clients/utils/client-url-builder';
+import { useRouter } from 'next/navigation';
 
 interface NavbarProps {
     session: Session | null;
 }
 
+type NavigationArea = 'home' | 'clients' | 'products' | 'orders';
+
 const NavBar = ({ session: initialSession }: NavbarProps) => {
     const { data: clientSession } = useSession();
     const session = clientSession ?? initialSession;
     const user = session?.user as User | undefined;
+    const router = useRouter();
+
+    const navigate = async (area: NavigationArea) => {
+        if (!user) return;
+
+        switch (area) {
+            case 'clients':
+                const resp = await api.Users.getUserFilter(user?.id, 'clients');
+
+                if (resp.isError) return;
+
+                const url = buildClientsUrl({ ...resp });
+
+                router.push(url);
+                break;
+        }
+    };
 
     return (
         <div className="mt-8 mb-4">
@@ -47,6 +69,7 @@ const NavBar = ({ session: initialSession }: NavbarProps) => {
                                 </>
                             )}
                             <NavButton
+                                onClick={() => navigate('clients')}
                                 to="/clients?p=1"
                                 title="Clients"
                                 icon={<Smartphone />}

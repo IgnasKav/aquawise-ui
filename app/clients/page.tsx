@@ -11,7 +11,7 @@ import TableLoader from 'app/shared/components/loaders/TableLoader';
 import { ClientSearchField } from './stores/useClientFilters';
 
 export type ClientsPageSearchParams = {
-    p: number;
+    page: number;
     searchText: string;
     types: ClientType[];
     searchFields: ClientSearchField[];
@@ -31,7 +31,7 @@ const getClientSearchParams = (searchParams: {
         ? (searchParams.searchFields.split(',') as ClientSearchField[])
         : [];
 
-    return { p: page, types, searchText, searchFields };
+    return { page, types, searchText, searchFields };
 };
 
 const ClientsPage = async ({
@@ -44,7 +44,7 @@ const ClientsPage = async ({
     const clients: Client[] = [];
 
     const params = getClientSearchParams(searchParams);
-    const { p: page, types, searchText, searchFields } = params;
+    const { page, types, searchText, searchFields } = params;
 
     const pageSize = 15;
 
@@ -53,7 +53,7 @@ const ClientsPage = async ({
         page,
         pageSize,
         searchText,
-        filters: {
+        filter: {
             searchFields,
             types,
         },

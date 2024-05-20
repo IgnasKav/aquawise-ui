@@ -7,15 +7,20 @@ import classNames from 'classnames';
 interface NavButtonProps {
     to: string;
     title: string;
+    onClick?: () => void;
     icon?: React.ReactNode;
 }
 
-const NavButton = ({ to, title, icon = null }: NavButtonProps) => {
+const NavButton = ({ to, title, onClick, icon = null }: NavButtonProps) => {
     const pathName = usePathname();
     const router = useRouter();
 
     const navigate = () => {
-        router.push(to);
+        if (onClick) {
+            onClick();
+        } else {
+            router.push(to);
+        }
     };
 
     const isActive = pathName === '/' ? to === pathName : to.includes(pathName);

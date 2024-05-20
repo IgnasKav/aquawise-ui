@@ -24,12 +24,13 @@ columnSorting:
 
 ## Todo
 
-## In Progress
+- [save-user-filters](tasks/save-user-filters.md)
 
-- [create-search-field](tasks/create-search-field.md)
+## In Progress
 
 ## Done
 
+- [create-search-field](tasks/create-search-field.md)
 - [fix-clients-table-filters](tasks/fix-clients-table-filters.md)
 - [add-filtering-to-the-table](tasks/add-filtering-to-the-table.md)
 - [entity-table-improvements](tasks/entity-table-improvements.md)

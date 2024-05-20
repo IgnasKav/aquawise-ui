@@ -14,6 +14,7 @@ import { ImagesApi as Images } from './images/ImagesApi';
 import { ClientsApi as Clients } from './clients/ClientsApi';
 import { ProductFormDto } from 'app/products/components/forms/ProductForm';
 import { CompanyApplicationFormDto } from 'app/auth/components/auth-modal/CompanyApplicationForm';
+import { UsersApi as Users } from './users/users-api';
 
 export const ApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -92,10 +93,36 @@ const post = async <T>(
     return { isError: false, ...data };
 };
 
+const get = async <T>(url: string): Promise<FetchResponse<T>> => {
+    const token = await api.getJwt();
+
+    const res = await fetch(`${ApiUrl}${url}`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    if (!res.ok) {
+        const error = (await res.json()) as Partial<ApiError>;
+
+        return {
+            isError: true,
+            message: error.message ?? '',
+            statusCode: error.statusCode ?? 0,
+            timeStamp: error.timeStamp ?? '',
+        };
+    }
+
+    const data = (await res.json()) as T;
+
+    return { isError: false, ...data };
+};
+
 const responseBody = (response: AxiosResponse) => response.data;
 
 const requests = {
-    get: (url: string) => axios.get(url).then(responseBody),
+    get,
     post,
     put: (url: string, body: object, isFormData = false) => {
         const headers = isFormData
@@ -111,26 +138,26 @@ const Auth = {
         requests.post<LoginResponse>('/auth/login', req),
     register: async (req: RegisterRequest) =>
         await requests.post<RegisterResponse>(`/auth/register`, req),
-    current: (): Promise<User> => requests.get('auth/current'),
-    getByRegistrationId: (registrationId: string): Promise<User> =>
-        requests.get(`/auth/register?registrationId=${registrationId}`),
+    current: () => requests.get<User>('auth/current'),
+    getByRegistrationId: (registrationId: string) =>
+        requests.get<User>(`/auth/register?registrationId=${registrationId}`),
 };
 
 const Companies = {
-    getAll: (): Promise<Company[] | undefined> => requests.get(`/companies`),
+    getAll: () => requests.get<Company[] | undefined>(`/companies`),
     applyForAccount: (createRequest: CompanyApplicationFormDto) =>
         requests.post<Company>('/companies/application', createRequest),
     confirmApplication: (registrationId: string) =>
         requests.post<Company>(`/companies/confirm/${registrationId}`, {}),
-    getById: (id: string): Promise<Company> => requests.get(`/companies/${id}`),
+    getById: (id: string) => requests.get<Company>(`/companies/${id}`),
     saveColor: (id: string, color: string | undefined): Promise<void> =>
         requests.put(`/companies/${id}`, { brandColor: color }),
 };
 
 const Products = {
-    getAll: (): Promise<Product[] | undefined> => requests.get('/products'),
-    getById: (productId: string): Promise<Company> =>
-        requests.get(`/products/${productId}`),
+    getAll: () => requests.get<Product[] | undefined>('/products'),
+    getById: (productId: string) =>
+        requests.get<Company>(`/products/${productId}`),
     create: (req: ProductFormDto) => requests.post<Product>('/products', req),
     update: (productId: string, req: ProductFormDto): Promise<Product> =>
         requests.put(`/products/${productId}`, req),
@@ -144,6 +171,7 @@ const api = {
     Products,
     Images,
     Clients,
+    Users,
     getJwt,
 };
 
