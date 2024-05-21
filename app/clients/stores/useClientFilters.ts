@@ -2,16 +2,15 @@ import { CategoryFilter } from 'app/shared/components/entity-table/filter/catego
 import { produce } from 'immer';
 import { create } from 'zustand';
 import { ClientType } from '../models/Client';
-
-export type ClientSearchField = 'email' | 'name' | 'phone' | 'address';
+import { ClientsSearchField } from 'api/clients/models/clients-search-request';
 
 type UseClientFiltersState = {
     searchText: string;
     setSearchText: (value: string) => void;
     typeFilters: CategoryFilter<ClientType>[];
     setTypeFilters: (filters: CategoryFilter<ClientType>[]) => void;
-    searchFields: CategoryFilter<ClientSearchField>[];
-    setSearchFields: (fields: CategoryFilter<ClientSearchField>[]) => void;
+    searchFields: CategoryFilter<ClientsSearchField>[];
+    setSearchFields: (fields: CategoryFilter<ClientsSearchField>[]) => void;
 };
 
 const useClientFilters = create<UseClientFiltersState>((set) => ({
@@ -33,7 +32,7 @@ const useClientFilters = create<UseClientFiltersState>((set) => ({
         { label: 'Phone', value: 'phone', isSelected: false },
         { label: 'Address', value: 'address', isSelected: false },
     ],
-    setSearchFields: (fields: CategoryFilter<ClientSearchField>[]) =>
+    setSearchFields: (fields: CategoryFilter<ClientsSearchField>[]) =>
         set(
             produce((state: UseClientFiltersState) => {
                 state.searchFields = fields;

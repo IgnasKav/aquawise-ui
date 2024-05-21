@@ -8,14 +8,14 @@ import { Client, ClientType } from './models/Client';
 import { FailedDataFetchComponent } from 'app/shared/components/not-found/failed-data-fetch';
 import { Suspense } from 'react';
 import TableLoader from 'app/shared/components/loaders/TableLoader';
-import { ClientSearchField } from './stores/useClientFilters';
 import { UserFilterSaveRequest } from 'api/users/models/user-filter-save-request';
+import { ClientsSearchField } from 'api/clients/models/clients-search-request';
 
 export type ClientsPageSearchParams = {
     page: number;
     searchText: string;
     types: ClientType[];
-    searchFields: ClientSearchField[];
+    searchFields: ClientsSearchField[];
 };
 
 const getClientSearchParams = (searchParams: {
@@ -29,7 +29,7 @@ const getClientSearchParams = (searchParams: {
     const searchText = searchParams.searchText ?? '';
 
     const searchFields = searchParams.searchFields
-        ? (searchParams.searchFields.split(',') as ClientSearchField[])
+        ? (searchParams.searchFields.split(',') as ClientsSearchField[])
         : [];
 
     return { page, types, searchText, searchFields };

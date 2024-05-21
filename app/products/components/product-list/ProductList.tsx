@@ -1,15 +1,13 @@
 'use client';
 
 import { ProductCard } from './ProductCard';
-import { useQuery } from '@tanstack/react-query';
-import { api } from '../../../../api/api';
+import { Product } from 'app/products/models/Product';
 
-const ProductList = () => {
-    const { data: products } = useQuery({
-        queryKey: ['products'],
-        queryFn: () => api.Products.getAll(),
-    });
+type ProductsListProps = {
+    products: Product[];
+};
 
+const ProductList = ({ products }: ProductsListProps) => {
     return (
         <div className="flex flex-wrap gap-2">
             {products?.map((product) => (

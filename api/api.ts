@@ -15,6 +15,8 @@ import { ClientsApi as Clients } from './clients/ClientsApi';
 import { ProductFormDto } from 'app/products/components/forms/ProductForm';
 import { CompanyApplicationFormDto } from 'app/auth/components/auth-modal/CompanyApplicationForm';
 import { UsersApi as Users } from './users/users-api';
+import { SearchResponse } from './models/SearchResponse';
+import { ProductsSearchRequest } from 'app/products/models/products-search-request';
 
 export const ApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -156,7 +158,8 @@ const Companies = {
 };
 
 const Products = {
-    getAll: () => requests.get<Product[] | undefined>('/products'),
+    search: (req: ProductsSearchRequest) =>
+        requests.post<SearchResponse<Product>>('/products/search', req),
     getById: (productId: string) =>
         requests.get<Company>(`/products/${productId}`),
     create: (req: ProductFormDto) => requests.post<Product>('/products', req),
