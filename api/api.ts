@@ -1,4 +1,3 @@
-import axios, { AxiosResponse } from 'axios';
 import { LoginRequest } from '../app/auth/register/models/LoginRequest';
 import { RegisterRequest } from '../app/auth/register/models/RegisterRequest';
 import { LoginResponse } from '../app/auth/register/models/LoginResponse';
@@ -20,8 +19,6 @@ import { ProductsSearchRequest } from 'app/products/models/products-search-reque
 
 export const ApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-axios.defaults.baseURL = `${ApiUrl}`;
-
 // this file is used by server and client components, which get session differently
 const getJwt = async (): Promise<string | undefined> => {
     let jwt = '';
@@ -39,17 +36,6 @@ const getJwt = async (): Promise<string | undefined> => {
 
     return jwt;
 };
-
-axios.interceptors.request.use(async (config) => {
-    const token = await getJwt();
-    if (token && config?.headers)
-        config.headers.Authorization = `Bearer ${token}`;
-    return config;
-});
-
-axios.interceptors.response.use(
-    (response) => response, // Simply return the response for successful requests
-);
 
 export type FetchResponse<T> = SuccessfulFetch<T> | FailedFetch;
 
@@ -122,18 +108,45 @@ const get = async <T>(url: string): Promise<FetchResponse<T>> => {
     return processFetchResponse(res);
 };
 
-const responseBody = (response: AxiosResponse) => response.data;
+const put = async <T>(
+    url: string,
+    body: object,
+    isFormData = false,
+): Promise<FetchResponse<T>> => {
+    const token = await api.getJwt();
+
+    const res = await fetch(`${ApiUrl}${url}`, {
+        method: 'PUT',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': isFormData
+                ? 'multipart/form-data'
+                : 'application/json',
+        },
+        body: JSON.stringify(body),
+    });
+
+    return processFetchResponse(res);
+};
+
+const del = async <T>(url: string): Promise<FetchResponse<T>> => {
+    const token = await api.getJwt();
+
+    const res = await fetch(`${ApiUrl}${url}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return processFetchResponse(res);
+};
 
 const requests = {
     get,
     post,
-    put: (url: string, body: object, isFormData = false) => {
-        const headers = isFormData
-            ? { 'Content-Type': 'multipart/form-data' }
-            : {};
-        return axios.put(url, body, { headers }).then(responseBody);
-    },
-    del: (url: string) => axios.delete(url).then(responseBody),
+    put,
+    del,
 };
 
 const Auth = {
@@ -153,8 +166,8 @@ const Companies = {
     confirmApplication: (registrationId: string) =>
         requests.post<Company>(`/companies/confirm/${registrationId}`, {}),
     getById: (id: string) => requests.get<Company>(`/companies/${id}`),
-    saveColor: (id: string, color: string | undefined): Promise<void> =>
-        requests.put(`/companies/${id}`, { brandColor: color }),
+    saveColor: (id: string, color: string | undefined) =>
+        requests.put<void>(`/companies/${id}`, { brandColor: color }),
 };
 
 const Products = {
@@ -163,10 +176,9 @@ const Products = {
     getById: (productId: string) =>
         requests.get<Company>(`/products/${productId}`),
     create: (req: ProductFormDto) => requests.post<Product>('/products', req),
-    update: (productId: string, req: ProductFormDto): Promise<Product> =>
-        requests.put(`/products/${productId}`, req),
-    delete: (productId: string): Promise<void> =>
-        requests.del(`/products/${productId}`),
+    update: (productId: string, req: ProductFormDto) =>
+        requests.put<Product>(`/products/${productId}`, req),
+    delete: (productId: string) => requests.del<void>(`/products/${productId}`),
 };
 
 const api = {
