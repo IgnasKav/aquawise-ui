@@ -1,3 +1,5 @@
 import { ImageDto } from './ImageEntity';
 
-export type ImageSaveResponse = ImageDto[];
+export type ImageSaveResponse = {
+    images: ImageDto[];
+};

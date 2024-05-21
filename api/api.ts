@@ -81,15 +81,18 @@ const post = async <T>(
 ): Promise<FetchResponse<T>> => {
     const token = await api.getJwt();
 
+    const headers: HeadersInit = {
+        Authorization: `Bearer ${token}`,
+    };
+
+    if (!isFormData) {
+        headers['Content-Type'] = 'application/json';
+    }
+
     const res = await fetch(`${ApiUrl}${url}`, {
         method: 'POST',
-        headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': isFormData
-                ? 'multipart/form-data'
-                : 'application/json',
-        },
-        body: JSON.stringify(body),
+        headers,
+        body: isFormData ? (body as FormData) : JSON.stringify(body),
     });
 
     return processFetchResponse(res);

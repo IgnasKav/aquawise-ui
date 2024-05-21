@@ -37,7 +37,9 @@ const DropZone = ({ control, name, title, error }: DropZoneProps) => {
 
         const res = await api.Images.save(formData);
 
-        const savedImages = [...images, ...res];
+        if (res.isError) return;
+
+        const savedImages = [...images, ...res.images];
 
         setSavedImages(savedImages);
         field.onChange(savedImages);
