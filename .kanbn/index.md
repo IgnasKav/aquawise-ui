@@ -24,14 +24,14 @@ columnSorting:
 
 ## Todo
 
+- [add-pagination-to-products-page](tasks/add-pagination-to-products-page.md)
 - [remove-react-query-do-after-removing-axios](tasks/remove-react-query-do-after-removing-axios.md)
 
 ## In Progress
 
-- [remove-axios](tasks/remove-axios.md)
-
 ## Done
 
+- [remove-axios](tasks/remove-axios.md)
 - [fix-fitler-bugs](tasks/fix-fitler-bugs.md)
 - [save-user-filters](tasks/save-user-filters.md)
 - [create-search-field](tasks/create-search-field.md)
