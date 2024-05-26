@@ -13,7 +13,13 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { Subject } from 'rxjs';
 
-export const CreateProductButton = () => {
+type CreateProductButtonProps = {
+    className?: string;
+};
+
+export const CreateProductButton = ({
+    className,
+}: CreateProductButtonProps) => {
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
     const onCloseSubject = useMemo(() => new Subject<void>(), []);
@@ -37,7 +43,12 @@ export const CreateProductButton = () => {
     return (
         <>
             <Dialog open={dialogOpen} onOpenChange={handleDialogClose}>
-                <Button onClick={() => setDialogOpen(true)}>Add product</Button>
+                <Button
+                    className={className}
+                    onClick={() => setDialogOpen(true)}
+                >
+                    Add product
+                </Button>
                 <DialogContent className="grid h-screen w-screen max-w-screen-md sm:h-fit sm:w-[434px]">
                     <DialogHeader>
                         <DialogTitle>Create Product</DialogTitle>

@@ -26,7 +26,7 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
                             enableSystem
                             disableTransitionOnChange
                         >
-                            <div className="relative h-screen max-w-screen-2xl mx-auto px-8">
+                            <div className="flex flex-col relative h-screen max-w-screen-2xl mx-auto px-8">
                                 <NavBar session={session} />
                                 {children}
                             </div>

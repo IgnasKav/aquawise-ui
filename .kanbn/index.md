@@ -24,10 +24,11 @@ columnSorting:
 
 ## Todo
 
-- [add-pagination-to-products-page](tasks/add-pagination-to-products-page.md)
 - [remove-react-query-do-after-removing-axios](tasks/remove-react-query-do-after-removing-axios.md)
 
 ## In Progress
+
+- [add-pagination-to-products-page](tasks/add-pagination-to-products-page.md)
 
 ## Done
 

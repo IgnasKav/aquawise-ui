@@ -1,0 +1,29 @@
+.productGrid {
+    display: grid;
+    grid-template-columns: repeat(1, auto);
+    justify-content: space-between;
+}
+
+@media (min-width: 560px) {
+    .productGrid {
+        grid-template-columns: repeat(2, auto);
+    }
+}
+
+@media (min-width: 816px) {
+    .productGrid {
+        grid-template-columns: repeat(3, auto);
+    }
+}
+
+@media (min-width: 1050px) {
+    .productGrid {
+        grid-template-columns: repeat(4, auto);
+    }
+}
+
+@media (min-width: 1400px) {
+    .productGrid {
+        grid-template-columns: repeat(5, auto);
+    }
+}

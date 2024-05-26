@@ -13,6 +13,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback } from 'react';
 
 type PaginationComponentProps = {
+    className?: string;
     page: number;
     pageSize: number;
     total: number;
@@ -22,6 +23,7 @@ const PaginationComponent = ({
     page,
     pageSize,
     total,
+    className,
 }: PaginationComponentProps) => {
     const searchParams = useSearchParams();
     const path = usePathname();
@@ -84,7 +86,7 @@ const PaginationComponent = ({
     } = getPaginationInfo();
 
     return (
-        <Pagination>
+        <Pagination className={className}>
             <PaginationContent>
                 {hasPrev && (
                     <PaginationItem>
