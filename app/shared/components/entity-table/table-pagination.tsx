@@ -2,8 +2,10 @@
 
 import { useCallback } from 'react';
 import { PaginationComponent } from '../pagination/pagination';
+import { cn } from '@/lib/utils';
 
 type TablePaginationComponentProps = {
+    className?: string;
     entityName: string;
     page: number;
     pageSize: number;
@@ -11,6 +13,7 @@ type TablePaginationComponentProps = {
 };
 
 export function TablePagination({
+    className,
     entityName,
     page,
     pageSize,
@@ -29,7 +32,12 @@ export function TablePagination({
     const { itemsFrom, itemsTo } = getPaginationInfo();
 
     return (
-        <div className="relative flex justify-items-center w-full">
+        <div
+            className={cn(
+                className,
+                'relative flex justify-items-center w-full',
+            )}
+        >
             <div className="absolute top-3 text-xs text-muted-foreground">
                 Showing{' '}
                 <strong>

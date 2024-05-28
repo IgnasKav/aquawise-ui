@@ -25,7 +25,6 @@ export default function ClientsTable({
 }: ClientsTableProps) {
     const clientsTableData: EntityTableProps = {
         entityName: 'Clients',
-        description: 'Manage clients',
         header: <ClientsTableHeader />,
         page,
         pageSize,
@@ -37,7 +36,7 @@ export default function ClientsTable({
     return (
         <>
             <ClientsTableFilters searchParams={searchParams} />
-            <EntityTable className="mt-4" {...clientsTableData}>
+            <EntityTable className="mt-4 mb-8" {...clientsTableData}>
                 {clients.map((c, i) => (
                     <ClientsTableItem
                         index={itemsFrom + i}

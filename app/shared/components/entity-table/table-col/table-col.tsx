@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge';
-import { TableCell } from '@/components/ui/table';
+import { TableCell, TableHead } from '@/components/ui/table';
+import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
 type StringColProps = {
@@ -41,4 +42,20 @@ const ImageCol = ({ src, name, className }: ImageColProps) => {
     );
 };
 
-export { StringCol, StatusCol, ImageCol };
+const HeaderCol = ({
+    value,
+    className,
+}: {
+    value?: string;
+    className?: string;
+}) => {
+    return (
+        <TableHead
+            className={cn(className, 'bg-primary-foreground sticky top-0')}
+        >
+            {value}
+        </TableHead>
+    );
+};
+
+export { StringCol, StatusCol, ImageCol, HeaderCol };
