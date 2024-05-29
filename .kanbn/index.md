@@ -28,10 +28,9 @@ columnSorting:
 
 ## In Progress
 
-- [add-pagination-to-products-page](tasks/add-pagination-to-products-page.md)
-
 ## Done
 
+- [add-pagination-to-products-page](tasks/add-pagination-to-products-page.md)
 - [remove-axios](tasks/remove-axios.md)
 - [fix-fitler-bugs](tasks/fix-fitler-bugs.md)
 - [save-user-filters](tasks/save-user-filters.md)

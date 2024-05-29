@@ -26,9 +26,7 @@ const EntityTable = ({
 }: EntityTableProps & Props) => {
     return (
         <>
-            <div
-                className={cn(className, 'flex flex-col grow overflow-hidden')}
-            >
+            <div className={cn(className, 'flex flex-col grow ')}>
                 <div className="border rounded-md  flex overflow-hidden">
                     <Table className="overflow-hidden overflow-y-auto">
                         <TableHeader className="rounded">{header}</TableHeader>

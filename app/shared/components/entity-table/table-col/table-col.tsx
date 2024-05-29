@@ -20,11 +20,32 @@ const StringCol = ({ value, className }: StringColProps) => {
     return <TableCell className={className}>{value}</TableCell>;
 };
 
+const StringCol2 = ({ value, className }: StringColProps) => {
+    return (
+        <div
+            className={cn(
+                'text-ellipsis overflow-hidden whitespace-nowrap',
+                className,
+            )}
+        >
+            {value}
+        </div>
+    );
+};
+
 const StatusCol = ({ value, className }: StatusColProps) => {
     return (
         <TableCell className={className}>
             <Badge variant="outline">{value}</Badge>
         </TableCell>
+    );
+};
+
+const StatusCol2 = ({ value, className }: StatusColProps) => {
+    return (
+        <div className={className}>
+            <Badge variant="outline">{value}</Badge>
+        </div>
     );
 };
 
@@ -58,4 +79,4 @@ const HeaderCol = ({
     );
 };
 
-export { StringCol, StatusCol, ImageCol, HeaderCol };
+export { StringCol, StringCol2, StatusCol, StatusCol2, ImageCol, HeaderCol };
