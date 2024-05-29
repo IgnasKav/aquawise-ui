@@ -1,5 +1,5 @@
 import { Badge } from '@/components/ui/badge';
-import { TableCell, TableHead } from '@/components/ui/table';
+import { TableCell } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -17,10 +17,6 @@ type ImageColProps = {
 };
 
 const StringCol = ({ value, className }: StringColProps) => {
-    return <TableCell className={className}>{value}</TableCell>;
-};
-
-const StringCol2 = ({ value, className }: StringColProps) => {
     return (
         <div
             className={cn(
@@ -34,14 +30,6 @@ const StringCol2 = ({ value, className }: StringColProps) => {
 };
 
 const StatusCol = ({ value, className }: StatusColProps) => {
-    return (
-        <TableCell className={className}>
-            <Badge variant="outline">{value}</Badge>
-        </TableCell>
-    );
-};
-
-const StatusCol2 = ({ value, className }: StatusColProps) => {
     return (
         <div className={className}>
             <Badge variant="outline">{value}</Badge>
@@ -63,20 +51,4 @@ const ImageCol = ({ src, name, className }: ImageColProps) => {
     );
 };
 
-const HeaderCol = ({
-    value,
-    className,
-}: {
-    value?: string;
-    className?: string;
-}) => {
-    return (
-        <TableHead
-            className={cn(className, 'bg-primary-foreground sticky top-0')}
-        >
-            {value}
-        </TableHead>
-    );
-};
-
-export { StringCol, StringCol2, StatusCol, StatusCol2, ImageCol, HeaderCol };
+export { StringCol, StatusCol, ImageCol };

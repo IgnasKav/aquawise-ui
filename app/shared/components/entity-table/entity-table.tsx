@@ -1,6 +1,5 @@
-import { Table, TableBody, TableHeader } from '@/components/ui/table';
-import { TablePagination } from './table-pagination';
 import { cn } from '@/lib/utils';
+import { TablePagination } from './table-pagination';
 
 export type EntityTableProps = {
     className?: string;
@@ -26,13 +25,9 @@ const EntityTable = ({
 }: EntityTableProps & Props) => {
     return (
         <>
-            <div className={cn(className, 'flex flex-col grow ')}>
-                <div className="border rounded-md  flex overflow-hidden">
-                    <Table className="overflow-hidden overflow-y-auto">
-                        <TableHeader className="rounded">{header}</TableHeader>
-                        <TableBody>{children}</TableBody>
-                    </Table>
-                </div>
+            <div className={cn('border rounded-md divide-y', className)}>
+                <div>{header}</div>
+                <div className="divide-y">{children}</div>
             </div>
             <TablePagination
                 className="absolute bottom-4 mb-4"
