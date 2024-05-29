@@ -3,6 +3,7 @@ import {
     StatusCol,
     StringCol,
 } from 'app/shared/components/entity-table/table-col/table-col';
+import { ClientsTableItemActions } from './clients-table-item-actions';
 
 type ClientsTableItemProps = {
     client: Client;
@@ -27,7 +28,7 @@ const ClientsTableItem = ({ client, index }: ClientsTableItemProps) => {
                 className="hidden xl:block flex-auto w-60"
                 value={client.address}
             />
-            <div>a</div>
+            <ClientsTableItemActions client={client} />
         </div>
     );
 };

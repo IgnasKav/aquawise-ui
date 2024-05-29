@@ -7,7 +7,6 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { TableCell } from '@/components/ui/table';
 import { MoreHorizontal } from 'lucide-react';
 
 export type EntityTableItemAction = {
@@ -21,7 +20,7 @@ type ActionsColProps = {
 
 const ActionsCol = ({ actions }: ActionsColProps) => {
     return (
-        <TableCell>
+        <div>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button aria-haspopup="true" size="icon" variant="ghost">
@@ -40,7 +39,7 @@ const ActionsCol = ({ actions }: ActionsColProps) => {
                     ))}
                 </DropdownMenuContent>
             </DropdownMenu>
-        </TableCell>
+        </div>
     );
 };
 
