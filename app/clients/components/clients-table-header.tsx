@@ -18,7 +18,7 @@ const ClientsTableHeader = () => {
                 className="hidden xl:block flex-auto w-60"
                 value="Address"
             />
-            <StringCol value="" />
+            <StringCol className="w-[40px]" value="" />
         </div>
     );
 };
