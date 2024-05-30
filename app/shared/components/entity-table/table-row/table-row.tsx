@@ -31,23 +31,31 @@ type EntityTableRowProps = {
 const EntityTableRow = ({ cols, className }: EntityTableRowProps) => {
     return (
         <div className={cn('flex h-14 items-center gap-4 px-4', className)}>
-            {cols.map((col) => getEntityTableCol(col))}
+            {cols.map((col, i) => getEntityTableCol(i, col))}
         </div>
     );
 };
 
-const getEntityTableCol = (props: EntityTableColProps) => {
+const getEntityTableCol = (index: number, props: EntityTableColProps) => {
     switch (props.type) {
         case 'string':
             return (
-                <StringCol className={props.className} value={props.value} />
+                <StringCol
+                    key={index}
+                    className={props.className}
+                    value={props.value}
+                />
             );
         case 'status':
             return (
-                <StatusCol className={props.className} value={props.value} />
+                <StatusCol
+                    key={index}
+                    className={props.className}
+                    value={props.value}
+                />
             );
         case 'actions':
-            return <ActionsCol actions={props.actions} />;
+            return <ActionsCol key={index} actions={props.actions} />;
     }
 };
 

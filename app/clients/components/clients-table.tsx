@@ -102,7 +102,7 @@ export default function ClientsTable({
             <EntityTable className="mt-4 mb-8" {...clientsTableData}>
                 <>
                     <EntityTableRow
-                        className="text-muted-foreground text-medium bg-primary-foreground"
+                        className="text-muted-foreground font-medium bg-primary-foreground"
                         cols={headerData}
                     />
                     {clients.map((c, i) => (
