@@ -26,13 +26,6 @@ export default function ClientsTable({
     total,
     searchParams,
 }: ClientsTableProps) {
-    const clientsTableData: EntityTableProps = {
-        entityName: 'Clients',
-        page,
-        pageSize,
-        total,
-    };
-
     const getActions = (client: Client): EntityTableItemAction[] => [
         {
             name: 'Edit',
@@ -96,15 +89,19 @@ export default function ClientsTable({
 
     const itemsFrom = page * pageSize - pageSize + 1;
 
+    const clientsTableData: EntityTableProps = {
+        entityName: 'Clients',
+        headerData,
+        page,
+        pageSize,
+        total,
+    };
+
     return (
         <>
             <ClientsTableFilters searchParams={searchParams} />
             <EntityTable className="mt-4" {...clientsTableData}>
                 <>
-                    <EntityTableRow
-                        className="text-muted-foreground font-medium bg-primary-foreground"
-                        cols={headerData}
-                    />
                     {clients.map((c, i) => (
                         <EntityTableRow
                             key={c.id}
