@@ -22,18 +22,24 @@ const EntityTable = ({
     total,
 }: EntityTableProps & Props) => {
     return (
-        <>
-            <div className={cn('border rounded-md divide-y', className)}>
+        <div className="grow flex flex-col overflow-hidden gap-2">
+            <div
+                className={cn(
+                    'overflow-y-scroll border rounded-md divide-y',
+                    className,
+                )}
+            >
                 {children}
             </div>
+            <div className="grow"></div>
             <TablePagination
-                className="absolute bottom-4 mb-4"
+                className="flex-none pb-4"
                 entityName={entityName}
                 page={page}
                 pageSize={pageSize}
                 total={total}
             />
-        </>
+        </div>
     );
 };
 

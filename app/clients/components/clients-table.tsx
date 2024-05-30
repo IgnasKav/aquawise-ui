@@ -99,7 +99,7 @@ export default function ClientsTable({
     return (
         <>
             <ClientsTableFilters searchParams={searchParams} />
-            <EntityTable className="mt-4 mb-8" {...clientsTableData}>
+            <EntityTable className="mt-4" {...clientsTableData}>
                 <>
                     <EntityTableRow
                         className="text-muted-foreground font-medium bg-primary-foreground"
