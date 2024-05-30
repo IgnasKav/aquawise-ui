@@ -47,7 +47,7 @@ const NavBar = ({ session: initialSession }: NavbarProps) => {
     };
 
     return (
-        <div className="pt-8 mb-4">
+        <div className="pt-4 mb-4">
             <Card className="p-2 flex justify-between">
                 <div className="flex gap-2">
                     <NavButton to="/" title="Home" icon={<Home />} />

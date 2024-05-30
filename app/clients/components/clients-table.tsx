@@ -1,12 +1,15 @@
 import { Client } from '../models/Client';
-import { ClientsTableHeader } from './clients-table-header';
 import { ClientsTableFilters } from './clients-table-filters';
 import { ClientsPageSearchParams } from '../page';
 import {
     EntityTable,
     EntityTableProps,
 } from 'app/shared/components/entity-table/entity-table';
-import { ClientsTableItem } from './clients-table-item/clients-table-item';
+import {
+    EntityTableColProps,
+    EntityTableRow,
+} from 'app/shared/components/entity-table/table-row/table-row';
+import { EntityTableItemAction } from 'app/shared/components/entity-table/table-col/actions-col';
 
 type ClientsTableProps = {
     clients: Client[];
@@ -25,11 +28,71 @@ export default function ClientsTable({
 }: ClientsTableProps) {
     const clientsTableData: EntityTableProps = {
         entityName: 'Clients',
-        header: <ClientsTableHeader />,
         page,
         pageSize,
         total,
     };
+
+    const getActions = (client: Client): EntityTableItemAction[] => [
+        {
+            name: 'Edit',
+            fn: async () => {
+                'use server';
+                console.log('editing item', client);
+            },
+        },
+        {
+            name: 'Delete',
+            fn: async () => {
+                'use server';
+                console.log('deleting item');
+            },
+        },
+    ];
+
+    const headerData: EntityTableColProps[] = [
+        { type: 'string', value: '#', className: 'flex-none w-5' },
+        { type: 'string', value: 'Email', className: 'flex-auto w-64' },
+        { type: 'string', value: 'Name', className: 'flex-auto w-60' },
+        {
+            type: 'string',
+            value: 'Type',
+            className: 'hidden xl:block flex-none w-24',
+        },
+        {
+            type: 'string',
+            value: 'Phone',
+            className: 'hidden md:block flex-auto w-60',
+        },
+        {
+            type: 'string',
+            value: 'Address',
+            className: 'hidden xl:block flex-auto w-60',
+        },
+        { type: 'string', value: '', className: 'w-[40px]' },
+    ];
+
+    const getItem = (index: number, c: Client): EntityTableColProps[] => [
+        { type: 'string', value: index, className: 'flex-none w-5' },
+        { type: 'string', value: c.email, className: 'flex-auto w-64' },
+        { type: 'string', value: c.name, className: 'flex-auto w-60' },
+        {
+            type: 'status',
+            value: c.type,
+            className: 'hidden xl:block flex-none w-24',
+        },
+        {
+            type: 'string',
+            value: c.phone,
+            className: 'hidden md:block flex-auto w-60',
+        },
+        {
+            type: 'string',
+            value: c.address,
+            className: 'hidden xl:block flex-auto w-60',
+        },
+        { type: 'actions', actions: getActions(c) },
+    ];
 
     const itemsFrom = page * pageSize - pageSize + 1;
 
@@ -37,13 +100,18 @@ export default function ClientsTable({
         <>
             <ClientsTableFilters searchParams={searchParams} />
             <EntityTable className="mt-4 mb-8" {...clientsTableData}>
-                {clients.map((c, i) => (
-                    <ClientsTableItem
-                        index={itemsFrom + i}
-                        key={c.id}
-                        client={c}
+                <>
+                    <EntityTableRow
+                        className="text-muted-foreground text-medium bg-primary-foreground"
+                        cols={headerData}
                     />
-                ))}
+                    {clients.map((c, i) => (
+                        <EntityTableRow
+                            key={c.id}
+                            cols={getItem(itemsFrom + i, c)}
+                        />
+                    ))}
+                </>
             </EntityTable>
         </>
     );

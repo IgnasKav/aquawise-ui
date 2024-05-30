@@ -14,7 +14,7 @@ export type EntityTableItemAction = {
     fn: () => void;
 };
 
-type ActionsColProps = {
+export type ActionsColProps = {
     actions: EntityTableItemAction[];
 };
 

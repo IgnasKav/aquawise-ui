@@ -42,7 +42,7 @@ const ProductsPage = async ({
             <div className="overflow-hidden flex flex-col grow">
                 <CreateProductButton className="flex-none" />
                 <ProductList
-                    className="overflow-y-scroll grow mt-4 rounded-md"
+                    className="overflow-y-auto grow mt-4 rounded-md"
                     products={products}
                 />
                 <PaginationComponent

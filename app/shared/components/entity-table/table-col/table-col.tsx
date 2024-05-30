@@ -3,12 +3,12 @@ import { TableCell } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
-type StringColProps = {
+export type StringColProps = {
     value: string | number;
     className?: string;
 };
 
-type StatusColProps = StringColProps;
+export type StatusColProps = StringColProps;
 
 type ImageColProps = {
     src: string;

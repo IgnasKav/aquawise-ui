@@ -4,7 +4,6 @@ import { TablePagination } from './table-pagination';
 export type EntityTableProps = {
     className?: string;
     entityName: string;
-    header: React.ReactNode;
     page: number;
     pageSize: number;
     total: number;
@@ -17,7 +16,6 @@ type Props = {
 const EntityTable = ({
     className,
     entityName,
-    header,
     children,
     page,
     pageSize,
@@ -26,8 +24,7 @@ const EntityTable = ({
     return (
         <>
             <div className={cn('border rounded-md divide-y', className)}>
-                <div>{header}</div>
-                <div className="divide-y">{children}</div>
+                {children}
             </div>
             <TablePagination
                 className="absolute bottom-4 mb-4"
