@@ -101,14 +101,12 @@ export default function ClientsTable({
         <>
             <ClientsTableFilters searchParams={searchParams} />
             <EntityTable className="mt-4" {...clientsTableData}>
-                <>
-                    {clients.map((c, i) => (
-                        <EntityTableRow
-                            key={c.id}
-                            cols={getItem(itemsFrom + i, c)}
-                        />
-                    ))}
-                </>
+                {clients.map((c, i) => (
+                    <EntityTableRow
+                        key={c.id}
+                        cols={getItem(itemsFrom + i, c)}
+                    />
+                ))}
             </EntityTable>
         </>
     );

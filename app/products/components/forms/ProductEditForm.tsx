@@ -2,50 +2,11 @@
 
 import { Product } from '../../models/Product';
 import { api } from '../../../../api/api';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { AlertDto } from '../../../shared/components/alert/models/AlertDto';
 import useAlert from '../../../shared/stores/useAlert';
 import { ProductForm, ProductFormDto } from './ProductForm';
-import { ApiError } from '../../../../api/models/ApiError';
 import { forwardRef } from 'react';
 import { Subject } from 'rxjs';
-
-interface ProductUpdateMutation {
-    productId: string;
-    product: ProductFormDto;
-}
-
-const useProductEdit = (onSave?: () => void) => {
-    const queryClient = useQueryClient();
-    const [createAlert, createAlertFromApiError] = useAlert((state) => [
-        state.createAlert,
-        state.createAlertFromApiError,
-    ]);
-
-    const mutation = useMutation({
-        mutationFn: ({ productId, product }: ProductUpdateMutation) =>
-            api.Products.update(productId, product),
-        onSuccess: async () => {
-            const alert = new AlertDto({
-                message: 'Product edited',
-                type: 'success',
-                title: 'Success!',
-            });
-
-            if (onSave) {
-                onSave();
-            }
-
-            createAlert(alert);
-            await queryClient.invalidateQueries({ queryKey: ['products'] });
-        },
-        onError: (error: ApiError) => {
-            createAlertFromApiError(error);
-        },
-    });
-
-    return mutation;
-};
 
 type ProductEditFormProps = {
     id: string;
@@ -59,11 +20,30 @@ export const ProductEditForm = forwardRef<
     HTMLFormElement,
     ProductEditFormProps
 >(({ id, product, onSave, onCloseSubject, onSubmitSubject }, ref) => {
-    const { mutate: editProduct } = useProductEdit(onSave);
+    const [createAlert, createAlertFromApiError] = useAlert((state) => [
+        state.createAlert,
+        state.createAlertFromApiError,
+    ]);
 
-    // change
     const handleSave = async (values: ProductFormDto) => {
-        editProduct({ productId: product.id, product: values });
+        const resp = await api.Products.update(product.id, values);
+
+        if (resp.isError) {
+            createAlertFromApiError(resp);
+            return;
+        }
+
+        if (onSave) {
+            onSave();
+        }
+
+        const alert = new AlertDto({
+            message: 'Product edited',
+            type: 'success',
+            title: 'Success!',
+        });
+
+        createAlert(alert);
     };
 
     return (

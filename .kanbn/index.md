@@ -24,9 +24,9 @@ columnSorting:
 
 ## Todo
 
-- [remove-react-query-do-after-removing-axios](tasks/remove-react-query-do-after-removing-axios.md)
-
 ## In Progress
+
+- [remove-react-query-do-after-removing-axios](tasks/remove-react-query-do-after-removing-axios.md)
 
 ## Done
 
