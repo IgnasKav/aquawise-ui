@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 import ClientsTable from './components/clients-table';
 import AuthGuard from 'app/auth/AuthGuard';
 import { nextAuthOptions } from 'app/api/auth/[...nextauth]/route';
-import { Client, ClientType } from './models/Client';
+import { ClientType } from './models/Client';
 import { FailedDataFetchComponent } from 'app/shared/components/not-found/failed-data-fetch';
 import { Suspense } from 'react';
 import TableLoader from 'app/shared/components/loaders/TableLoader';
@@ -59,7 +59,6 @@ const ClientsPage = async ({
 }) => {
     const session = await getServerSession(nextAuthOptions);
     const user = session?.user as User;
-    const clients: Client[] = [];
 
     const params = getClientSearchParams(searchParams);
 
@@ -80,9 +79,7 @@ const ClientsPage = async ({
         },
     });
 
-    if (!response.isError) {
-        clients.push(...response.data);
-    } else {
+    if (response.isError) {
         return (
             <FailedDataFetchComponent
                 title="Failed to load clients"
@@ -91,14 +88,18 @@ const ClientsPage = async ({
         );
     }
 
+    if (!response.data) {
+        return <div>No resulst</div>;
+    }
+
     return (
         <AuthGuard>
             <Suspense fallback={<TableLoader />}>
                 <ClientsTable
-                    clients={clients}
+                    clients={response.data.data}
                     page={page}
                     pageSize={pageSize}
-                    total={response.total}
+                    total={response.data.total}
                     searchParams={params}
                 />
             </Suspense>

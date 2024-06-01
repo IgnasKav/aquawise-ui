@@ -37,11 +37,17 @@ const getJwt = async (): Promise<string | undefined> => {
     return jwt;
 };
 
-export type FetchResponse<T> = SuccessfulFetch<T> | FailedFetch;
+export type FetchResponse<T> = SuccessfulFetch<T> | FailedFetch | EmptyFetch;
+
+type EmptyFetch = {
+    isError: false;
+    data: null;
+};
 
 type SuccessfulFetch<T> = {
+    data: T;
     isError: false;
-} & T;
+};
 
 type FailedFetch = {
     isError: true;
@@ -68,10 +74,10 @@ const processFetchResponse = async <T>(
     } catch (e) {}
 
     if (data === null) {
-        return { isError: false } as SuccessfulFetch<null>;
+        return { isError: false, data: null };
     }
 
-    return { isError: false, ...data };
+    return { isError: false, data };
 };
 
 const post = async <T>(

@@ -37,9 +37,9 @@ const NavBar = ({ session: initialSession }: NavbarProps) => {
             case 'clients':
                 const resp = await api.Users.getUserFilter(user?.id, 'clients');
 
-                if (resp.isError) return;
+                if (resp.isError || !resp.data) return;
 
-                const url = buildClientsUrl({ ...resp });
+                const url = buildClientsUrl({ ...resp.data });
 
                 router.push(url);
                 break;

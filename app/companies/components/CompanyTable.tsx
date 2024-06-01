@@ -18,6 +18,10 @@ const CompanyTable = () => {
         queryFn: () => api.Companies.getAll(),
     });
 
+    console.log('compnaies', companies);
+
+    if (!companies || companies?.isError) return;
+
     return (
         <>
             <Card>
@@ -32,7 +36,7 @@ const CompanyTable = () => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {companies?.map((c) => (
+                        {companies.data?.map((c) => (
                             <CompanyTableItem key={c.id} company={c} />
                         ))}
                     </TableBody>

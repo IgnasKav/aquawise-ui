@@ -34,9 +34,9 @@ const nextAuthOptions: AuthOptions = {
                     throw new Error(e.message);
                 }
 
-                if (res.isError) return null;
+                if (res.isError || !res.data) return null;
 
-                const session = { ...res.user, jwt: res.jwt };
+                const session = { ...res.data.user, jwt: res.data.jwt };
 
                 return session;
             },
