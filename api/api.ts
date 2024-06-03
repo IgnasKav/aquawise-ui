@@ -1,135 +1,203 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import { LoginRequest } from '../models/auth/LoginRequest';
-import { RegisterRequest } from '../models/auth/RegisterRequest';
-import { LoginResponse } from '../models/auth/LoginResponse';
-import { getCookie } from 'cookies-next';
-import { ApiError } from '../models/ApiError';
-import { User } from '../models/User';
-import { CompanyCreateDto } from '../models/companies/CompanyCreate.dto';
-import { Company } from '../models/companies/Company';
-import { RegisterResponse } from '../models/auth/RegisterResponse';
-import { UserInviteRequest } from '../components/users/models/UserInviteRequest';
-import { Product } from '../components/products/models/Product';
-import { CompanyClient } from '../models/companies/CompanyClient';
-import { Order } from '../components/orders/models/Order';
-import { OrderUpdateRequest } from '../components/orders/models/OrderUpdateRequest';
+import { LoginRequest } from '../app/auth/register/models/LoginRequest';
+import { RegisterRequest } from '../app/auth/register/models/RegisterRequest';
+import { LoginResponse } from '../app/auth/register/models/LoginResponse';
+import { ApiError } from './models/ApiError';
+import { User } from '../app/auth/models/User';
+import { Company } from '../app/companies/models/Company';
+import { RegisterResponse } from '../app/auth/register/models/RegisterResponse';
+import { Product } from '../app/products/models/Product';
+import { getServerSession } from 'next-auth';
+import { nextAuthOptions } from '../app/api/auth/[...nextauth]/route';
+import { getSession } from 'next-auth/react';
+import { ImagesApi as Images } from './images/ImagesApi';
+import { ClientsApi as Clients } from './clients/ClientsApi';
+import { ProductFormDto } from 'app/products/components/forms/ProductForm';
+import { CompanyApplicationFormDto } from 'app/auth/components/auth-modal/CompanyApplicationForm';
+import { UsersApi as Users } from './users/users-api';
+import { SearchResponse } from './models/SearchResponse';
+import { ProductsSearchRequest } from 'app/products/models/products-search-request';
 
-import * as dotenv from 'dotenv';
-dotenv.config({ path: `../ a.env` });
+export const ApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-export const ApiUrl = process.env.API_URL;
+// this file is used by server and client components, which get session differently
+const getJwt = async (): Promise<string | undefined> => {
+    let jwt = '';
 
-axios.defaults.baseURL = `${ApiUrl}`;
+    // server side
+    if (typeof window === 'undefined') {
+        // @ts-expect-error user type is wrong in next auth
+        jwt = (await getServerSession(nextAuthOptions))?.user?.jwt;
+    }
+    // client side
+    else {
+        // @ts-expect-error user type is wrong in next auth
+        jwt = (await getSession())?.user?.jwt;
+    }
 
-axios.interceptors.request.use((config) => {
-    const token = getCookie('jwt');
-    if (token && config?.headers)
-        config.headers.Authorization = `Bearer ${token}`;
-    return config;
-});
+    return jwt;
+};
 
-const responseBody = (response: AxiosResponse) => response.data;
-const parseError = (error: AxiosError): ApiError => {
-    const data = error.response?.data as Partial<ApiError>;
-    return new ApiError(data);
+export type FetchResponse<T> = SuccessfulFetch<T> | FailedFetch | EmptyFetch;
+
+type EmptyFetch = {
+    isError: false;
+    data: null;
+};
+
+type SuccessfulFetch<T> = {
+    data: T;
+    isError: false;
+};
+
+type FailedFetch = {
+    isError: true;
+} & ApiError;
+
+const processFetchResponse = async <T>(
+    resp: Response,
+): Promise<FetchResponse<T>> => {
+    if (!resp.ok) {
+        const error = (await resp.json()) as Partial<ApiError>;
+
+        return {
+            isError: true,
+            message: error.message ?? '',
+            statusCode: error.statusCode ?? 0,
+            timeStamp: error.timeStamp ?? '',
+        };
+    }
+
+    let data: T | null = null;
+
+    try {
+        data = (await resp.json()) as T;
+    } catch (e) {}
+
+    if (data === null) {
+        return { isError: false, data: null };
+    }
+
+    return { isError: false, data };
+};
+
+const post = async <T>(
+    url: string,
+    body: object,
+    isFormData?: boolean,
+): Promise<FetchResponse<T>> => {
+    const token = await api.getJwt();
+
+    const headers: HeadersInit = {
+        Authorization: `Bearer ${token}`,
+    };
+
+    if (!isFormData) {
+        headers['Content-Type'] = 'application/json';
+    }
+
+    const res = await fetch(`${ApiUrl}${url}`, {
+        method: 'POST',
+        headers,
+        body: isFormData ? (body as FormData) : JSON.stringify(body),
+    });
+
+    return processFetchResponse(res);
+};
+
+const get = async <T>(url: string): Promise<FetchResponse<T>> => {
+    const token = await api.getJwt();
+
+    const res = await fetch(`${ApiUrl}${url}`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return processFetchResponse(res);
+};
+
+const put = async <T>(
+    url: string,
+    body: object,
+    isFormData = false,
+): Promise<FetchResponse<T>> => {
+    const token = await api.getJwt();
+
+    const res = await fetch(`${ApiUrl}${url}`, {
+        method: 'PUT',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': isFormData
+                ? 'multipart/form-data'
+                : 'application/json',
+        },
+        body: JSON.stringify(body),
+    });
+
+    return processFetchResponse(res);
+};
+
+const del = async <T>(url: string): Promise<FetchResponse<T>> => {
+    const token = await api.getJwt();
+
+    const res = await fetch(`${ApiUrl}${url}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return processFetchResponse(res);
 };
 
 const requests = {
-    get: (url: string) => axios.get(url).then(responseBody),
-    post: (url: string, body: object, isFormData?: boolean) => {
-        const headers = isFormData
-            ? { 'Content-Type': 'multipart/form-data' }
-            : {};
-        return axios.post(url, body, { headers }).then(responseBody);
-    },
-    put: (url: string, body: object, isFormData = false) => {
-        const headers = isFormData
-            ? { 'Content-Type': 'multipart/form-data' }
-            : {};
-        return axios.put(url, body, { headers }).then(responseBody);
-    },
-    del: (url: string) => axios.delete(url).then(responseBody),
+    get,
+    post,
+    put,
+    del,
 };
 
 const Auth = {
-    login: (req: LoginRequest): Promise<LoginResponse> => {
-        console.log(axios.defaults.baseURL);
-        return requests.post('/auth/login', req);
-    },
-    register: async (
-        userRegistrationId: string,
-        req: RegisterRequest,
-    ): Promise<RegisterResponse> => {
-        return await requests.post(
-            `/auth/register?userRegistrationId=${userRegistrationId}`,
-            req,
-        );
-    },
-    registerAdmin: async (
-        companyRegistrationId: string,
-        req: RegisterRequest,
-    ): Promise<RegisterResponse> => {
-        return await requests.post(
-            `/auth/register?companyRegistrationId=${companyRegistrationId}`,
-            req,
-        );
-    },
-    current: (): Promise<User> => requests.get('auth/current'),
-    getByRegistrationId: (registrationId: string): Promise<User> =>
-        requests.get(`auth?userRegistrationId=${registrationId}`),
-    inviteUser: (request: UserInviteRequest) =>
-        requests.post(`/auth/invite`, request),
+    login: (req: LoginRequest) =>
+        requests.post<LoginResponse>('/auth/login', req),
+    register: async (req: RegisterRequest) =>
+        await requests.post<RegisterResponse>(`/auth/register`, req),
+    current: () => requests.get<User>('auth/current'),
+    getByRegistrationId: (registrationId: string) =>
+        requests.get<User>(`/auth/register?registrationId=${registrationId}`),
 };
 
 const Companies = {
-    getAll: (): Promise<Company[] | undefined> => requests.get(`/companies`),
-    getByApplicationId: (applicationId: string): Promise<Company> =>
-        requests.get(`/companies/application/${applicationId}`),
-
-    create: (createRequest: CompanyCreateDto): Promise<Company> =>
-        requests.post('/companies', createRequest),
-
-    confirmApplication: (applicationId: string): Promise<Company> =>
-        requests.post(`/companies/confirm/${applicationId}`, {}),
-    getById: (id: string): Promise<Company> => requests.get(`/companies/${id}`),
-    getClients: (id: string): Promise<CompanyClient[]> =>
-        requests.get(`/companies/${id}/clients`),
-    getOrders: (id: string): Promise<Order[]> =>
-        requests.get(`/companies/${id}/orders`),
-    saveColor: (id: string, color: string | undefined): Promise<void> =>
-        requests.put(`/companies/${id}`, { brandColor: color }),
-};
-
-const Orders = {
-    update: (
-        companyId: string,
-        clientId: string,
-        orderId: string,
-        request: OrderUpdateRequest,
-    ): Promise<Order> =>
-        requests.put(
-            `/companies/${companyId}/clients/${clientId}/orders/${orderId}`,
-            request,
-        ),
+    getAll: () => requests.get<Company[] | undefined>(`/companies`),
+    applyForAccount: (createRequest: CompanyApplicationFormDto) =>
+        requests.post<Company>('/companies/application', createRequest),
+    confirmApplication: (registrationId: string) =>
+        requests.post<Company>(`/companies/confirm/${registrationId}`, {}),
+    getById: (id: string) => requests.get<Company>(`/companies/${id}`),
+    saveColor: (id: string, color: string | undefined) =>
+        requests.put<void>(`/companies/${id}`, { brandColor: color }),
 };
 
 const Products = {
-    getAll: (): Promise<Product[] | undefined> => requests.get('/products'),
-    getById: (productId: string): Promise<Company> =>
-        requests.get(`/products/${productId}`),
-    create: (req: FormData): Promise<Product> =>
-        requests.post('/products', req, true),
-    update: (productId: string, req: FormData): Promise<Product> =>
-        requests.put(`/products/${productId}`, req, true),
-    delete: (productId: string): Promise<void> =>
-        requests.del(`/products/${productId}`),
+    search: (req: ProductsSearchRequest) =>
+        requests.post<SearchResponse<Product>>('/products/search', req),
+    getById: (productId: string) =>
+        requests.get<Company>(`/products/${productId}`),
+    create: (req: ProductFormDto) => requests.post<Product>('/products', req),
+    update: (productId: string, req: ProductFormDto) =>
+        requests.put<Product>(`/products/${productId}`, req),
+    delete: (productId: string) => requests.del<void>(`/products/${productId}`),
 };
 
 const api = {
     Auth,
     Companies,
     Products,
-    Orders,
+    Images,
+    Clients,
+    Users,
+    getJwt,
 };
 
-export { api, parseError };
+export { api, requests };
