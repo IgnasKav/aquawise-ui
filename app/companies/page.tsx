@@ -1,11 +1,7 @@
 import AuthGuard from 'app/auth/AuthGuard';
 import { api } from '../../api/api';
 import CompanyTable from './components/CompanyTable';
-import {
-    HydrationBoundary,
-    QueryClient,
-    dehydrate,
-} from '@tanstack/react-query';
+import { QueryClient } from '@tanstack/react-query';
 
 const CompaniesPage = async () => {
     const queryClient = new QueryClient();
@@ -15,11 +11,19 @@ const CompaniesPage = async () => {
         queryFn: () => api.Companies.getAll(),
     });
 
+    const resp = await api.Companies.getAll();
+
+    if (resp.isError) {
+        return `Error: ${resp.message}`;
+    }
+
+    if (!resp.data) {
+        return 'No resulsts';
+    }
+
     return (
         <AuthGuard>
-            <HydrationBoundary state={dehydrate(queryClient)}>
-                <CompanyTable />
-            </HydrationBoundary>
+            <CompanyTable companies={resp.data} />
         </AuthGuard>
     );
 };

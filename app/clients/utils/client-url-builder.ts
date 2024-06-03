@@ -1,4 +1,9 @@
+import { UserFilterScope } from 'api/users/models/user-filter-save-request';
 import { ClientsPageSearchParams } from '../page';
+
+const buildUrl = (scope: UserFilterScope, page: number) => {
+    return `/${scope}?p=${page}`;
+};
 
 const buildClientsUrl = ({
     page,
@@ -6,7 +11,7 @@ const buildClientsUrl = ({
     types,
     searchFields,
 }: ClientsPageSearchParams) => {
-    let url = `/clients?p=${page}`;
+    let url = buildUrl('clients', page);
 
     if (types.length > 0) {
         url += `&types=${encodeURIComponent(types.toString())}`;

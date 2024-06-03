@@ -37,9 +37,18 @@ const NavBar = ({ session: initialSession }: NavbarProps) => {
             case 'clients':
                 const resp = await api.Users.getUserFilter(user?.id, 'clients');
 
-                if (resp.isError || !resp.data) return;
+                console.log(resp);
 
-                const url = buildClientsUrl({ ...resp.data });
+                if (resp.isError) return;
+
+                const data = resp.data ?? {
+                    page: 1,
+                    searchText: '',
+                    searchFields: [],
+                    types: [],
+                };
+
+                const url = buildClientsUrl(data);
 
                 router.push(url);
                 break;
@@ -53,37 +62,36 @@ const NavBar = ({ session: initialSession }: NavbarProps) => {
                     <NavButton to="/" title="Home" icon={<Home />} />
                     {user && (
                         <>
-                            {(user.role === 'admin' ||
-                                user.role === 'support') && (
+                            {user.role === 'support' && (
                                 <>
                                     <NavButton
                                         to="/companies"
                                         title="Companies"
                                         icon={<Building2 />}
                                     />
+                                </>
+                            )}
+                            {(user.role === 'user' ||
+                                user.role === 'admin') && (
+                                <>
                                     <NavButton
-                                        to="/users"
-                                        title="Team"
-                                        icon={<Users />}
+                                        onClick={() => navigate('clients')}
+                                        to="/clients"
+                                        title="Clients"
+                                        icon={<Smartphone />}
+                                    />
+                                    <NavButton
+                                        to="/products"
+                                        title="Products"
+                                        icon={<Package />}
+                                    />
+                                    <NavButton
+                                        to="/orders"
+                                        title="Orders"
+                                        icon={<ScrollText />}
                                     />
                                 </>
                             )}
-                            <NavButton
-                                onClick={() => navigate('clients')}
-                                to="/clients?p=1"
-                                title="Clients"
-                                icon={<Smartphone />}
-                            />
-                            <NavButton
-                                to="/products"
-                                title="Products"
-                                icon={<Package />}
-                            />
-                            <NavButton
-                                to="/orders"
-                                title="Orders"
-                                icon={<ScrollText />}
-                            />
                         </>
                     )}
                 </div>

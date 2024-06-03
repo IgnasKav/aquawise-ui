@@ -9,19 +9,13 @@ import {
 } from '@/components/ui/table';
 import CompanyTableItem from './CompanyTableItem';
 import { Card } from '@/components/ui/card';
-import { useQuery } from '@tanstack/react-query';
-import { api } from 'api/api';
+import { Company } from '../models/Company';
 
-const CompanyTable = () => {
-    const { data: companies } = useQuery({
-        queryKey: ['companies'],
-        queryFn: () => api.Companies.getAll(),
-    });
+type CompanyTableProps = {
+    companies: Company[];
+};
 
-    console.log('compnaies', companies);
-
-    if (!companies || companies?.isError) return;
-
+const CompanyTable = ({ companies }: CompanyTableProps) => {
     return (
         <>
             <Card>
@@ -36,7 +30,7 @@ const CompanyTable = () => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {companies.data?.map((c) => (
+                        {companies.map((c) => (
                             <CompanyTableItem key={c.id} company={c} />
                         ))}
                     </TableBody>

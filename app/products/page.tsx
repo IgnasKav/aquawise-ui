@@ -35,7 +35,11 @@ const ProductsPage = async ({
         return;
     }
 
-    const products = resp.data;
+    if (!resp.data) {
+        return 'No products';
+    }
+
+    const products = resp.data.data;
 
     return (
         <AuthGuard>
@@ -49,7 +53,7 @@ const ProductsPage = async ({
                     className="mt-2 pb-8"
                     page={page}
                     pageSize={pageSize}
-                    total={resp.total}
+                    total={resp.data.total}
                 />
             </div>
         </AuthGuard>
